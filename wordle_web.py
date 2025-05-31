@@ -114,6 +114,10 @@ def admin_daily_word():
         print(traceback.format_exc())
         return f"Server Error: {str(e)}", 500
 
+@app.route('/')
+def root():
+    return redirect(url_for('daily_game'))
+
 @app.route('/daily_game', methods=['GET', 'POST'])
 def daily_game():
     try:
