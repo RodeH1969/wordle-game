@@ -1,4 +1,3 @@
-# wordle_web.py
 from flask import Flask, render_template, request, session, redirect, url_for
 import datetime
 import os
@@ -201,4 +200,5 @@ def daily_game():
 
 if __name__ == '__main__':
     print("Starting Flask server...")
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    port = int(os.getenv('PORT', 5000))  # Use PORT env var if set, otherwise default to 5000
+    app.run(debug=True, host='0.0.0.0', port=port)
