@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Daily Word</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        form {
+            margin-top: 20px;
+        }
+        input[type="text"], input[type="submit"], button {
+            padding: 10px;
+            margin: 5px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input[type="submit"], button {
+            background-color: #538d4e;
+            color: #fff;
+            cursor: pointer;
+            border: none;
+        }
+        button {
+            background-color: #3a3a3c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Admin - Daily Word</h1>
+        <p>Today's Date: {{ today }}</p>
+        <p>Current Daily Word: {{ current_word }}</p>
+        <form method="POST">
+            <input type="hidden" name="password" value="{{ request.args.get('password') }}">
+            <input type="hidden" name="action" value="override_random">
+            <input type="submit" value="Set New Random Word">
+        </form>
+        <form method="POST">
+            <input type="hidden" name="password" value="{{ request.args.get('password') }}">
+            <input type="hidden" name="action" value="override_specific">
+            <input type="text" name="new_word" placeholder="Enter a new word" required>
+            <input type="submit" value="Set Specific Word">
+        </form>
+    </div>
+</body>
+</html>
