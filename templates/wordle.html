@@ -500,7 +500,7 @@
                         console.log('Generating snapshot...');
                         const allGuesses = {{ attempts|tojson }};
                         const allFeedbacks = {{ feedbacks|tojson }};
-                        const targetWord = '{{ target }}'; // Get the target word from Flask
+                        const targetWord = '{{ target }}';
                         snapshotText = `Wordle {{ attempts|length }}/6\n${targetWord}\n\n`;
 
                         allGuesses.forEach((guess, row) => {
@@ -515,7 +515,7 @@
                             snapshotText += rowText + '\n';
                         });
 
-                        snapshotText += `\nThe first player to submit the correct word wins a $20 Dan Murphy's gift card. The winner of the 10 am daily tournament is announced on WhatsApp. Join the Qld Wordle Tournament group on WhatsApp to get the daily Wordle at 10am.`;
+                        snapshotText += `\nThe first player to Send via SMS the correct word wins a $20 Dan Murphy's gift card. The winner is announced on the Qld Wordle Tournament group chat on WhatsApp. Tournaments are daily at 10 am sharp when a link to the Tournament will be posted on the WhatsApp group chat.`;
                         console.log('Generated snapshot text:', snapshotText);
 
                         // Display the snapshot text
