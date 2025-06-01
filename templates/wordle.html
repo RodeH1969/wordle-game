@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>10 am Wordle Tournie</title>
     <style>
         body {
@@ -16,6 +16,7 @@
             align-items: center;
             justify-content: center;
             min-height: 100vh;
+            overscroll-behavior: none; /* Prevent pull-to-refresh or overscroll effects */
         }
         .game-container {
             display: flex;
@@ -118,7 +119,7 @@
             gap: 5px;
             margin-top: 10px;
             width: 100%;
-            max-width: 370px;
+            max-width: 370px; /* Match grid width */
         }
         .keyboard-row {
             display: flex;
@@ -134,16 +135,17 @@
             border: none;
             border-radius: 4px;
             padding: 0;
-            height: 55px;
+            height: 58px; /* Increased for better touch area */
             flex: 1;
-            max-width: 40px;
+            max-width: 48px; /* Increased to meet minimum touch target size */
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
+            touch-action: manipulation; /* Prevent zooming on touch */
         }
         .key.wide {
-            max-width: 60px;
+            max-width: 68px; /* Adjusted for larger keys */
         }
         .key.green {
             background-color: #538d4e;
@@ -243,10 +245,10 @@
             .key {
                 font-size: 16px;
                 height: 58px;
-                max-width: 40px;
+                max-width: 48px;
             }
             .key.wide {
-                max-width: 60px;
+                max-width: 68px;
             }
             .toast {
                 font-size: 16px;
