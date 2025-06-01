@@ -37,8 +37,8 @@ def save_daily_word_state(state):
 
 DAILY_WORD_STATE = load_daily_word_state()
 
-# Admin password for simple authentication (for local testing)
-ADMIN_PASSWORD = "admin123"  # Change this in production or use proper authentication
+# Admin password for simple authentication
+ADMIN_PASSWORD = "admin123"
 
 def load_word_list(file_path='words.txt'):
     try:
@@ -181,12 +181,6 @@ def daily_game():
                 }
                 session.modified = True
                 print(f"Session reset for new day:", session[session_key])
-            else:
-                # Ensure game_over is False if reinitializing on the same day
-                session[session_key]['game_over'] = False
-                session[session_key]['won'] = False
-                session.modified = True
-                print(f"Session forced reset for user:", session[session_key])
 
         print(f"Session state before processing:", session[session_key])
 
