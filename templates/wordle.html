@@ -22,13 +22,14 @@
             flex-direction: column;
             align-items: center;
             width: 100%;
-            max-width: 500px;
-            padding: 10px;
+            max-width: 100%; /* Use full width on mobile */
+            padding: 5px; /* Reduced padding for mobile */
+            box-sizing: border-box;
         }
         .title {
-            font-size: 24px;
+            font-size: 28px; /* Increased for mobile */
             font-weight: bold;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             color: #ffffff;
             text-align: center;
             line-height: 1.2;
@@ -37,38 +38,44 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            width: 100%;
         }
         .grid-row {
             display: flex;
             align-items: center;
-            margin-bottom: 5px;
+            margin-bottom: 4px; /* Reduced spacing between rows */
+            width: 100%;
+            justify-content: center;
         }
         .row-label {
-            width: 20px;
+            width: 24px; /* Slightly wider for larger font */
             text-align: right;
-            margin-right: 5px;
-            font-size: 14px;
+            margin-right: 4px;
+            font-size: 16px; /* Increased for mobile */
             color: #d7dadc;
         }
         .grid {
             display: grid;
-            grid-template-rows: repeat(6, 50px);
-            grid-gap: 5px;
-            margin-bottom: 20px;
+            grid-template-rows: repeat(6, 60px); /* Increased row height for larger tiles */
+            grid-gap: 4px; /* Reduced gap for mobile */
+            margin-bottom: 10px;
+            width: 100%;
+            max-width: 340px; /* Adjusted to fit 5 tiles (60px each + 4px gaps) */
         }
         .row {
             display: grid;
-            grid-template-columns: repeat(5, 50px);
-            grid-gap: 5px;
+            grid-template-columns: repeat(5, 60px); /* Increased tile width */
+            grid-gap: 4px; /* Reduced gap */
+            justify-content: center;
         }
         .tile {
-            width: 50px;
-            height: 50px;
+            width: 60px; /* Increased tile size for mobile */
+            height: 60px;
             border: 2px solid #3a3a3c;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 28px; /* Increased font size for mobile */
             font-weight: bold;
             text-transform: uppercase;
             color: #ffffff;
@@ -123,35 +130,35 @@
         .keyboard {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 5px; /* Reduced gap for mobile */
             margin-top: 10px;
             width: 100%;
-            max-width: 500px;
+            max-width: 340px; /* Match grid width */
         }
         .keyboard-row {
             display: flex;
             justify-content: center;
-            gap: 6px;
+            gap: 5px; /* Reduced gap for mobile */
         }
         .key {
             background-color: #818384;
             color: #ffffff;
-            font-size: 14px;
+            font-size: 16px; /* Increased for mobile */
             font-weight: bold;
             text-transform: uppercase;
             border: none;
             border-radius: 4px;
             padding: 0;
-            height: 50px;
+            height: 55px; /* Increased for better touch area */
             flex: 1;
-            max-width: 35px;
+            max-width: 40px; /* Increased for larger keys */
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
         }
         .key.wide {
-            max-width: 55px;
+            max-width: 60px; /* Adjusted for larger keys */
         }
         .key.green {
             background-color: #538d4e;
@@ -170,7 +177,7 @@
             top: 20px;
             background-color: #ffffff;
             color: #000000;
-            padding: 10px 20px;
+            padding: 8px 16px; /* Adjusted for mobile */
             border-radius: 5px;
             font-size: 14px;
             opacity: 0;
@@ -181,18 +188,18 @@
         }
         .message {
             font-size: 16px;
-            margin: 20px 0;
+            margin: 15px 0; /* Adjusted for mobile */
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
         .share-options {
             display: flex;
-            gap: 10px;
+            gap: 8px;
         }
         .share-link, .copy-button {
-            padding: 8px 16px;
+            padding: 6px 12px; /* Adjusted for mobile */
             background-color: #538d4e;
             color: #ffffff;
             text-decoration: none;
@@ -209,28 +216,36 @@
             font-size: 12px;
             color: #d7dadc;
             text-align: center;
-            max-width: 400px;
+            max-width: 340px; /* Match grid width */
         }
         .snapshot-text {
             font-size: 12px;
             color: #ffffff;
             background-color: #3a3a3c;
-            padding: 8px;
+            padding: 6px; /* Adjusted for mobile */
             border-radius: 5px;
             white-space: pre-wrap;
             text-align: center;
-            max-width: 400px;
+            max-width: 340px;
         }
+        /* Media query for larger screens (e.g., tablets, desktops) */
         @media (min-width: 600px) {
+            .game-container {
+                max-width: 500px;
+                padding: 10px;
+            }
             .title {
                 font-size: 32px;
-                margin-bottom: 20px;
+                margin-bottom: 15px;
             }
             .grid {
                 grid-template-rows: repeat(6, 62px);
+                grid-gap: 5px;
+                max-width: 380px; /* Adjusted for larger tiles */
             }
             .row {
                 grid-template-columns: repeat(5, 62px);
+                grid-gap: 5px;
             }
             .tile {
                 width: 62px;
@@ -242,7 +257,8 @@
                 margin-right: 10px;
             }
             .keyboard {
-                margin-top: 20px;
+                margin-top: 15px;
+                max-width: 500px;
             }
             .key {
                 font-size: 16px;
