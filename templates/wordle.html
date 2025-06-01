@@ -83,12 +83,6 @@
             background-position: center;
             background-repeat: no-repeat;
         }
-        .tile.logo-2 {
-            background-image: url('/static/logo_2.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
         .tile.filled {
             background-image: none !important;
             border-color: #565758;
@@ -206,7 +200,7 @@
             max-width: 370px;
         }
         .instructions a {
-            color: #538d4e; /* Match the share button color for consistency */
+            color: #538d4e;
             text-decoration: none;
         }
         .instructions a:hover {
@@ -288,8 +282,7 @@
                     <div class="grid" style="display: contents;">
                         <div class="row" data-row="{{ i }}">
                             {% for j in range(5) %}
-                                {% set logo_class = 'logo-2' if i in [0, 2, 4] else 'logo-1' %}
-                                <div class="tile {{ logo_class }} {% if i < attempts|length and attempts[i][j] %}filled {{ feedbacks[i][j] }}{% endif %}" data-tile="{{ i }}-{{ j }}">
+                                <div class="tile logo-1 {% if i < attempts|length and attempts[i][j] %}filled {{ feedbacks[i][j] }}{% endif %}" data-tile="{{ i }}-{{ j }}">
                                     {% if i < attempts|length %}{{ attempts[i][j] }}{% endif %}
                                 </div>
                             {% endfor %}
