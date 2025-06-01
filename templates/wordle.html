@@ -28,12 +28,12 @@
             box-sizing: border-box;
         }
         .title {
-            font-size: 24px; /* Reduced from 28px for mobile */
+            font-size: 16px; /* Reduced to minimum legible size for mobile */
             font-weight: bold;
-            margin-bottom: 6px; /* Adjusted from 8px */
+            margin-bottom: 4px; /* Reduced from 6px */
             color: #ffffff;
             text-align: center;
-            line-height: 1.2;
+            line-height: 1.1; /* Reduced from 1.2 */
         }
         .grid-container {
             display: flex;
@@ -221,8 +221,9 @@
                 padding: 10px;
             }
             .title {
-                font-size: 28px; /* Reduced from 32px for larger screens */
-                margin-bottom: 12px; /* Adjusted from 15px */
+                font-size: 20px; /* Reduced to minimum legible size for larger screens */
+                margin-bottom: 8px; /* Reduced from 12px */
+                line-height: 1.1; /* Reduced from 1.2 */
             }
             .grid {
                 grid-template-rows: repeat(6, 62px);
