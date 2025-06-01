@@ -88,12 +88,6 @@
             background-position: center;
             background-repeat: no-repeat;
         }
-        .tile.logo-3 {
-            background-image: url('/static/logo_3.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
         .tile.filled {
             background-image: none !important;
             border-color: #565758;
@@ -284,7 +278,7 @@
                     <div class="grid" style="display: contents;">
                         <div class="row" data-row="{{ i }}">
                             {% for j in range(5) %}
-                                {% set logo_class = 'logo-1' if i == 0 or i == 3 else 'logo-2' if i == 1 or i == 4 else 'logo-3' %}
+                                {% set logo_class = 'logo-2' if i in [0, 2, 4] else 'logo-1' %}
                                 <div class="tile {{ logo_class }} {% if i < attempts|length and attempts[i][j] %}filled {{ feedbacks[i][j] }}{% endif %}" data-tile="{{ i }}-{{ j }}">
                                     {% if i < attempts|length %}{{ attempts[i][j] }}{% endif %}
                                 </div>
