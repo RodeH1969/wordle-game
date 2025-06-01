@@ -3,6 +3,8 @@ import datetime
 import os
 import traceback
 import random
+import json
+import glob
 
 # Initialize the Flask app
 app = Flask(__name__)
@@ -12,11 +14,28 @@ app.secret_key = os.urandom(24)
 WORD_LIST = []
 ANSWER_LIST = []
 
-# Store the daily word state (date and override word if set)
-DAILY_WORD_STATE = {
-    'date': None,  # Store the date for which the word is set
-    'word': None   # Store the overridden word, if any
-}
+# Store the daily word state in a file
+DAILY_WORD_STATE_FILE = 'daily_word_state.json'
+
+# Load DAILY_WORD_STATE from file at startup
+def load_daily_word_state():
+    try:
+        if os.path.exists(DAILY_WORD_STATE_FILE):
+            with open(DAILY_WORD_STATE_FILE, 'r') as f:
+                return json.load(f)
+    except Exception as e:
+        print(f"Error loading daily word state: {str(e)}")
+    return {'date': None, 'word': None}
+
+# Save DAILY_WORD_STATE to file
+def save_daily_word_state(state):
+    try:
+        with open(DAILY_WORD_STATE_FILE, 'w') as f:
+            json.dump(state, f)
+    except Exception as e:
+        print(f"Error saving daily word state: {str(e)}")
+
+DAILY_WORD_STATE = load_daily_word_state()
 
 # Admin password for simple authentication (for local testing)
 ADMIN_PASSWORD = "admin123"  # Change this in production or use proper authentication
@@ -33,7 +52,7 @@ def load_answers(file_path='answers.txt'):
     try:
         with open(file_path, 'r') as f:
             answers = [line.strip().upper() for line in f if len(line.strip()) == 5 and line.strip().isalpha()]
-            print(f"Loaded answers from answers.txt: {answers}")  # Debug: Log the loaded answers
+            print(f"Loaded answers from answers.txt: {answers}")
             return answers
     except FileNotFoundError:
         return []
@@ -92,18 +111,30 @@ def admin_daily_word():
                 new_word = get_random_word(ANSWER_LIST)
                 DAILY_WORD_STATE['date'] = today_str
                 DAILY_WORD_STATE['word'] = new_word
+                save_daily_word_state(DAILY_WORD_STATE)
                 print(f"Admin overrode daily word to: {new_word}")
             elif action == 'override_specific':
                 new_word = request.form.get('new_word', '').strip().upper()
-                print(f"Attempting to override daily word with: '{new_word}'")  # Debug: Log the entered word
-                print(f"ANSWER_LIST contents: {ANSWER_LIST}")  # Debug: Log the ANSWER_LIST
+                print(f"Attempting to override daily word with: '{new_word}'")
+                print(f"ANSWER_LIST contents: {ANSWER_LIST}")
                 if new_word in ANSWER_LIST:
                     DAILY_WORD_STATE['date'] = today_str
                     DAILY_WORD_STATE['word'] = new_word
+                    save_daily_word_state(DAILY_WORD_STATE)
                     print(f"Admin overrode daily word to: {new_word}")
                 else:
-                    print(f"Word '{new_word}' not found in ANSWER_LIST.")  # Debug: Log why it failed
+                    print(f"Word '{new_word}' not found in ANSWER_LIST.")
                     return "Invalid word. Please choose a word from answers.txt.", 400
+
+            # Clear all user sessions to ensure the new word takes effect immediately
+            session_files = glob.glob('flask_session/*')
+            for session_file in session_files:
+                try:
+                    os.remove(session_file)
+                    print(f"Cleared session file: {session_file}")
+                except Exception as e:
+                    print(f"Error clearing session file {session_file}: {str(e)}")
+
             return redirect(url_for('admin_daily_word', password=password))
 
         # Show the current daily word
@@ -204,5 +235,5 @@ def daily_game():
 
 if __name__ == '__main__':
     print("Starting Flask server...")
-    port = int(os.getenv('PORT', 5000))  # Use PORT env var if set, otherwise default to 5000
+    port = int(os.getenv('PORT', 5000))
     app.run(debug=True, host='0.0.0.0', port=port)
