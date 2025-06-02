@@ -5,6 +5,7 @@ import traceback
 import random
 import requests
 import glob
+import json  # Added missing import
 
 # Initialize the Flask app
 app = Flask(__name__)
