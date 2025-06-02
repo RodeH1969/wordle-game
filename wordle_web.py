@@ -3,7 +3,7 @@ import datetime
 import os
 import traceback
 import random
-import json
+import requests
 import glob
 
 # Initialize the Flask app
@@ -14,31 +14,42 @@ app.secret_key = os.urandom(24)
 WORD_LIST = []
 ANSWER_LIST = []
 
-# Store the daily word state in a file
-DAILY_WORD_STATE_FILE = 'daily_word_state.json'
-
-# Load DAILY_WORD_STATE from file at startup
-def load_daily_word_state():
-    try:
-        if os.path.exists(DAILY_WORD_STATE_FILE):
-            with open(DAILY_WORD_STATE_FILE, 'r') as f:
-                return json.load(f)
-    except Exception as e:
-        print(f"Error loading daily word state: {str(e)}")
-    return {'date': None, 'word': None}
-
-# Save DAILY_WORD_STATE to file
-def save_daily_word_state(state):
-    try:
-        with open(DAILY_WORD_STATE_FILE, 'w') as f:
-            json.dump(state, f)
-    except Exception as e:
-        print(f"Error saving daily word state: {str(e)}")
-
-DAILY_WORD_STATE = load_daily_word_state()
+# Upstash Redis configuration (replace with your Upstash REST API URL and token)
+UPSTASH_REDIS_URL = "https://<your-database-id>.upstash.io"
+UPSTASH_REDIS_TOKEN = "<your-upstash-token>"
 
 # Admin password for simple authentication
 ADMIN_PASSWORD = "admin123"
+
+# Load DAILY_WORD_STATE from Upstash Redis
+def load_daily_word_state():
+    try:
+        response = requests.get(
+            f"{UPSTASH_REDIS_URL}/get/DAILY_WORD_STATE",
+            headers={"Authorization": f"Bearer {UPSTASH_REDIS_TOKEN}"}
+        )
+        result = response.json()
+        if result["result"]:
+            return json.loads(result["result"])
+    except Exception as e:
+        print(f"Error loading daily word state from Upstash: {str(e)}")
+    return {'date': None, 'word': None}
+
+# Save DAILY_WORD_STATE to Upstash Redis
+def save_daily_word_state(state):
+    try:
+        response = requests.post(
+            f"{UPSTASH_REDIS_URL}/set/DAILY_WORD_STATE",
+            headers={"Authorization": f"Bearer {UPSTASH_REDIS_TOKEN}"},
+            data=json.dumps(state)
+        )
+        if response.json().get("result") != "OK":
+            print("Failed to save daily word state to Upstash")
+    except Exception as e:
+        print(f"Error saving daily word state to Upstash: {str(e)}")
+
+# Load DAILY_WORD_STATE at startup
+DAILY_WORD_STATE = load_daily_word_state()
 
 def load_word_list(file_path='words.txt'):
     try:
@@ -67,17 +78,21 @@ if not WORD_LIST or not ANSWER_LIST:
 def get_random_word(answer_list):
     return random.choice(answer_list)
 
-def get_daily_word(answer_list, start_date=datetime.date(2025, 1, 1)):
+def get_daily_word(answer_list):
     today = datetime.date.today()
     today_str = today.isoformat()
 
-    # Check if we have an override for today
-    if DAILY_WORD_STATE.get('date') == today_str and DAILY_WORD_STATE.get('word'):
+    # Check if we have an override
+    if DAILY_WORD_STATE.get('word'):
         return DAILY_WORD_STATE['word']
     
-    # Otherwise, use the deterministic daily word
-    days_since_start = (today - start_date).days
-    return answer_list[days_since_start % len(answer_list)]
+    # If no word is set, set a random word as the initial state
+    new_word = get_random_word(answer_list)
+    DAILY_WORD_STATE['date'] = today_str
+    DAILY_WORD_STATE['word'] = new_word
+    save_daily_word_state(DAILY_WORD_STATE)
+    print(f"Set initial random word: {new_word}")
+    return new_word
 
 def get_feedback(guess, target):
     feedback = ['gray'] * 5
