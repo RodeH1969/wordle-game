@@ -16,8 +16,8 @@ WORD_LIST = []
 ANSWER_LIST = []
 
 # Upstash Redis configuration (replace with your Upstash REST API URL and token)
-UPSTASH_REDIS_URL = "https://<your-database-id>.upstash.io"
-UPSTASH_REDIS_TOKEN = "<your-upstash-token>"
+UPSTASH_REDIS_URL = "https://ample-chamois-15026.upstash.io"
+UPSTASH_REDIS_TOKEN = "<ATqyAAIjcDFhZjU5NjI5NDdhZjA0ZDE5YjIwM2RiMTNjM2Q5M2VjN3AxMA>"
 
 # Admin password for simple authentication
 ADMIN_PASSWORD = "admin123"
