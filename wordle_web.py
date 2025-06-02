@@ -5,7 +5,7 @@ import traceback
 import random
 import requests
 import glob
-import json  # Added missing import
+import json
 
 # Initialize the Flask app
 app = Flask(__name__)
@@ -29,12 +29,18 @@ def load_daily_word_state():
             f"{UPSTASH_REDIS_URL}/get/DAILY_WORD_STATE",
             headers={"Authorization": f"Bearer {UPSTASH_REDIS_TOKEN}"}
         )
+        response.raise_for_status()
         result = response.json()
         if result["result"]:
-            return json.loads(result["result"])
+            state = json.loads(result["result"])
+            print(f"Loaded DAILY_WORD_STATE from Upstash: {state}")
+            return state
+        else:
+            print("No DAILY_WORD_STATE found in Upstash, returning default state")
+            return {'word': None}
     except Exception as e:
         print(f"Error loading daily word state from Upstash: {str(e)}")
-    return {'date': None, 'word': None}
+        return {'word': None}
 
 # Save DAILY_WORD_STATE to Upstash Redis
 def save_daily_word_state(state):
@@ -44,8 +50,11 @@ def save_daily_word_state(state):
             headers={"Authorization": f"Bearer {UPSTASH_REDIS_TOKEN}"},
             data=json.dumps(state)
         )
-        if response.json().get("result") != "OK":
-            print("Failed to save daily word state to Upstash")
+        response.raise_for_status()
+        if response.json().get("result") == "OK":
+            print(f"Saved DAILY_WORD_STATE to Upstash: {state}")
+        else:
+            print(f"Failed to save DAILY_WORD_STATE to Upstash, response: {response.json()}")
     except Exception as e:
         print(f"Error saving daily word state to Upstash: {str(e)}")
 
@@ -80,19 +89,16 @@ def get_random_word(answer_list):
     return random.choice(answer_list)
 
 def get_daily_word(answer_list):
-    today = datetime.date.today()
-    today_str = today.isoformat()
-
     # Check if we have an override
     if DAILY_WORD_STATE.get('word'):
+        print(f"Using existing DAILY_WORD_STATE word: {DAILY_WORD_STATE['word']}")
         return DAILY_WORD_STATE['word']
     
-    # If no word is set, set a random word as the initial state
+    # If no word is set, set a random word
     new_word = get_random_word(answer_list)
-    DAILY_WORD_STATE['date'] = today_str
     DAILY_WORD_STATE['word'] = new_word
     save_daily_word_state(DAILY_WORD_STATE)
-    print(f"Set initial random word: {new_word}")
+    print(f"Set new random word: {new_word}")
     return new_word
 
 def get_feedback(guess, target):
@@ -117,27 +123,22 @@ def admin_daily_word():
         if password != ADMIN_PASSWORD:
             return "Unauthorized: Incorrect password.", 403
 
-        today = datetime.date.today()
-        today_str = today.isoformat()
-
         if request.method == 'POST':
-            # Override the daily word
+            # Override the word
             action = request.form.get('action')
             if action == 'override_random':
                 new_word = get_random_word(ANSWER_LIST)
-                DAILY_WORD_STATE['date'] = today_str
                 DAILY_WORD_STATE['word'] = new_word
                 save_daily_word_state(DAILY_WORD_STATE)
-                print(f"Admin overrode daily word to: {new_word}")
+                print(f"Admin overrode word to: {new_word}")
             elif action == 'override_specific':
                 new_word = request.form.get('new_word', '').strip().upper()
-                print(f"Attempting to override daily word with: '{new_word}'")
+                print(f"Attempting to override word with: '{new_word}'")
                 print(f"ANSWER_LIST contents: {ANSWER_LIST}")
                 if new_word in ANSWER_LIST:
-                    DAILY_WORD_STATE['date'] = today_str
                     DAILY_WORD_STATE['word'] = new_word
                     save_daily_word_state(DAILY_WORD_STATE)
-                    print(f"Admin overrode daily word to: {new_word}")
+                    print(f"Admin overrode word to: {new_word}")
                 else:
                     print(f"Word '{new_word}' not found in ANSWER_LIST.")
                     return "Invalid word. Please choose a word from answers.txt.", 400
@@ -153,8 +154,9 @@ def admin_daily_word():
 
             return redirect(url_for('admin_daily_word', password=password))
 
-        # Show the current daily word
+        # Show the current word
         current_word = get_daily_word(ANSWER_LIST)
+        today = datetime.date.today()
         return render_template('admin_daily_word.html', current_word=current_word, today=today)
     except Exception as e:
         print(f"Error in admin_daily_word route: {str(e)}")
