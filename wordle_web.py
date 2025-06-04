@@ -6,6 +6,7 @@ import random
 import requests
 import glob
 import json
+from werkzeug.utils import secure_filename
 
 # Initialize the Flask app
 app = Flask(__name__)
@@ -15,12 +16,19 @@ app.secret_key = os.urandom(24)
 WORD_LIST = []
 ANSWER_LIST = []
 
-# Upstash Redis configuration (replace with your Upstash REST API URL and token)
+# Upstash Redis configuration
 UPSTASH_REDIS_URL = "https://ample-chamois-15026.upstash.io"
-UPSTASH_REDIS_TOKEN = "ATqyAAIjcDFhZjU5NjI5NDdhZjA0ZDE5YjIwM2RiMTNjM2Q5M2VjN3AxMA"
+UPSTASH_REDIS_TOKEN = "your-upstash-token"
 
 # Admin password for simple authentication
 ADMIN_PASSWORD = "admin123"
+
+# Directory to store uploaded images
+UPLOAD_FOLDER = 'static/tile_images'
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 # Load DAILY_WORD_STATE from Upstash Redis
 def load_daily_word_state():
@@ -58,8 +66,48 @@ def save_daily_word_state(state):
     except Exception as e:
         print(f"Error saving daily word state to Upstash: {str(e)}")
 
-# Load DAILY_WORD_STATE at startup
+# Load TILE_IMAGES from Upstash Redis
+def load_tile_images():
+    try:
+        response = requests.get(
+            f"{UPSTASH_REDIS_URL}/get/TILE_IMAGES",
+            headers={"Authorization": f"Bearer {UPSTASH_REDIS_TOKEN}"}
+        )
+        response.raise_for_status()
+        result = response.json()
+        if result["result"]:
+            images = json.loads(result["result"])
+            print(f"Loaded TILE_IMAGES from Upstash: {images}")
+            return images
+        else:
+            print("No TILE_IMAGES found in Upstash, returning default state")
+            return {}
+    except Exception as e:
+        print(f"Error loading tile images from Upstash: {str(e)}")
+        return {}
+
+# Save TILE_IMAGES to Upstash Redis
+def save_tile_images(images):
+    try:
+        response = requests.post(
+            f"{UPSTASH_REDIS_URL}/set/TILE_IMAGES",
+            headers={"Authorization": f"Bearer {UPSTASH_REDIS_TOKEN}"},
+            data=json.dumps(images)
+        )
+        response.raise_for_status()
+        if response.json().get("result") == "OK":
+            print(f"Saved TILE_IMAGES to Upstash: {images}")
+        else:
+            print(f"Failed to save TILE_IMAGES to Upstash, response: {response.json()}")
+    except Exception as e:
+        print(f"Error saving tile images to Upstash: {str(e)}")
+
+# Load states at startup
 DAILY_WORD_STATE = load_daily_word_state()
+TILE_IMAGES = load_tile_images()
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def load_word_list(file_path='words.txt'):
     try:
@@ -124,7 +172,6 @@ def admin_daily_word():
             return "Unauthorized: Incorrect password.", 403
 
         if request.method == 'POST':
-            # Override the word
             action = request.form.get('action')
             if action == 'override_random':
                 new_word = get_random_word(ANSWER_LIST)
@@ -142,8 +189,29 @@ def admin_daily_word():
                 else:
                     print(f"Word '{new_word}' not found in ANSWER_LIST.")
                     return "Invalid word. Please choose a word from answers.txt.", 400
+            elif action == 'upload_tile_image':
+                row = int(request.form.get('row'))
+                col = int(request.form.get('col'))
+                if 'image' not in request.files:
+                    return "No image file provided.", 400
+                file = request.files['image']
+                if file.filename == '':
+                    return "No selected file.", 400
+                if file and allowed_file(file.filename):
+                    filename = secure_filename(file.filename)
+                    # Create unique filename using row and col
+                    ext = filename.rsplit('.', 1)[1].lower()
+                    new_filename = f"tile_{row}_{col}.{ext}"
+                    file.save(os.path.join(app.config['UPLOAD_FOLDER'], new_filename))
+                    # Update TILE_IMAGES
+                    global TILE_IMAGES
+                    TILE_IMAGES[f"{row}-{col}"] = f"/static/tile_images/{new_filename}"
+                    save_tile_images(TILE_IMAGES)
+                    print(f"Uploaded image for tile {row}-{col}: {new_filename}")
+                else:
+                    return "Invalid file type. Allowed extensions: jpg, jpeg, png, gif.", 400
 
-            # Clear all user sessions to ensure the new word takes effect immediately
+            # Clear all user sessions to ensure the new word/images take effect immediately
             session_files = glob.glob('flask_session/*')
             for session_file in session_files:
                 try:
@@ -154,10 +222,10 @@ def admin_daily_word():
 
             return redirect(url_for('admin_daily_word', password=password))
 
-        # Show the current word
+        # Show the current word and tile images
         current_word = get_daily_word(ANSWER_LIST)
         today = datetime.date.today()
-        return render_template('admin_daily_word.html', current_word=current_word, today=today)
+        return render_template('admin_daily_word.html', current_word=current_word, today=today, tile_images=TILE_IMAGES)
     except Exception as e:
         print(f"Error in admin_daily_word route: {str(e)}")
         print(traceback.format_exc())
@@ -210,11 +278,13 @@ def daily_game():
             if len(guess) != 5 or not guess.isalpha():
                 return render_template('wordle.html', error="Please enter a valid 5-letter word.", 
                                      attempts=session[session_key]['attempts'], 
-                                     feedbacks=session[session_key]['feedbacks'])
+                                     feedbacks=session[session_key]['feedbacks'],
+                                     tile_images=TILE_IMAGES)
             if guess not in valid_words:
                 return render_template('wordle.html', error="Not in word list. Try again.", 
                                      attempts=session[session_key]['attempts'], 
-                                     feedbacks=session[session_key]['feedbacks'])
+                                     feedbacks=session[session_key]['feedbacks'],
+                                     tile_images=TILE_IMAGES)
 
             feedback = get_feedback(guess, target)
             session[session_key]['attempts'].append(guess)
@@ -232,14 +302,16 @@ def daily_game():
                                  feedbacks=session[session_key]['feedbacks'], 
                                  game_over=session[session_key]['game_over'], 
                                  won=session[session_key]['won'], 
-                                 target=target)
+                                 target=target,
+                                 tile_images=TILE_IMAGES)
 
         print(f"Session state before rendering:", session[session_key])
         return render_template('wordle.html', attempts=session[session_key]['attempts'], 
                              feedbacks=session[session_key]['feedbacks'], 
                              game_over=session[session_key]['game_over'], 
                              won=session[session_key]['won'], 
-                             target=target)
+                             target=target,
+                             tile_images=TILE_IMAGES)
     except Exception as e:
         print(f"Error in daily_game route: {str(e)}")
         print(traceback.format_exc())

@@ -76,9 +76,6 @@
             box-sizing: border-box;
             position: relative;
             transition: transform 0.5s, background-color 0.5s, border-color 0.5s;
-        }
-        .tile.logo-1 {
-            background-image: url('/static/qld_logo.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -282,7 +279,9 @@
                     <div class="grid" style="display: contents;">
                         <div class="row" data-row="{{ i }}">
                             {% for j in range(5) %}
-                                <div class="tile logo-1 {% if i < attempts|length and attempts[i][j] %}filled {{ feedbacks[i][j] }}{% endif %}" data-tile="{{ i }}-{{ j }}">
+                                {% set tile_key = i|string + '-' + j|string %}
+                                {% set tile_image = tile_images.get(tile_key, '/static/qld_logo.png') %}
+                                <div class="tile" style="background-image: url('{{ tile_image }}'); {% if i < attempts|length and attempts[i][j] %}filled {{ feedbacks[i][j] }}{% endif %}" data-tile="{{ i }}-{{ j }}">
                                     {% if i < attempts|length %}{{ attempts[i][j] }}{% endif %}
                                 </div>
                             {% endfor %}
