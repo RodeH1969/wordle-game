@@ -87,14 +87,17 @@
         .tile.green {
             background-color: #538d4e;
             border-color: #538d4e;
+            background-image: none !important;
         }
         .tile.yellow {
             background-color: #b59f3b;
             border-color: #b59f3b;
+            background-image: none !important;
         }
         .tile.gray {
             background-color: #3a3a3c;
             border-color: #3a3a3c;
+            background-image: none !important;
         }
         .tile.flip {
             animation: flip 0.5s ease forwards;
@@ -281,7 +284,7 @@
                             {% for j in range(5) %}
                                 {% set tile_key = i|string + '-' + j|string %}
                                 {% set tile_image = tile_images.get(tile_key, '/static/qld_logo.png') %}
-                                <div class="tile" style="background-image: url('{{ tile_image }}'); {% if i < attempts|length and attempts[i][j] %}filled {{ feedbacks[i][j] }}{% endif %}" data-tile="{{ i }}-{{ j }}">
+                                <div class="tile {% if i < attempts|length and attempts[i][j] %}filled {{ feedbacks[i][j] }}{% endif %}" style="--tile-bg-image: url('{{ tile_image }}'); background-image: var(--tile-bg-image);" data-tile="{{ i }}-{{ j }}">
                                     {% if i < attempts|length %}{{ attempts[i][j] }}{% endif %}
                                 </div>
                             {% endfor %}
@@ -404,6 +407,10 @@
                             if (feedback) {
                                 tile.classList.add(feedback);
                             }
+                            // Ensure background image is cleared after flip animation
+                            tile.addEventListener('animationend', () => {
+                                tile.style.backgroundImage = 'none';
+                            }, { once: true });
                         }, index * 300);
                     });
                 }
