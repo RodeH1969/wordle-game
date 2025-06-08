@@ -50,20 +50,66 @@
         button:hover {
             background-color: #45a049;
         }
+        .row-container {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fafafa;
+        }
         .tile-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 10px;
-            margin-top: 20px;
+            margin: 15px 0;
         }
         .tile-preview {
             text-align: center;
         }
         .tile-preview img {
-            width: 70px;
-            height: 70px;
+            width: 60px;
+            height: 60px;
             object-fit: cover;
-            border: 1px solid #ccc;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+        }
+        .tile-placeholder {
+            width: 60px;
+            height: 60px;
+            border: 2px dashed #ccc;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: #666;
+            text-align: center;
+            line-height: 1.2;
+        }
+        .upload-form {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .upload-form input[type="file"] {
+            flex: 1;
+            margin-bottom: 0;
+        }
+        .upload-form button {
+            flex-shrink: 0;
+        }
+        .current-image-info {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+        .remove-button {
+            background-color: #dc3545;
+            margin-left: 5px;
+        }
+        .remove-button:hover {
+            background-color: #c82333;
         }
     </style>
 </head>
@@ -86,32 +132,61 @@
             </div>
         </form>
 
-        <h2>Upload Tile Images</h2>
-        <p>Upload an image for each tile (6 rows × 5 tiles per row). Allowed formats: jpg, jpeg, png, gif.</p>
+        <h2>Upload Row Images</h2>
+        <p>Upload one image per row that will fill all 5 tiles in that row. Allowed formats: jpg, jpeg, png, gif.</p>
+        
         {% for i in range(6) %}
-            <h3>Row {{ i + 1 }}</h3>
-            <div class="tile-grid">
-                {% for j in range(5) %}
-                    <div class="tile-preview">
-                        <p>Tile {{ j + 1 }}</p>
-                        {% set tile_key = i|string + '-' + j|string %}
-                        {% if tile_images[tile_key] %}
-                            <img src="{{ tile_images[tile_key] }}" alt="Tile {{ i }}-{{ j }} Image">
-                        {% else %}
-                            <p>No image set</p>
-                        {% endif %}
-                        <form method="POST" enctype="multipart/form-data">
-                            <input type="hidden" name="password" value="{{ request.args.get('password') }}">
-                            <input type="hidden" name="action" value="upload_tile_image">
-                            <input type="hidden" name="row" value="{{ i }}">
-                            <input type="hidden" name="col" value="{{ j }}">
-                            <input type="file" name="image" accept="image/*">
-                            <button type="submit">Upload</button>
-                        </form>
+            <div class="row-container">
+                <h3>Row {{ i + 1 }}</h3>
+                
+                <!-- Preview of all tiles in this row -->
+                <div class="tile-grid">
+                    {% for j in range(5) %}
+                        <div class="tile-preview">
+                            {% set row_image_key = 'row-' + i|string %}
+                            {% if tile_images.get(row_image_key) %}
+                                <img src="{{ tile_images[row_image_key] }}" alt="Row {{ i }} Image">
+                            {% else %}
+                                <div class="tile-placeholder">No Image</div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Current image info and upload form -->
+                {% set row_image_key = 'row-' + i|string %}
+                {% if tile_images.get(row_image_key) %}
+                    <div class="current-image-info">
+                        <strong>Current image:</strong> {{ tile_images[row_image_key].split('/')[-1] }}
                     </div>
-                {% endfor %}
+                {% endif %}
+
+                <form method="POST" enctype="multipart/form-data" class="upload-form">
+                    <input type="hidden" name="password" value="{{ request.args.get('password') }}">
+                    <input type="hidden" name="action" value="upload_row_image">
+                    <input type="hidden" name="row" value="{{ i }}">
+                    <input type="file" name="image" accept="image/*" required>
+                    <button type="submit">Upload for Row {{ i + 1 }}</button>
+                    {% if tile_images.get(row_image_key) %}
+                        <button type="submit" name="action" value="remove_row_image" class="remove-button" 
+                                onclick="return confirm('Are you sure you want to remove the image for Row {{ i + 1 }}?')">
+                            Remove
+                        </button>
+                    {% endif %}
+                </form>
             </div>
         {% endfor %}
+
+        <div style="margin-top: 30px; padding: 20px; background-color: #e8f4fd; border-radius: 8px;">
+            <h3>Instructions:</h3>
+            <ul>
+                <li>Each row can have its own background image</li>
+                <li>When you upload an image for a row, it will appear behind all 5 tiles in that row</li>
+                <li>Images will be automatically resized to fit the tiles</li>
+                <li>You can remove an image by clicking the "Remove" button</li>
+                <li>If no image is uploaded for a row, the default QLD logo will be used</li>
+            </ul>
+        </div>
     </div>
 </body>
 </html>
