@@ -282,9 +282,9 @@
                     <div class="grid" style="display: contents;">
                         <div class="row" data-row="{{ i }}">
                             {% for j in range(5) %}
-                                {% set row_image_key = 'row-' + i|string %}
-                                {% set row_image = tile_images.get(row_image_key, '/static/qld_logo.png') %}
-                                <div class="tile {% if i < attempts|length and attempts[i][j] %}filled {{ feedbacks[i][j] }}{% endif %}" style="--tile-bg-image: url('{{ row_image }}'); background-image: var(--tile-bg-image);" data-tile="{{ i }}-{{ j }}">
+                                {% set tile_key = i|string + '-' + j|string %}
+                                {% set tile_image = tile_images.get(tile_key, '/static/qld_logo.png') %}
+                                <div class="tile {% if i < attempts|length and attempts[i][j] %}filled {{ feedbacks[i][j] }}{% endif %}" style="--tile-bg-image: url('{{ tile_image }}'); background-image: var(--tile-bg-image);" data-tile="{{ i }}-{{ j }}">
                                     {% if i < attempts|length %}{{ attempts[i][j] }}{% endif %}
                                 </div>
                             {% endfor %}
