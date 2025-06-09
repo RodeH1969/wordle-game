@@ -109,7 +109,7 @@
            }
            /* Define background images for each row */
            {% for i in range(6) %}
-               {% set row_image = row_images.get(str(i), '/static/qld_logo.png') %}
+               {% set row_image = row_images.get(i|string, '/static/qld_logo.png') %}
            .row-{{ i }} .tile {
                background-image: url('{{ row_image }}');
            }
