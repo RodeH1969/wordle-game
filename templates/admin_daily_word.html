@@ -92,8 +92,8 @@
                {% for i in range(6) %}
                    <div class="row-preview">
                        <p>Row {{ i + 1 }}</p>
-                       {% if row_images[str(i)] %}
-                           <img src="{{ row_images[str(i)] }}" alt="Row {{ i + 1 }} Image">
+                       {% if row_images[i|string] %}
+                           <img src="{{ row_images[i|string] }}" alt="Row {{ i + 1 }} Image">
                        {% else %}
                            <p>No image set</p>
                        {% endif %}
