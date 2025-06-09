@@ -1,410 +1,112 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Daily Word</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 80%;
-            max-width: 800px;
-        }
-        h1, h2 {
-            text-align: center;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        input[type="text"], input[type="file"] {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        .row-container {
-            margin-bottom: 30px;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            background-color: #fafafa;
-        }
-        .tile-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 10px;
-            margin: 15px 0;
-        }
-        .tile-preview {
-            text-align: center;
-        }
-        .tile-preview img {
-            width: 60px;
-            height: 60px;
-            object-fit: cover;
-            border: 2px solid #ccc;
-            border-radius: 4px;
-        }
-        .tile-placeholder {
-            width: 60px;
-            height: 60px;
-            border: 2px dashed #ccc;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 10px;
-            color: #666;
-            text-align: center;
-            line-height: 1.2;
-        }
-        .upload-form {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        .upload-form input[type="file"] {
-            flex: 1;
-            margin-bottom: 0;
-        }
-        .upload-form button {
-            flex-shrink: 0;
-        }
-        .current-image-info {
-            font-size: 12px;
-            color: #666;
-            margin-top: 5px;
-        }
-        .remove-button {
-            background-color: #dc3545;
-            margin-left: 5px;
-        }
-        .remove-button:hover {
-            background-color: #c82333;
-        }
-        .hidden-forms {
-            display: none;
-        }
-        #upload-status {
-            min-height: 20px;
-            font-size: 16px;
-            margin-top: 15px;
-            font-weight: bold;
-        }
-        .upload-all-button {
-            background-color: #007bff;
-            font-size: 18px;
-            padding: 15px 30px;
-            margin: 10px;
-        }
-        .upload-all-button:hover {
-            background-color: #0056b3;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Admin - Daily Word Management</h1>
-        <p><strong>Current Word:</strong> {{ current_word }}</p>
-        <p><strong>Today:</strong> {{ today }}</p>
+   <html lang="en">
+   <head>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <title>Admin - Daily Word Management</title>
+       <style>
+           body {
+               font-family: Arial, sans-serif;
+               background-color: #f4f4f4;
+               margin: 0;
+               padding: 20px;
+               display: flex;
+               flex-direction: column;
+               align-items: center;
+           }
+           .container {
+               background-color: #fff;
+               padding: 20px;
+               border-radius: 8px;
+               box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+               width: 80%;
+               max-width: 800px;
+           }
+           h1, h2 {
+               text-align: center;
+           }
+           .form-group {
+               margin-bottom: 15px;
+           }
+           label {
+               display: block;
+               margin-bottom: 5px;
+           }
+           input[type="text"], input[type="file"] {
+               width: 100%;
+               padding: 8px;
+               margin-bottom: 10px;
+               border: 1px solid #ccc;
+               border-radius: 4px;
+           }
+           button {
+               background-color: #4CAF50;
+               color: white;
+               padding: 10px 15px;
+               border: none;
+               border-radius: 4px;
+               cursor: pointer;
+           }
+           button:hover {
+               background-color: #45a049;
+           }
+           .row-grid {
+               display: grid;
+               grid-template-columns: 1fr;
+               gap: 10px;
+               margin-top: 20px;
+           }
+           .row-preview {
+               text-align: center;
+           }
+           .row-preview img {
+               width: 70px;
+               height: 70px;
+               object-fit: cover;
+               border: 1px solid #ccc;
+           }
+       </style>
+   </head>
+   <body>
+       <div class="container">
+           <h1>Admin - Daily Word Management</h1>
+           <p><strong>Current Word:</strong> {{ current_word }}</p>
+           <p><strong>Today:</strong> {{ today }}</p>
 
-        <h2>Override Word</h2>
-        <form method="POST">
-            <input type="hidden" name="password" value="{{ request.args.get('password') }}">
-            <div class="form-group">
-                <button type="submit" name="action" value="override_random">Override with Random Word</button>
-            </div>
-            <div class="form-group">
-                <label for="new_word">Override with Specific Word:</label>
-                <input type="text" id="new_word" name="new_word" placeholder="Enter a 5-letter word">
-                <button type="submit" name="action" value="override_specific">Override</button>
-            </div>
-        </form>
+           <h2>Override Word</h2>
+           <form method="POST">
+               <input type="hidden" name="password" value="{{ request.args.get('password') }}">
+               <div class="form-group">
+                   <button type="submit" name="action" value="override_random">Override with Random Word</button>
+               </div>
+               <div class="form-group">
+                   <label for="new_word">Override with Specific Word:</label>
+                   <input type="text" id="new_word" name="new_word" placeholder="Enter a 5-letter word">
+                   <button type="submit" name="action" value="override_specific">Override</button>
+               </div>
+           </form>
 
-        <h2>Upload Row Images</h2>
-        <p>Select one image per row, then click "Upload All Images" to upload them all at once. Allowed formats: jpg, jpeg, png, gif.</p>
-        
-        {% for i in range(6) %}
-            <div class="row-container">
-                <h3>Row {{ i + 1 }}</h3>
-                
-                <!-- Preview of all tiles in this row -->
-                <div class="tile-grid">
-                    {% for j in range(5) %}
-                        <div class="tile-preview">
-                            {% set tile_key = i|string + '-' + j|string %}
-                            {% if tile_images.get(tile_key) %}
-                                <img src="{{ tile_images[tile_key] }}" alt="Row {{ i }} Tile {{ j }} Image">
-                            {% else %}
-                                <div class="tile-placeholder">No Image</div>
-                            {% endif %}
-                        </div>
-                    {% endfor %}
-                </div>
-
-                <!-- Current image info -->
-                {% set first_tile_key = i|string + '-0' %}
-                {% if tile_images.get(first_tile_key) %}
-                    <div class="current-image-info">
-                        <strong>Current row image:</strong> {{ tile_images[first_tile_key].split('/')[-1] }}
-                    </div>
-                {% endif %}
-
-                <!-- File input for this row -->
-                <div class="upload-form">
-                    <label for="row-file-{{ i }}">Choose image for Row {{ i + 1 }}:</label>
-                    <input type="file" id="row-file-{{ i }}" accept="image/*">
-                    {% if tile_images.get(first_tile_key) %}
-                        <button type="button" class="remove-button" onclick="removeRowImage({{ i }})">Remove Row {{ i + 1 }}</button>
-                    {% endif %}
-                </div>
-            </div>
-        {% endfor %}
-
-        <div style="text-align: center; margin: 30px 0;">
-            <button type="button" onclick="uploadAllImages()" class="upload-all-button">
-                Upload All Images
-            </button>
-            <div id="upload-status"></div>
-        </div>
-
-        <!-- Hidden forms for each tile (used by JavaScript) -->
-        <div class="hidden-forms">
-            {% for i in range(6) %}
-                {% for j in range(5) %}
-                    <form method="POST" enctype="multipart/form-data" id="form-{{ i }}-{{ j }}">
-                        <input type="hidden" name="password" value="{{ request.args.get('password') }}">
-                        <input type="hidden" name="action" value="upload_tile_image">
-                        <input type="hidden" name="row" value="{{ i }}">
-                        <input type="hidden" name="col" value="{{ j }}">
-                        <input type="file" name="image" id="hidden-file-{{ i }}-{{ j }}">
-                    </form>
-                {% endfor %}
-            {% endfor %}
-        </div>
-
-        <div style="margin-top: 30px; padding: 20px; background-color: #e8f4fd; border-radius: 8px;">
-            <h3>Instructions:</h3>
-            <ul>
-                <li><strong>Step 1:</strong> Select an image file for each row you want to update</li>
-                <li><strong>Step 2:</strong> Click the "Upload All Images" button to upload all selected images at once</li>
-                <li><strong>How it works:</strong> Each selected image will be applied to all 5 tiles in its respective row</li>
-                <li><strong>Remove:</strong> Use individual "Remove Row X" buttons to remove images from specific rows</li>
-                <li><strong>Default:</strong> If no image is uploaded for a row, the default QLD logo will be used</li>
-                <li><strong>Status:</strong> Watch the status message above to see upload progress</li>
-            </ul>
-        </div>
-    </div>
-
-    <script>
-        // Get the password value safely from the URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const adminPassword = urlParams.get('password') || '';
-
-        function uploadAllImages() {
-            const statusDiv = document.getElementById('upload-status');
-            statusDiv.innerHTML = 'Starting uploads...';
-            statusDiv.style.color = '#007bff';
-
-            const rowsToUpload = [];
-            
-            // Check which rows have files selected
-            for (let i = 0; i < 6; i++) {
-                const fileInput = document.getElementById(`row-file-${i}`);
-                if (fileInput.files.length > 0) {
-                    rowsToUpload.push({
-                        rowIndex: i,
-                        file: fileInput.files[0]
-                    });
-                }
-            }
-
-            if (rowsToUpload.length === 0) {
-                statusDiv.innerHTML = 'No images selected. Please select at least one image.';
-                statusDiv.style.color = '#dc3545';
-                return;
-            }
-
-            statusDiv.innerHTML = `Uploading ${rowsToUpload.length} row(s)...`;
-
-            let completedRows = 0;
-            let totalUploads = 0;
-            let completedUploads = 0;
-
-            // Count total uploads needed
-            rowsToUpload.forEach(row => {
-                totalUploads += 5; // 5 tiles per row
-            });
-
-            // Upload each row
-            rowsToUpload.forEach(rowData => {
-                uploadSingleRow(rowData.rowIndex, rowData.file, (success) => {
-                    completedRows++;
-                    if (success) {
-                        completedUploads += 5;
-                    }
-                    
-                    statusDiv.innerHTML = `Uploaded ${completedRows}/${rowsToUpload.length} rows (${completedUploads}/${totalUploads} tiles)`;
-                    
-                    if (completedRows === rowsToUpload.length) {
-                        if (completedUploads === totalUploads) {
-                            statusDiv.innerHTML = 'All uploads completed! Refreshing page...';
-                            statusDiv.style.color = '#28a745';
-                            setTimeout(() => {
-                                window.location.reload();
-                            }, 1500);
-                        } else {
-                            statusDiv.innerHTML = `Upload completed with some errors. ${completedUploads}/${totalUploads} tiles uploaded.`;
-                            statusDiv.style.color = '#ffc107';
-                        }
-                    }
-                });
-            });
-        }
-
-        function uploadSingleRow(rowIndex, file, callback) {
-            let uploadCount = 0;
-            let successCount = 0;
-            const totalUploads = 5;
-
-            for (let col = 0; col < 5; col++) {
-                const hiddenFileInput = document.getElementById(`hidden-file-${rowIndex}-${col}`);
-                const hiddenForm = document.getElementById(`form-${rowIndex}-${col}`);
-                
-                if (!hiddenFileInput || !hiddenForm) {
-                    console.error(`Missing form elements for row ${rowIndex}, col ${col}`);
-                    uploadCount++;
-                    if (uploadCount === totalUploads) {
-                        callback(successCount === totalUploads);
-                    }
-                    continue;
-                }
-
-                // Create a new FileList with the selected file
-                try {
-                    const dataTransfer = new DataTransfer();
-                    dataTransfer.items.add(file);
-                    hiddenFileInput.files = dataTransfer.files;
-
-                    // Create FormData and submit
-                    const formData = new FormData(hiddenForm);
-                    
-                    fetch(window.location.href, {
-                        method: 'POST',
-                        body: formData
-                    })
-                    .then(response => {
-                        uploadCount++;
-                        if (response.ok) {
-                            successCount++;
-                        }
-                        
-                        if (uploadCount === totalUploads) {
-                            callback(successCount === totalUploads);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Upload error:', error);
-                        uploadCount++;
-                        
-                        if (uploadCount === totalUploads) {
-                            callback(successCount === totalUploads);
-                        }
-                    });
-                } catch (error) {
-                    console.error('Error setting up upload:', error);
-                    uploadCount++;
-                    if (uploadCount === totalUploads) {
-                        callback(successCount === totalUploads);
-                    }
-                }
-            }
-        }
-
-        function removeRowImage(rowIndex) {
-            if (!confirm(`Are you sure you want to remove the image for Row ${rowIndex + 1}?`)) {
-                return;
-            }
-
-            const statusDiv = document.getElementById('upload-status');
-            statusDiv.innerHTML = `Removing Row ${rowIndex + 1}...`;
-            statusDiv.style.color = '#ffc107';
-
-            // Remove images from all 5 tiles in this row
-            let removeCount = 0;
-            let successCount = 0;
-            const totalRemoves = 5;
-
-            for (let col = 0; col < 5; col++) {
-                const formData = new FormData();
-                formData.append('password', adminPassword);
-                formData.append('action', 'remove_tile_image');
-                formData.append('row', rowIndex);
-                formData.append('col', col);
-                
-                fetch(window.location.href, {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => {
-                    removeCount++;
-                    if (response.ok) {
-                        successCount++;
-                    }
-                    
-                    if (removeCount === totalRemoves) {
-                        if (successCount === totalRemoves) {
-                            statusDiv.innerHTML = `Row ${rowIndex + 1} removed successfully! Refreshing...`;
-                            statusDiv.style.color = '#28a745';
-                            setTimeout(() => {
-                                window.location.reload();
-                            }, 1000);
-                        } else {
-                            statusDiv.innerHTML = `Error removing Row ${rowIndex + 1}. Some tiles may not have been removed.`;
-                            statusDiv.style.color = '#dc3545';
-                        }
-                    }
-                })
-                .catch(error => {
-                    console.error('Remove error:', error);
-                    removeCount++;
-                    
-                    if (removeCount === totalRemoves) {
-                        statusDiv.innerHTML = `Error removing Row ${rowIndex + 1}: ${error.message}`;
-                        statusDiv.style.color = '#dc3545';
-                    }
-                });
-            }
-        }
-    </script>
-</body>
-</html>
+           <h2>Upload Row Images</h2>
+           <p>Upload one image per row (6 rows total). Allowed formats: jpg, jpeg, png, gif.</p>
+           <div class="row-grid">
+               {% for i in range(6) %}
+                   <div class="row-preview">
+                       <p>Row {{ i + 1 }}</p>
+                       {% if row_images[str(i)] %}
+                           <img src="{{ row_images[str(i)] }}" alt="Row {{ i + 1 }} Image">
+                       {% else %}
+                           <p>No image set</p>
+                       {% endif %}
+                       <form method="POST" enctype="multipart/form-data">
+                           <input type="hidden" name="password" value="{{ request.args.get('password') }}">
+                           <input type="hidden" name="action" value="upload_row_image">
+                           <input type="hidden" name="row" value="{{ i }}">
+                           <input type="file" name="image" accept="image/*">
+                           <button type="submit">Upload</button>
+                       </form>
+                   </div>
+               {% endfor %}
+           </div>
+       </div>
+   </body>
+   </html>
