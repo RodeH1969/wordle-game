@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session, redirect, url_for
+from flask import Flask, render_template, request, session, redirect, url_for, make_response
 import datetime
 import os
 import traceback
@@ -19,7 +19,7 @@ ANSWER_LIST = []
 
 # Upstash Redis configuration
 UPSTASH_REDIS_URL = "https://ample-chamois-15026.upstash.io"
-UPSTASH_REDIS_TOKEN = "your-upstash-token"  # Replace with your actual token
+UPSTASH_REDIS_TOKEN = "ATqyAAIjcDFhZjU5NjI5NDdhZjA0ZDE5YjIwM2RiMTNjM2Q5M2VjN3AxMA"
 
 # Admin password for simple authentication
 ADMIN_PASSWORD = "admin123"
@@ -115,7 +115,7 @@ def load_user_played_words(session_id):
         if result["result"]:
             words = json.loads(result["result"])
             print(f"Loaded USER_PLAYED_{session_id} from Upstash: {words}")
-            return words
+            return set(words)  # Convert to set for efficient lookup
         else:
             print(f"No USER_PLAYED_{session_id} found in Upstash, returning empty set")
             return set()
@@ -139,11 +139,12 @@ def save_user_played_words(session_id, words):
     except Exception as e:
         print(f"Error saving user played words to Upstash: {str(e)}")
 
-# Clear USER_PLAYED_WORDS when admin sets a new word
+# Clear USER_PLAYED_WORDS when admin sets a new word (simplified approach)
 def clear_user_played_words():
     try:
-        # This is a simplistic approach; in production, you might want to list all keys and delete them selectively
-        print("Clearing all user played words is not implemented due to Redis key listing limitation. Consider manual reset or advanced Redis setup.")
+        # Note: Redis doesn't support listing all keys easily via REST API. This is a placeholder.
+        # In a production environment, you might need a more advanced setup (e.g., Redis CLI or a prefix scan).
+        print("Clearing all user played words is not fully implemented via REST API. Consider manual reset or advanced Redis setup.")
     except Exception as e:
         print(f"Error attempting to clear user played words: {str(e)}")
 
@@ -192,7 +193,7 @@ def get_daily_word(answer_list):
     DAILY_WORD_STATE['word'] = new_word
     save_daily_word_state(DAILY_WORD_STATE)
     print(f"Set new random word: {new_word}")
-    clear_user_played_words()  # Clear played words when a new word is set
+    clear_user_played_words()  # Attempt to clear played words (placeholder)
     return new_word
 
 def get_feedback(guess, target):
@@ -279,7 +280,7 @@ def daily_game():
         session_id = request.cookies.get('user_session_id')
         if not session_id:
             session_id = str(uuid.uuid4())
-            response = make_response(render_template('wordle.html', ...))  # Placeholder for response
+            response = make_response(render_template('wordle.html', attempts=[], feedbacks=[], game_over=False, won=False, target=None, row_images=ROW_IMAGES))
             response.set_cookie('user_session_id', session_id, max_age=365*24*60*60)  # 1-year expiration
             return response
 
@@ -323,11 +324,12 @@ def daily_game():
 
         # Check if the player has already played this word
         if target in played_words:
-            return render_template('wordle.html', error="You have already played this word. Please wait for the admin to set a new word.", 
-                                 attempts=session[session_key]['attempts'], 
-                                 feedbacks=session[session_key]['feedbacks'],
-                                 game_over=True,
-                                 row_images=ROW_IMAGES)
+            response = make_response(render_template('wordle.html', error="You have already played this word. Please wait for the admin to set a new word.", 
+                                                   attempts=session[session_key]['attempts'], 
+                                                   feedbacks=session[session_key]['feedbacks'],
+                                                   game_over=True,
+                                                   row_images=ROW_IMAGES))
+            return response
 
         if request.method == 'POST' and not session[session_key]['game_over']:
             guess = request.form.get('guess', '').strip().upper()
@@ -366,12 +368,13 @@ def daily_game():
                                  row_images=ROW_IMAGES)
 
         print(f"Session state before rendering for user {session_id}:", session[session_key])
-        return render_template('wordle.html', attempts=session[session_key]['attempts'], 
-                             feedbacks=session[session_key]['feedbacks'], 
-                             game_over=session[session_key]['game_over'], 
-                             won=session[session_key]['won'], 
-                             target=target,
-                             row_images=ROW_IMAGES)
+        response = make_response(render_template('wordle.html', attempts=session[session_key]['attempts'], 
+                                               feedbacks=session[session_key]['feedbacks'], 
+                                               game_over=session[session_key]['game_over'], 
+                                               won=session[session_key]['won'], 
+                                               target=target,
+                                               row_images=ROW_IMAGES))
+        return response
     except Exception as e:
         print(f"Error in daily_game route: {str(e)}")
         print(traceback.format_exc())
