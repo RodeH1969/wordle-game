@@ -18,13 +18,13 @@ ANSWER_LIST = []
 
 # Upstash Redis configuration
 UPSTASH_REDIS_URL = "https://ample-chamois-15026.upstash.io"
-UPSTASH_REDIS_TOKEN = "your-upstash-token"
+UPSTASH_REDIS_TOKEN = "your-upstash-token"  # Replace with your actual token
 
 # Admin password for simple authentication
 ADMIN_PASSWORD = "admin123"
 
 # Directory to store uploaded images
-UPLOAD_FOLDER = 'static/tile_images'
+UPLOAD_FOLDER = 'static/row_images'
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -66,45 +66,45 @@ def save_daily_word_state(state):
     except Exception as e:
         print(f"Error saving daily word state to Upstash: {str(e)}")
 
-# Load TILE_IMAGES from Upstash Redis
-def load_tile_images():
+# Load ROW_IMAGES from Upstash Redis
+def load_row_images():
     try:
         response = requests.get(
-            f"{UPSTASH_REDIS_URL}/get/TILE_IMAGES",
+            f"{UPSTASH_REDIS_URL}/get/ROW_IMAGES",
             headers={"Authorization": f"Bearer {UPSTASH_REDIS_TOKEN}"}
         )
         response.raise_for_status()
         result = response.json()
         if result["result"]:
             images = json.loads(result["result"])
-            print(f"Loaded TILE_IMAGES from Upstash: {images}")
+            print(f"Loaded ROW_IMAGES from Upstash: {images}")
             return images
         else:
-            print("No TILE_IMAGES found in Upstash, returning default state")
+            print("No ROW_IMAGES found in Upstash, returning default state")
             return {}
     except Exception as e:
-        print(f"Error loading tile images from Upstash: {str(e)}")
+        print(f"Error loading row images from Upstash: {str(e)}")
         return {}
 
-# Save TILE_IMAGES to Upstash Redis
-def save_tile_images(images):
+# Save ROW_IMAGES to Upstash Redis
+def save_row_images(images):
     try:
         response = requests.post(
-            f"{UPSTASH_REDIS_URL}/set/TILE_IMAGES",
+            f"{UPSTASH_REDIS_URL}/set/ROW_IMAGES",
             headers={"Authorization": f"Bearer {UPSTASH_REDIS_TOKEN}"},
             data=json.dumps(images)
         )
         response.raise_for_status()
         if response.json().get("result") == "OK":
-            print(f"Saved TILE_IMAGES to Upstash: {images}")
+            print(f"Saved ROW_IMAGES to Upstash: {images}")
         else:
-            print(f"Failed to save TILE_IMAGES to Upstash, response: {response.json()}")
+            print(f"Failed to save ROW_IMAGES to Upstash, response: {response.json()}")
     except Exception as e:
-        print(f"Error saving tile images to Upstash: {str(e)}")
+        print(f"Error saving row images to Upstash: {str(e)}")
 
 # Load states at startup
 DAILY_WORD_STATE = load_daily_word_state()
-TILE_IMAGES = load_tile_images()
+ROW_IMAGES = load_row_images()
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -189,9 +189,8 @@ def admin_daily_word():
                 else:
                     print(f"Word '{new_word}' not found in ANSWER_LIST.")
                     return "Invalid word. Please choose a word from answers.txt.", 400
-            elif action == 'upload_tile_image':
+            elif action == 'upload_row_image':
                 row = int(request.form.get('row'))
-                col = int(request.form.get('col'))
                 if 'image' not in request.files:
                     return "No image file provided.", 400
                 file = request.files['image']
@@ -199,15 +198,14 @@ def admin_daily_word():
                     return "No selected file.", 400
                 if file and allowed_file(file.filename):
                     filename = secure_filename(file.filename)
-                    # Create unique filename using row and col
                     ext = filename.rsplit('.', 1)[1].lower()
-                    new_filename = f"tile_{row}_{col}.{ext}"
+                    new_filename = f"row_{row}.{ext}"
                     file.save(os.path.join(app.config['UPLOAD_FOLDER'], new_filename))
-                    # Update TILE_IMAGES
-                    global TILE_IMAGES
-                    TILE_IMAGES[f"{row}-{col}"] = f"/static/tile_images/{new_filename}"
-                    save_tile_images(TILE_IMAGES)
-                    print(f"Uploaded image for tile {row}-{col}: {new_filename}")
+                    # Update ROW_IMAGES
+                    global ROW_IMAGES
+                    ROW_IMAGES[str(row)] = f"/static/row_images/{new_filename}"
+                    save_row_images(ROW_IMAGES)
+                    print(f"Uploaded image for row {row}: {new_filename}")
                 else:
                     return "Invalid file type. Allowed extensions: jpg, jpeg, png, gif.", 400
 
@@ -222,10 +220,10 @@ def admin_daily_word():
 
             return redirect(url_for('admin_daily_word', password=password))
 
-        # Show the current word and tile images
+        # Show the current word and row images
         current_word = get_daily_word(ANSWER_LIST)
         today = datetime.date.today()
-        return render_template('admin_daily_word.html', current_word=current_word, today=today, tile_images=TILE_IMAGES)
+        return render_template('admin_daily_word.html', current_word=current_word, today=today, row_images=ROW_IMAGES)
     except Exception as e:
         print(f"Error in admin_daily_word route: {str(e)}")
         print(traceback.format_exc())
@@ -248,7 +246,8 @@ def daily_game():
                 'feedbacks': [],
                 'game_over': False,
                 'won': False,
-                'last_played_date': datetime.date.today().isoformat()
+                'last_played_date': datetime.date.today().isoformat(),
+                'played_word': None  # New field to track the played word
             }
             session.modified = True
             print(f"Session initialized for user:", session[session_key])
@@ -257,21 +256,30 @@ def daily_game():
             last_played_date = session[session_key].get('last_played_date')
             today = datetime.date.today().isoformat()
             if last_played_date != today:
-                # Reset the session if it's a new day
+                # Reset the session if it's a new day, but retain played_word until admin changes it
                 session[session_key] = {
                     'attempts': [],
                     'feedbacks': [],
                     'game_over': False,
                     'won': False,
-                    'last_played_date': today
+                    'last_played_date': today,
+                    'played_word': session[session_key].get('played_word')  # Preserve played_word
                 }
                 session.modified = True
-                print(f"Session reset for new day:", session[session_key])
+                print(f"Session reset for new day, played_word: {session[session_key]['played_word']}")
 
         print(f"Session state before processing:", session[session_key])
 
         valid_words = set(WORD_LIST)
         target = get_daily_word(ANSWER_LIST)
+
+        # Check if the player has already played this word
+        if session[session_key].get('played_word') == target and session[session_key].get('game_over'):
+            return render_template('wordle.html', error="You have already played this word. Please wait for the admin to set a new word.", 
+                                 attempts=session[session_key]['attempts'], 
+                                 feedbacks=session[session_key]['feedbacks'],
+                                 game_over=True,
+                                 row_images=ROW_IMAGES)
 
         if request.method == 'POST' and not session[session_key]['game_over']:
             guess = request.form.get('guess', '').strip().upper()
@@ -279,12 +287,12 @@ def daily_game():
                 return render_template('wordle.html', error="Please enter a valid 5-letter word.", 
                                      attempts=session[session_key]['attempts'], 
                                      feedbacks=session[session_key]['feedbacks'],
-                                     tile_images=TILE_IMAGES)
+                                     row_images=ROW_IMAGES)
             if guess not in valid_words:
                 return render_template('wordle.html', error="Not in word list. Try again.", 
                                      attempts=session[session_key]['attempts'], 
                                      feedbacks=session[session_key]['feedbacks'],
-                                     tile_images=TILE_IMAGES)
+                                     row_images=ROW_IMAGES)
 
             feedback = get_feedback(guess, target)
             session[session_key]['attempts'].append(guess)
@@ -294,8 +302,10 @@ def daily_game():
             if guess == target:
                 session[session_key]['game_over'] = True
                 session[session_key]['won'] = True
+                session[session_key]['played_word'] = target  # Mark this word as played
             elif len(session[session_key]['attempts']) >= 6:
                 session[session_key]['game_over'] = True
+                session[session_key]['played_word'] = target  # Mark this word as played
 
             print(f"Session state after guess:", session[session_key])
             return render_template('wordle.html', attempts=session[session_key]['attempts'], 
@@ -303,7 +313,7 @@ def daily_game():
                                  game_over=session[session_key]['game_over'], 
                                  won=session[session_key]['won'], 
                                  target=target,
-                                 tile_images=TILE_IMAGES)
+                                 row_images=ROW_IMAGES)
 
         print(f"Session state before rendering:", session[session_key])
         return render_template('wordle.html', attempts=session[session_key]['attempts'], 
@@ -311,7 +321,7 @@ def daily_game():
                              game_over=session[session_key]['game_over'], 
                              won=session[session_key]['won'], 
                              target=target,
-                             tile_images=TILE_IMAGES)
+                             row_images=ROW_IMAGES)
     except Exception as e:
         print(f"Error in daily_game route: {str(e)}")
         print(traceback.format_exc())
