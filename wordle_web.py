@@ -189,25 +189,18 @@ def admin_daily_word():
                 else:
                     print(f"Word '{new_word}' not found in ANSWER_LIST.")
                     return "Invalid word. Please choose a word from answers.txt.", 400
-            elif action == 'upload_row_image':
-                row = int(request.form.get('row'))
-                if 'image' not in request.files:
-                    return "No image file provided.", 400
-                file = request.files['image']
-                if file.filename == '':
-                    return "No selected file.", 400
-                if file and allowed_file(file.filename):
-                    filename = secure_filename(file.filename)
-                    ext = filename.rsplit('.', 1)[1].lower()
-                    new_filename = f"row_{row}.{ext}"
-                    file.save(os.path.join(app.config['UPLOAD_FOLDER'], new_filename))
-                    # Update ROW_IMAGES
-                    global ROW_IMAGES
-                    ROW_IMAGES[str(row)] = f"/static/row_images/{new_filename}"
-                    save_row_images(ROW_IMAGES)
-                    print(f"Uploaded image for row {row}: {new_filename}")
-                else:
-                    return "Invalid file type. Allowed extensions: jpg, jpeg, png, gif.", 400
+            elif action == 'upload_all_row_images':
+                global ROW_IMAGES
+                for i in range(6):
+                    file = request.files.get(f'row_{i}')
+                    if file and file.filename != '' and allowed_file(file.filename):
+                        filename = secure_filename(file.filename)
+                        ext = filename.rsplit('.', 1)[1].lower()
+                        new_filename = f"row_{i}.{ext}"
+                        file.save(os.path.join(app.config['UPLOAD_FOLDER'], new_filename))
+                        ROW_IMAGES[str(i)] = f"/static/row_images/{new_filename}"
+                        print(f"Uploaded image for row {i}: {new_filename}")
+                save_row_images(ROW_IMAGES)
 
             # Clear all user sessions to ensure the new word/images take effect immediately
             session_files = glob.glob('flask_session/*')

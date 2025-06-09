@@ -1,112 +1,111 @@
 <!DOCTYPE html>
-   <html lang="en">
-   <head>
-       <meta charset="UTF-8">
-       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-       <title>Admin - Daily Word Management</title>
-       <style>
-           body {
-               font-family: Arial, sans-serif;
-               background-color: #f4f4f4;
-               margin: 0;
-               padding: 20px;
-               display: flex;
-               flex-direction: column;
-               align-items: center;
-           }
-           .container {
-               background-color: #fff;
-               padding: 20px;
-               border-radius: 8px;
-               box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-               width: 80%;
-               max-width: 800px;
-           }
-           h1, h2 {
-               text-align: center;
-           }
-           .form-group {
-               margin-bottom: 15px;
-           }
-           label {
-               display: block;
-               margin-bottom: 5px;
-           }
-           input[type="text"], input[type="file"] {
-               width: 100%;
-               padding: 8px;
-               margin-bottom: 10px;
-               border: 1px solid #ccc;
-               border-radius: 4px;
-           }
-           button {
-               background-color: #4CAF50;
-               color: white;
-               padding: 10px 15px;
-               border: none;
-               border-radius: 4px;
-               cursor: pointer;
-           }
-           button:hover {
-               background-color: #45a049;
-           }
-           .row-grid {
-               display: grid;
-               grid-template-columns: 1fr;
-               gap: 10px;
-               margin-top: 20px;
-           }
-           .row-preview {
-               text-align: center;
-           }
-           .row-preview img {
-               width: 70px;
-               height: 70px;
-               object-fit: cover;
-               border: 1px solid #ccc;
-           }
-       </style>
-   </head>
-   <body>
-       <div class="container">
-           <h1>Admin - Daily Word Management</h1>
-           <p><strong>Current Word:</strong> {{ current_word }}</p>
-           <p><strong>Today:</strong> {{ today }}</p>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Daily Word Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 800px;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"], input[type="file"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .row-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .row-preview {
+            text-align: center;
+        }
+        .row-preview img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Admin - Daily Word Management</h1>
+        <p><strong>Current Word:</strong> {{ current_word }}</p>
+        <p><strong>Today:</strong> {{ today }}</p>
 
-           <h2>Override Word</h2>
-           <form method="POST">
-               <input type="hidden" name="password" value="{{ request.args.get('password') }}">
-               <div class="form-group">
-                   <button type="submit" name="action" value="override_random">Override with Random Word</button>
-               </div>
-               <div class="form-group">
-                   <label for="new_word">Override with Specific Word:</label>
-                   <input type="text" id="new_word" name="new_word" placeholder="Enter a 5-letter word">
-                   <button type="submit" name="action" value="override_specific">Override</button>
-               </div>
-           </form>
+        <h2>Override Word</h2>
+        <form method="POST">
+            <input type="hidden" name="password" value="{{ request.args.get('password') }}">
+            <div class="form-group">
+                <button type="submit" name="action" value="override_random">Override with Random Word</button>
+            </div>
+            <div class="form-group">
+                <label for="new_word">Override with Specific Word:</label>
+                <input type="text" id="new_word" name="new_word" placeholder="Enter a 5-letter word">
+                <button type="submit" name="action" value="override_specific">Override</button>
+            </div>
+        </form>
 
-           <h2>Upload Row Images</h2>
-           <p>Upload one image per row (6 rows total). Allowed formats: jpg, jpeg, png, gif.</p>
-           <div class="row-grid">
-               {% for i in range(6) %}
-                   <div class="row-preview">
-                       <p>Row {{ i + 1 }}</p>
-                       {% if row_images[i|string] %}
-                           <img src="{{ row_images[i|string] }}" alt="Row {{ i + 1 }} Image">
-                       {% else %}
-                           <p>No image set</p>
-                       {% endif %}
-                       <form method="POST" enctype="multipart/form-data">
-                           <input type="hidden" name="password" value="{{ request.args.get('password') }}">
-                           <input type="hidden" name="action" value="upload_row_image">
-                           <input type="hidden" name="row" value="{{ i }}">
-                           <input type="file" name="image" accept="image/*">
-                           <button type="submit">Upload</button>
-                       </form>
-                   </div>
-               {% endfor %}
-           </div>
-       </div>
-   </body>
-   </html>
+        <h2>Upload Row Images</h2>
+        <p>Upload one image per row (6 rows total). Allowed formats: jpg, jpeg, png, gif. Use 'Upload All' to submit.</p>
+        <form method="POST" enctype="multipart/form-data" id="upload-all-form">
+            <input type="hidden" name="password" value="{{ request.args.get('password') }}">
+            <input type="hidden" name="action" value="upload_all_row_images">
+            <div class="row-grid">
+                {% for i in range(6) %}
+                    <div class="row-preview">
+                        <p>Row {{ i + 1 }}</p>
+                        {% if row_images[i|string] %}
+                            <img src="{{ row_images[i|string] }}" alt="Row {{ i + 1 }} Image">
+                        {% else %}
+                            <p>No image set</p>
+                        {% endif %}
+                        <input type="file" name="row_{{ i }}" accept="image/*">
+                    </div>
+                {% endfor %}
+            </div>
+            <button type="submit">Upload All</button>
+        </form>
+    </div>
+</body>
+</html>
