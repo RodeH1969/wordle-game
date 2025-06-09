@@ -6,6 +6,7 @@ import random
 import requests
 import glob
 import json
+import uuid
 from werkzeug.utils import secure_filename
 
 # Initialize the Flask app
@@ -102,6 +103,50 @@ def save_row_images(images):
     except Exception as e:
         print(f"Error saving row images to Upstash: {str(e)}")
 
+# Load USER_PLAYED_WORDS from Upstash Redis
+def load_user_played_words(session_id):
+    try:
+        response = requests.get(
+            f"{UPSTASH_REDIS_URL}/get/USER_PLAYED_{session_id}",
+            headers={"Authorization": f"Bearer {UPSTASH_REDIS_TOKEN}"}
+        )
+        response.raise_for_status()
+        result = response.json()
+        if result["result"]:
+            words = json.loads(result["result"])
+            print(f"Loaded USER_PLAYED_{session_id} from Upstash: {words}")
+            return words
+        else:
+            print(f"No USER_PLAYED_{session_id} found in Upstash, returning empty set")
+            return set()
+    except Exception as e:
+        print(f"Error loading user played words from Upstash: {str(e)}")
+        return set()
+
+# Save USER_PLAYED_WORDS to Upstash Redis
+def save_user_played_words(session_id, words):
+    try:
+        response = requests.post(
+            f"{UPSTASH_REDIS_URL}/set/USER_PLAYED_{session_id}",
+            headers={"Authorization": f"Bearer {UPSTASH_REDIS_TOKEN}"},
+            data=json.dumps(list(words))
+        )
+        response.raise_for_status()
+        if response.json().get("result") == "OK":
+            print(f"Saved USER_PLAYED_{session_id} to Upstash: {words}")
+        else:
+            print(f"Failed to save USER_PLAYED_{session_id} to Upstash, response: {response.json()}")
+    except Exception as e:
+        print(f"Error saving user played words to Upstash: {str(e)}")
+
+# Clear USER_PLAYED_WORDS when admin sets a new word
+def clear_user_played_words():
+    try:
+        # This is a simplistic approach; in production, you might want to list all keys and delete them selectively
+        print("Clearing all user played words is not implemented due to Redis key listing limitation. Consider manual reset or advanced Redis setup.")
+    except Exception as e:
+        print(f"Error attempting to clear user played words: {str(e)}")
+
 # Load states at startup
 DAILY_WORD_STATE = load_daily_word_state()
 ROW_IMAGES = load_row_images()
@@ -147,6 +192,7 @@ def get_daily_word(answer_list):
     DAILY_WORD_STATE['word'] = new_word
     save_daily_word_state(DAILY_WORD_STATE)
     print(f"Set new random word: {new_word}")
+    clear_user_played_words()  # Clear played words when a new word is set
     return new_word
 
 def get_feedback(guess, target):
@@ -229,8 +275,16 @@ def root():
 @app.route('/daily_game', methods=['GET', 'POST'])
 def daily_game():
     try:
+        # Generate or retrieve a unique session ID for the user
+        session_id = request.cookies.get('user_session_id')
+        if not session_id:
+            session_id = str(uuid.uuid4())
+            response = make_response(render_template('wordle.html', ...))  # Placeholder for response
+            response.set_cookie('user_session_id', session_id, max_age=365*24*60*60)  # 1-year expiration
+            return response
+
         # Use a session key for this user to store their progress
-        session_key = 'daily_game'
+        session_key = f'daily_game_{session_id}'
 
         # Initialize session for this user if not present
         if session_key not in session:
@@ -239,35 +293,36 @@ def daily_game():
                 'feedbacks': [],
                 'game_over': False,
                 'won': False,
-                'last_played_date': datetime.date.today().isoformat(),
-                'played_word': None  # New field to track the played word
+                'last_played_date': datetime.date.today().isoformat()
             }
             session.modified = True
-            print(f"Session initialized for user:", session[session_key])
-        else:
-            # Check if the date has changed since the last play
-            last_played_date = session[session_key].get('last_played_date')
-            today = datetime.date.today().isoformat()
-            if last_played_date != today:
-                # Reset the session if it's a new day, but retain played_word until admin changes it
-                session[session_key] = {
-                    'attempts': [],
-                    'feedbacks': [],
-                    'game_over': False,
-                    'won': False,
-                    'last_played_date': today,
-                    'played_word': session[session_key].get('played_word')  # Preserve played_word
-                }
-                session.modified = True
-                print(f"Session reset for new day, played_word: {session[session_key]['played_word']}")
+            print(f"Session initialized for user {session_id}:", session[session_key])
 
-        print(f"Session state before processing:", session[session_key])
+        # Load played words for this user
+        played_words = load_user_played_words(session_id)
+
+        # Check if the date has changed since the last play
+        last_played_date = session[session_key].get('last_played_date')
+        today = datetime.date.today().isoformat()
+        if last_played_date != today:
+            # Reset the session if it's a new day, but retain played words
+            session[session_key] = {
+                'attempts': [],
+                'feedbacks': [],
+                'game_over': False,
+                'won': False,
+                'last_played_date': today
+            }
+            session.modified = True
+            print(f"Session reset for new day for user {session_id}")
+
+        print(f"Session state before processing for user {session_id}:", session[session_key])
 
         valid_words = set(WORD_LIST)
         target = get_daily_word(ANSWER_LIST)
 
         # Check if the player has already played this word
-        if session[session_key].get('played_word') == target and session[session_key].get('game_over'):
+        if target in played_words:
             return render_template('wordle.html', error="You have already played this word. Please wait for the admin to set a new word.", 
                                  attempts=session[session_key]['attempts'], 
                                  feedbacks=session[session_key]['feedbacks'],
@@ -295,12 +350,14 @@ def daily_game():
             if guess == target:
                 session[session_key]['game_over'] = True
                 session[session_key]['won'] = True
-                session[session_key]['played_word'] = target  # Mark this word as played
+                played_words.add(target)
+                save_user_played_words(session_id, played_words)
             elif len(session[session_key]['attempts']) >= 6:
                 session[session_key]['game_over'] = True
-                session[session_key]['played_word'] = target  # Mark this word as played
+                played_words.add(target)
+                save_user_played_words(session_id, played_words)
 
-            print(f"Session state after guess:", session[session_key])
+            print(f"Session state after guess for user {session_id}:", session[session_key])
             return render_template('wordle.html', attempts=session[session_key]['attempts'], 
                                  feedbacks=session[session_key]['feedbacks'], 
                                  game_over=session[session_key]['game_over'], 
@@ -308,7 +365,7 @@ def daily_game():
                                  target=target,
                                  row_images=ROW_IMAGES)
 
-        print(f"Session state before rendering:", session[session_key])
+        print(f"Session state before rendering for user {session_id}:", session[session_key])
         return render_template('wordle.html', attempts=session[session_key]['attempts'], 
                              feedbacks=session[session_key]['feedbacks'], 
                              game_over=session[session_key]['game_over'], 
