@@ -1,563 +1,601 @@
 <!DOCTYPE html>
-   <html lang="en">
-   <head>
-       <meta charset="UTF-8">
-       <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-       <title>World Championship Wordle</title>
-       <style>
-           body {
-               font-family: 'Clear Sans', 'Helvetica Neue', Arial, sans-serif;
-               background-color: #121213;
-               color: #ffffff;
-               margin: 0;
-               padding: 0;
-               display: flex;
-               flex-direction: column;
-               align-items: center;
-               justify-content: center;
-               min-height: 100vh;
-               overscroll-behavior: none;
-           }
-           .game-container {
-               display: flex;
-               flex-direction: column;
-               align-items: center;
-               width: 100%;
-               max-width: 100%;
-               padding: 5px;
-               box-sizing: border-box;
-           }
-           .title {
-               font-size: 16px;
-               font-weight: bold;
-               margin-bottom: 4px;
-               color: #ffffff;
-               text-align: center;
-               line-height: 1.1;
-           }
-           .grid-container {
-               display: flex;
-               flex-direction: column;
-               align-items: center;
-               width: 100%;
-           }
-           .grid-row {
-               display: flex;
-               align-items: center;
-               margin-bottom: 4px;
-               width: 100%;
-               justify-content: center;
-           }
-           .grid {
-               display: grid;
-               grid-template-rows: repeat(6, 70px);
-               grid-gap: 5px;
-               margin-bottom: 10px;
-               width: 100%;
-               max-width: 370px;
-           }
-           .row {
-               display: grid;
-               grid-template-columns: repeat(5, 70px);
-               grid-gap: 5px;
-               justify-content: center;
-           }
-           .tile {
-               width: 70px;
-               height: 70px;
-               border: 2px solid #3a3a3c;
-               display: flex;
-               align-items: center;
-               justify-content: center;
-               font-size: 32px;
-               font-weight: bold;
-               text-transform: uppercase;
-               color: #ffffff;
-               box-sizing: border-box;
-               position: relative;
-               transition: transform 0.5s, background-color 0.5s, border-color 0.5s;
-               background-size: cover;
-               background-position: center;
-               background-repeat: no-repeat;
-           }
-           .tile.filled {
-               background-image: none !important;
-               border-color: #565758;
-           }
-           .tile.green {
-               background-color: #538d4e;
-               border-color: #538d4e;
-               background-image: none !important;
-           }
-           .tile.yellow {
-               background-color: #b59f3b;
-               border-color: #b59f3b;
-               background-image: none !important;
-           }
-           .tile.gray {
-               background-color: #3a3a3c;
-               border-color: #3a3a3c;
-               background-image: none !important;
-           }
-           .tile.flip {
-               animation: flip 0.5s ease forwards;
-           }
-           @keyframes flip {
-               0% { transform: rotateX(0); }
-               50% { transform: rotateX(90deg); }
-               100% { transform: rotateX(0); }
-           }
-           /* Define background images for each row */
-           {% for i in range(6) %}
-               {% set row_image = row_images.get(i|string, '/static/qld_logo.png') %}
-           .row-{{ i }} .tile {
-               background-image: url('{{ row_image }}');
-           }
-           {% endfor %}
-           .keyboard {
-               display: flex;
-               flex-direction: column;
-               gap: 5px;
-               margin-top: 10px;
-               width: 100%;
-               max-width: 370px;
-           }
-           .keyboard-row {
-               display: flex;
-               justify-content: center;
-               gap: 5px;
-           }
-           .key {
-               background-color: #818384;
-               color: #ffffff;
-               font-size: 16px;
-               font-weight: bold;
-               text-transform: uppercase;
-               border: none;
-               border-radius: 4px;
-               padding: 0;
-               height: 58px;
-               flex: 1;
-               max-width: 48px;
-               cursor: pointer;
-               display: flex;
-               align-items: center;
-               justify-content: center;
-               touch-action: manipulation;
-           }
-           .key.wide {
-               max-width: 68px;
-           }
-           .key.green {
-               background-color: #538d4e;
-           }
-           .key.yellow {
-               background-color: #b59f3b;
-           }
-           .key.gray {
-               background-color: #3a3a3c;
-           }
-           .input-form {
-               display: none;
-           }
-           .toast {
-               position: fixed;
-               top: 20px;
-               background-color: #ffffff;
-               color: #000000;
-               padding: 8px 16px;
-               border-radius: 5px;
-               font-size: 14px;
-               opacity: 0;
-               transition: opacity 0.3s ease;
-           }
-           .toast.show {
-               opacity: 1;
-           }
-           .message {
-               font-size: 16px;
-               margin: 15px 0;
-               display: flex;
-               flex-direction: column;
-               align-items: center;
-               gap: 8px;
-           }
-           .share-options {
-               display: flex;
-               gap: 8px;
-           }
-           .share-link, .copy-button {
-               padding: 6px 12px;
-               background-color: #538d4e;
-               color: #ffffff;
-               text-decoration: none;
-               border-radius: 5px;
-               font-weight: bold;
-               cursor: pointer;
-               border: none;
-               font-size: 14px;
-           }
-           .copy-button {
-               background-color: #3a3a3c;
-           }
-           .instructions {
-               font-size: 12px;
-               color: #d7dadc;
-               text-align: center;
-               max-width: 370px;
-           }
-           .instructions a {
-               color: #538d4e;
-               text-decoration: none;
-           }
-           .instructions a:hover {
-               text-decoration: underline;
-           }
-           .snapshot-text {
-               font-size: 12px;
-               color: #ffffff;
-               background-color: #3a3a3c;
-               padding: 6px;
-               border-radius: 5px;
-               white-space: pre-wrap;
-               text-align: center;
-               max-width: 370px;
-           }
-           @media (min-width: 600px) {
-               .game-container {
-                   max-width: 500px;
-                   padding: 10px;
-               }
-               .title {
-                   font-size: 20px;
-                   margin-bottom: 8px;
-                   line-height: 1.1;
-               }
-               .grid {
-                   grid-template-rows: repeat(6, 62px);
-                   grid-gap: 5px;
-                   max-width: 380px;
-               }
-               .row {
-                   grid-template-columns: repeat(5, 62px);
-                   grid-gap: 5px;
-               }
-               .tile {
-                   width: 62px;
-                   height: 62px;
-                   font-size: 32px;
-               }
-               .keyboard {
-                   margin-top: 15px;
-                   max-width: 500px;
-               }
-               .key {
-                   font-size: 16px;
-                   height: 58px;
-                   max-width: 48px;
-               }
-               .key.wide {
-                   max-width: 68px;
-               }
-               .toast {
-                   font-size: 16px;
-               }
-               .message {
-                   font-size: 18px;
-               }
-               .share-link, .copy-button {
-                   padding: 10px 20px;
-                   font-size: 16px;
-               }
-               .instructions {
-                   font-size: 14px;
-               }
-               .snapshot-text {
-                   font-size: 14px;
-                   padding: 10px;
-               }
-           }
-       </style>
-   </head>
-   <body>
-       <div class="game-container">
-           <h1 class="title">World Championship Wordle</h1>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>World Championship Wordle</title>
+    <style>
+        body {
+            font-family: 'Clear Sans', 'Helvetica Neue', Arial, sans-serif;
+            background-color: #121213;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh; /* Ensure full height, adjusted below for mobile */
+            overscroll-behavior: none;
+        }
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 100%;
+            padding: 5px;
+            box-sizing: border-box;
+            flex-grow: 1; /* Allow container to grow and fill space */
+        }
+        .title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 4px;
+            color: #ffffff;
+            text-align: center;
+            line-height: 1.1;
+        }
+        .grid-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            flex-grow: 1; /* Allow grid to take available space */
+        }
+        .grid-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 4px;
+            width: 100%;
+            justify-content: center;
+        }
+        .grid {
+            display: grid;
+            grid-template-rows: repeat(6, 70px);
+            grid-gap: 5px;
+            margin-bottom: 10px;
+            width: 100%;
+            max-width: 370px;
+        }
+        .row {
+            display: grid;
+            grid-template-columns: repeat(5, 70px);
+            grid-gap: 5px;
+            justify-content: center;
+        }
+        .tile {
+            width: 70px;
+            height: 70px;
+            border: 2px solid #3a3a3c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #ffffff;
+            box-sizing: border-box;
+            position: relative;
+            transition: transform 0.5s, background-color 0.5s, border-color 0.5s;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .tile.filled {
+            background-image: none !important;
+            border-color: #565758;
+        }
+        .tile.green {
+            background-color: #538d4e;
+            border-color: #538d4e;
+            background-image: none !important;
+        }
+        .tile.yellow {
+            background-color: #b59f3b;
+            border-color: #b59f3b;
+            background-image: none !important;
+        }
+        .tile.gray {
+            background-color: #3a3a3c;
+            border-color: #3a3a3c;
+            background-image: none !important;
+        }
+        .tile.flip {
+            animation: flip 0.5s ease forwards;
+        }
+        @keyframes flip {
+            0% { transform: rotateX(0); }
+            50% { transform: rotateX(90deg); }
+            100% { transform: rotateX(0); }
+        }
+        /* Define background images for each row */
+        {% for i in range(6) %}
+            {% set row_image = row_images.get(i|string, '/static/qld_logo.png') %}
+        .row-{{ i }} .tile {
+            background-image: url('{{ row_image }}');
+        }
+        {% endfor %}
+        .keyboard {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 5px; /* Reduced from 10px to minimize top space */
+            width: 100%;
+            max-width: 370px;
+            margin-bottom: 10px; /* Add bottom margin to push up if needed */
+        }
+        .keyboard-row {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+        }
+        .key {
+            background-color: #818384;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 4px;
+            padding: 0;
+            height: 58px;
+            flex: 1;
+            max-width: 48px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
+        }
+        .key.wide {
+            max-width: 68px;
+        }
+        .key.green {
+            background-color: #538d4e;
+        }
+        .key.yellow {
+            background-color: #b59f3b;
+        }
+        .key.gray {
+            background-color: #3a3a3c;
+        }
+        .input-form {
+            display: none;
+        }
+        .toast {
+            position: fixed;
+            top: 20px;
+            background-color: #ffffff;
+            color: #000000;
+            padding: 8px 16px;
+            border-radius: 5px;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .toast.show {
+            opacity: 1;
+        }
+        .message {
+            font-size: 16px;
+            margin: 15px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        .share-options {
+            display: flex;
+            gap: 8px;
+        }
+        .share-link, .copy-button {
+            padding: 6px 12px;
+            background-color: #538d4e;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            font-size: 14px;
+        }
+        .copy-button {
+            background-color: #3a3a3c;
+        }
+        .instructions {
+            font-size: 12px;
+            color: #d7dadc;
+            text-align: center;
+            max-width: 370px;
+        }
+        .instructions a {
+            color: #538d4e;
+            text-decoration: none;
+        }
+        .instructions a:hover {
+            text-decoration: underline;
+        }
+        .snapshot-text {
+            font-size: 12px;
+            color: #ffffff;
+            background-color: #3a3a3c;
+            padding: 6px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            text-align: center;
+            max-width: 370px;
+        }
+        /* Mobile-specific adjustments */
+        @media (max-width: 600px) {
+            body {
+                min-height: -webkit-fill-available; /* Use available height on mobile */
+                height: -webkit-fill-available; /* Safari/Chrome support */
+            }
+            .game-container {
+                padding: 0; /* Remove padding to utilize full height */
+                height: 100%; /* Ensure container fills height */
+            }
+            .title {
+                font-size: 14px; /* Slightly reduce title size on mobile */
+                margin-bottom: 2px; /* Reduce margin to save space */
+            }
+            .grid {
+                grid-template-rows: repeat(6, 60px); /* Slightly reduce tile size */
+                max-width: 340px; /* Reduce grid width */
+            }
+            .row {
+                grid-template-columns: repeat(5, 60px); /* Match tile size */
+            }
+            .tile {
+                width: 60px;
+                height: 60px;
+                font-size: 28px; /* Reduce font size */
+            }
+            .keyboard {
+                margin-top: 0; /* Remove top margin to push up */
+                padding-bottom: 10px; /* Add padding to ensure visibility */
+            }
+            .key {
+                height: 50px; /* Reduce key height */
+                font-size: 14px; /* Reduce font size */
+                max-width: 42px; /* Adjust width */
+            }
+            .key.wide {
+                max-width: 60px; /* Adjust wide keys */
+            }
+        }
+        @media (min-width: 600px) {
+            .game-container {
+                max-width: 500px;
+                padding: 10px;
+            }
+            .title {
+                font-size: 20px;
+                margin-bottom: 8px;
+            }
+            .grid {
+                grid-template-rows: repeat(6, 62px);
+                max-width: 380px;
+            }
+            .row {
+                grid-template-columns: repeat(5, 62px);
+            }
+            .tile {
+                width: 62px;
+                height: 62px;
+                font-size: 32px;
+            }
+            .keyboard {
+                margin-top: 15px;
+                max-width: 500px;
+            }
+            .key {
+                font-size: 16px;
+                height: 58px;
+                max-width: 48px;
+            }
+            .key.wide {
+                max-width: 68px;
+            }
+            .toast {
+                font-size: 16px;
+            }
+            .message {
+                font-size: 18px;
+            }
+            .share-link, .copy-button {
+                padding: 10px 20px;
+                font-size: 16px;
+            }
+            .instructions {
+                font-size: 14px;
+            }
+            .snapshot-text {
+                font-size: 14px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1 class="title">World Championship Wordle</h1>
 
-           <div class="grid-container">
-               {% for i in range(6) %}
-                   <div class="grid-row">
-                       <div class="grid" style="display: contents;">
-                           <div class="row row-{{ i }}" data-row="{{ i }}">
-                               {% for j in range(5) %}
-                                   <div class="tile {% if i < attempts|length and attempts[i][j] %}filled {{ feedbacks[i][j] }}{% endif %}" data-tile="{{ i }}-{{ j }}">
-                                       {% if i < attempts|length %}{{ attempts[i][j] }}{% endif %}
-                                   </div>
-                               {% endfor %}
-                           </div>
-                       </div>
-                   </div>
-               {% endfor %}
-           </div>
+        <div class="grid-container">
+            {% for i in range(6) %}
+                <div class="grid-row">
+                    <div class="grid" style="display: contents;">
+                        <div class="row row-{{ i }}" data-row="{{ i }}">
+                            {% for j in range(5) %}
+                                <div class="tile {% if i < attempts|length and attempts[i][j] %}filled {{ feedbacks[i][j] }}{% endif %}" data-tile="{{ i }}-{{ j }}">
+                                    {% if i < attempts|length %}{{ attempts[i][j] }}{% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
 
-           {% if error %}
-               <p id="toast" class="toast show">{{ error }}</p>
-           {% endif %}
+        {% if error %}
+            <p id="toast" class="toast show">{{ error }}</p>
+        {% endif %}
 
-           {% if not game_over %}
-               <form class="input-form" method="POST" action="{{ url_for('daily_game') }}" id="guess-form">
-                   <input type="text" name="guess" id="guess-input" maxlength="5" pattern="[A-Za-z]{5}" 
-                          value="" style="opacity: 0; position: absolute;" required>
-               </form>
+        {% if not game_over %}
+            <form class="input-form" method="POST" action="{{ url_for('daily_game') }}" id="guess-form">
+                <input type="text" name="guess" id="guess-input" maxlength="5" pattern="[A-Za-z]{5}" 
+                       value="" style="opacity: 0; position: absolute;" required>
+            </form>
 
-               <div class="keyboard" id="keyboard">
-                   <div class="keyboard-row">
-                       {% for letter in 'QWERTYUIOP' %}
-                           <button class="key" data-key="{{ letter }}">{{ letter }}</button>
-                       {% endfor %}
-                   </div>
-                   <div class="keyboard-row">
-                       {% for letter in 'ASDFGHJKL' %}
-                           <button class="key" data-key="{{ letter }}">{{ letter }}</button>
-                       {% endfor %}
-                   </div>
-                   <div class="keyboard-row">
-                       <button class="key wide" data-key="ENTER">ENTER</button>
-                       {% for letter in 'ZXCVBNM' %}
-                           <button class="key" data-key="{{ letter }}">{{ letter }}</button>
-                       {% endfor %}
-                       <button class="key wide" data-key="BACKSPACE">⌫</button>
-                   </div>
-               </div>
+            <div class="keyboard" id="keyboard">
+                <div class="keyboard-row">
+                    {% for letter in 'QWERTYUIOP' %}
+                        <button class="key" data-key="{{ letter }}">{{ letter }}</button>
+                    {% endfor %}
+                </div>
+                <div class="keyboard-row">
+                    {% for letter in 'ASDFGHJKL' %}
+                        <button class="key" data-key="{{ letter }}">{{ letter }}</button>
+                    {% endfor %}
+                </div>
+                <div class="keyboard-row">
+                    <button class="key wide" data-key="ENTER">ENTER</button>
+                    {% for letter in 'ZXCVBNM' %}
+                        <button class="key" data-key="{{ letter }}">{{ letter }}</button>
+                    {% endfor %}
+                    <button class="key wide" data-key="BACKSPACE">⌫</button>
+                </div>
+            </div>
 
-               <script>
-                   console.log("Game interface script running...");
-                   let keys;
-                   const guessInput = document.getElementById('guess-input');
-                   const guessForm = document.getElementById('guess-form');
-                   let currentGuess = '';
-                   const currentRow = {{ attempts|length }};
-                   let isSubmitting = false;
-                   const keyboardState = {};
-                   const allFeedbacks = {{ feedbacks|tojson }};
+            <script>
+                console.log("Game interface script running...");
+                let keys;
+                const guessInput = document.getElementById('guess-input');
+                const guessForm = document.getElementById('guess-form');
+                let currentGuess = '';
+                const currentRow = {{ attempts|length }};
+                let isSubmitting = false;
+                const keyboardState = {};
+                const allFeedbacks = {{ feedbacks|tojson }};
 
-                   document.addEventListener('DOMContentLoaded', () => {
-                       console.log("DOM fully loaded, initializing keyboard...");
-                       keys = document.querySelectorAll('.key');
-                       console.log("Number of keys found:", keys.length);
+                document.addEventListener('DOMContentLoaded', () => {
+                    console.log("DOM fully loaded, initializing keyboard...");
+                    keys = document.querySelectorAll('.key');
+                    console.log("Number of keys found:", keys.length);
 
-                       keys.forEach((key, index) => {
-                           console.log(`Attaching click event to key ${index}:`, key.getAttribute('data-key'));
-                           key.addEventListener('click', () => {
-                               const keyValue = key.getAttribute('data-key');
-                               console.log("Key clicked:", keyValue);
-                               handleKeyInput(keyValue);
-                           });
-                       });
+                    keys.forEach((key, index) => {
+                        console.log(`Attaching click event to key ${index}:`, key.getAttribute('data-key'));
+                        key.addEventListener('click', () => {
+                            const keyValue = key.getAttribute('data-key');
+                            console.log("Key clicked:", keyValue);
+                            handleKeyInput(keyValue);
+                        });
+                    });
 
-                       document.addEventListener('keydown', (e) => {
-                           if (isSubmitting) return;
-                           const key = e.key.toUpperCase();
-                           console.log("Physical key pressed:", key);
-                           if (key === 'ENTER') {
-                               handleKeyInput('ENTER');
-                           } else if (key === 'BACKSPACE') {
-                               handleKeyInput('BACKSPACE');
-                           } else if (/^[A-Z]$/.test(key)) {
-                               handleKeyInput(key);
-                           }
-                       });
+                    document.addEventListener('keydown', (e) => {
+                        if (isSubmitting) return;
+                        const key = e.key.toUpperCase();
+                        console.log("Physical key pressed:", key);
+                        if (key === 'ENTER') {
+                            handleKeyInput('ENTER');
+                        } else if (key === 'BACKSPACE') {
+                            handleKeyInput('BACKSPACE');
+                        } else if (/^[A-Z]$/.test(key)) {
+                            handleKeyInput(key);
+                        }
+                    });
 
-                       updateKeyboard();
-                       console.log("Initialization complete.");
+                    updateKeyboard();
+                    console.log("Initialization complete.");
 
-                       // Animate previous guesses on page load
-                       window.onload = () => {
-                           console.log("Window loaded, animating previous guesses...");
-                           for (let rowIndex = 0; rowIndex < {{ attempts|length }}; rowIndex++) {
-                               animateTiles(rowIndex);
-                           }
-                       };
-                   });
+                    // Animate previous guesses on page load
+                    window.onload = () => {
+                        console.log("Window loaded, animating previous guesses...");
+                        for (let rowIndex = 0; rowIndex < {{ attempts|length }}; rowIndex++) {
+                            animateTiles(rowIndex);
+                        }
+                    };
+                });
 
-                   function updateGrid() {
-                       console.log("Updating grid with currentGuess:", currentGuess);
-                       const tiles = document.querySelectorAll(`[data-row="${currentRow}"] .tile`);
-                       tiles.forEach((tile, index) => {
-                           tile.textContent = currentGuess[index] || '';
-                           tile.classList.toggle('filled', !!currentGuess[index]);
-                       });
-                   }
+                function updateGrid() {
+                    console.log("Updating grid with currentGuess:", currentGuess);
+                    const tiles = document.querySelectorAll(`[data-row="${currentRow}"] .tile`);
+                    tiles.forEach((tile, index) => {
+                        tile.textContent = currentGuess[index] || '';
+                        tile.classList.toggle('filled', !!currentGuess[index]);
+                    });
+                }
 
-                   function showToast(message) {
-                       console.log("Showing toast:", message);
-                       const existingToast = document.getElementById('toast');
-                       if (existingToast) existingToast.remove();
-                       const toast = document.createElement('p');
-                       toast.id = 'toast';
-                       toast.className = 'toast';
-                       toast.textContent = message;
-                       document.querySelector('.game-container').prepend(toast);
-                       setTimeout(() => toast.classList.add('show'), 10);
-                       setTimeout(() => toast.classList.remove('show'), 2000);
-                   }
+                function showToast(message) {
+                    console.log("Showing toast:", message);
+                    const existingToast = document.getElementById('toast');
+                    if (existingToast) existingToast.remove();
+                    const toast = document.createElement('p');
+                    toast.id = 'toast';
+                    toast.className = 'toast';
+                    toast.textContent = message;
+                    document.querySelector('.game-container').prepend(toast);
+                    setTimeout(() => toast.classList.add('show'), 10);
+                    setTimeout(() => toast.classList.remove('show'), 2000);
+                }
 
-                   function animateTiles(row) {
-                       console.log("Animating tiles for row:", row);
-                       const tiles = document.querySelectorAll(`[data-row="${row}"] .tile`);
-                       const feedbacks = row < {{ attempts|length }} ? allFeedbacks[row] : [];
-                       tiles.forEach((tile, index) => {
-                           setTimeout(() => {
-                               tile.classList.add('flip');
-                               const feedback = feedbacks[index] || '';
-                               if (feedback) {
-                                   tile.classList.add(feedback);
-                               }
-                               // Ensure background image is cleared after flip animation
-                               tile.addEventListener('animationend', () => {
-                                   tile.style.backgroundImage = 'none';
-                               }, { once: true });
-                           }, index * 300);
-                       });
-                   }
+                function animateTiles(row) {
+                    console.log("Animating tiles for row:", row);
+                    const tiles = document.querySelectorAll(`[data-row="${row}"] .tile`);
+                    const feedbacks = row < {{ attempts|length }} ? allFeedbacks[row] : [];
+                    tiles.forEach((tile, index) => {
+                        setTimeout(() => {
+                            tile.classList.add('flip');
+                            const feedback = feedbacks[index] || '';
+                            if (feedback) {
+                                tile.classList.add(feedback);
+                            }
+                            // Ensure background image is cleared after flip animation
+                            tile.addEventListener('animationend', () => {
+                                tile.style.backgroundImage = 'none';
+                            }, { once: true });
+                        }, index * 300);
+                    });
+                }
 
-                   function updateKeyboard() {
-                       console.log("Updating keyboard...");
-                       const allGuesses = {{ attempts|tojson }};
-                       const letterStates = {};
+                function updateKeyboard() {
+                    console.log("Updating keyboard...");
+                    const allGuesses = {{ attempts|tojson }};
+                    const letterStates = {};
 
-                       allGuesses.forEach((guess, row) => {
-                           if (!guess) return;
-                           const feedbacks = allFeedbacks[row];
-                           guess.split('').forEach((letter, index) => {
-                               const currentState = letterStates[letter];
-                               const newState = feedbacks[index];
-                               if (!currentState || (newState === 'green') || (newState === 'yellow' && currentState !== 'green') || (newState === 'gray' && !currentState)) {
-                                   letterStates[letter] = newState;
-                               }
-                           });
-                       });
+                    allGuesses.forEach((guess, row) => {
+                        if (!guess) return;
+                        const feedbacks = allFeedbacks[row];
+                        guess.split('').forEach((letter, index) => {
+                            const currentState = letterStates[letter];
+                            const newState = feedbacks[index];
+                            if (!currentState || (newState === 'green') || (newState === 'yellow' && currentState !== 'green') || (newState === 'gray' && !currentState)) {
+                                letterStates[letter] = newState;
+                            }
+                        });
+                    });
 
-                       Object.keys(letterStates).forEach(letter => {
-                           const key = document.querySelector(`.key[data-key="${letter}"]`);
-                           if (key) {
-                               key.classList.remove('green', 'yellow', 'gray');
-                               key.classList.add(letterStates[letter]);
-                           } else {
-                               console.warn(`Key for letter ${letter} not found.`);
-                           }
-                       });
-                   }
+                    Object.keys(letterStates).forEach(letter => {
+                        const key = document.querySelector(`.key[data-key="${letter}"]`);
+                        if (key) {
+                            key.classList.remove('green', 'yellow', 'gray');
+                            key.classList.add(letterStates[letter]);
+                        } else {
+                            console.warn(`Key for letter ${letter} not found.`);
+                        }
+                    });
+                }
 
-                   function handleKeyInput(keyValue) {
-                       if (isSubmitting) return;
-                       console.log("Handling key input:", keyValue);
-                       if (keyValue === 'ENTER') {
-                           if (currentGuess.length > 0) {
-                               isSubmitting = true;
-                               console.log("Submitting guess:", currentGuess);
-                               guessInput.value = currentGuess;
-                               guessForm.submit();
-                           } else {
-                               showToast('Please enter at least one letter.');
-                           }
-                       } else if (keyValue === 'BACKSPACE') {
-                           currentGuess = currentGuess.slice(0, -1);
-                           updateGrid();
-                       } else if (currentGuess.length < 5 && /^[A-Z]$/.test(keyValue)) {
-                           currentGuess += keyValue;
-                           updateGrid();
-                       }
-                       console.log("Current guess after input:", currentGuess);
-                   }
-               </script>
-           {% else %}
-               <div class="message">
-                   {% if won %}
-                       <p>🎉 Correct! You guessed '{{ target }}' in {{ attempts|length }} tries.</p>
-                   {% else %}
-                       <p>💀 Game Over! The word was: {{ target }}</p>
-                   {% endif %}
-                   <div class="share-options">
-                       <a href="#" class="share-link" onclick="shareSnapshot()">Send via SMS</a>
-                       <button class="copy-button" onclick="copySnapshot()">Copy Result</button>
-                   </div>
-                   <pre id="snapshot-text" class="snapshot-text"></pre>
-                   <p class="instructions">
-                       Today's game brought to you by My Retirement Home - experts in helping you make the best decision on Retirement villages/ land lease communities in Qld. Call Rod today for a free chat on <a href="tel:+61459754708">+61459754708</a>
-                   </p>
+                function handleKeyInput(keyValue) {
+                    if (isSubmitting) return;
+                    console.log("Handling key input:", keyValue);
+                    if (keyValue === 'ENTER') {
+                        if (currentGuess.length > 0) {
+                            isSubmitting = true;
+                            console.log("Submitting guess:", currentGuess);
+                            guessInput.value = currentGuess;
+                            guessForm.submit();
+                        } else {
+                            showToast('Please enter at least one letter.');
+                        }
+                    } else if (keyValue === 'BACKSPACE') {
+                        currentGuess = currentGuess.slice(0, -1);
+                        updateGrid();
+                    } else if (currentGuess.length < 5 && /^[A-Z]$/.test(keyValue)) {
+                        currentGuess += keyValue;
+                        updateGrid();
+                    }
+                    console.log("Current guess after input:", currentGuess);
+                }
+            </script>
+        {% else %}
+            <div class="message">
+                {% if won %}
+                    <p>🎉 Correct! You guessed '{{ target }}' in {{ attempts|length }} tries.</p>
+                {% else %}
+                    <p>💀 Game Over! The word was: {{ target }}</p>
+                {% endif %}
+                <div class="share-options">
+                    <a href="#" class="share-link" onclick="shareSnapshot()">Send via SMS</a>
+                    <button class="copy-button" onclick="copySnapshot()">Copy Result</button>
+                </div>
+                <pre id="snapshot-text" class="snapshot-text"></pre>
+                <p class="instructions">
+                    Today's game brought to you by My Retirement Home - experts in helping you make the best decision on Retirement villages/ land lease communities in Qld. Call Rod today for a free chat on <a href="tel:+61459754708">+61459754708</a>
+                </p>
 
-                   <script>
-                       console.log("Game-over script running...");
-                       let snapshotText = '';
+                <script>
+                    console.log("Game-over script running...");
+                    let snapshotText = '';
 
-                       function generateSnapshot() {
-                           console.log('Generating snapshot...');
-                           const allGuesses = {{ attempts|tojson }};
-                           const allFeedbacks = {{ feedbacks|tojson }};
-                           const targetWord = '{{ target }}';
-                           snapshotText = `Wordle {{ attempts|length }}/6\n${targetWord}\n\n`;
+                    function generateSnapshot() {
+                        console.log('Generating snapshot...');
+                        const allGuesses = {{ attempts|tojson }};
+                        const allFeedbacks = {{ feedbacks|tojson }};
+                        const targetWord = '{{ target }}';
+                        snapshotText = `Wordle {{ attempts|length }}/6\n${targetWord}\n\n`;
 
-                           allGuesses.forEach((guess, row) => {
-                               if (!guess) return;
-                               const feedbacks = allFeedbacks[row];
-                               let rowText = '';
-                               feedbacks.forEach(feedback => {
-                                   if (feedback === 'green') rowText += '🟩';
-                                   else if (feedback === 'yellow') rowText += '🟨';
-                                   else rowText += '⬜';
-                               });
-                               snapshotText += rowText + '\n';
-                           });
+                        allGuesses.forEach((guess, row) => {
+                            if (!guess) return;
+                            const feedbacks = allFeedbacks[row];
+                            let rowText = '';
+                            feedbacks.forEach(feedback => {
+                                if (feedback === 'green') rowText += '🟩';
+                                else if (feedback === 'yellow') rowText += '🟨';
+                                else rowText += '⬜';
+                            });
+                            snapshotText += rowText + '\n';
+                        });
 
-                           snapshotText += `\n1st to SMS wins $5 Dan Murphy's Gift card`;
-                           console.log('Generated snapshot text:', snapshotText);
+                        snapshotText += `\n1st to SMS wins $20 Dan Murphy's Gift card`;
+                        console.log('Generated snapshot text:', snapshotText);
 
-                           // Display the snapshot text
-                           const snapshotTextElement = document.getElementById('snapshot-text');
-                           snapshotTextElement.textContent = snapshotText;
-                       }
+                        // Display the snapshot text
+                        const snapshotTextElement = document.getElementById('snapshot-text');
+                        snapshotTextElement.textContent = snapshotText;
+                    }
 
-                       function shareSnapshot() {
-                           console.log('Starting shareSnapshot function...');
-                           if (!snapshotText) generateSnapshot();
+                    function shareSnapshot() {
+                        console.log('Starting shareSnapshot function...');
+                        if (!snapshotText) generateSnapshot();
 
-                           // Attempt to open SMS link
-                           try {
-                               const smsLink = document.createElement('a');
-                               smsLink.href = `sms:+61459754708?body=${encodeURIComponent(snapshotText)}&body=${encodeURIComponent(snapshotText)}`;
-                               smsLink.style.display = 'none';
-                               document.body.appendChild(smsLink);
-                               smsLink.click();
-                               document.body.removeChild(smsLink);
-                               console.log('SMS link triggered successfully.');
-                           } catch (error) {
-                               console.error('Error triggering SMS link:', error);
-                               alert('Could not open messaging app. Please use "Copy Result" to copy the summary and send it to +61459754708 manually.');
-                           }
-                       }
+                        // Attempt to open SMS link
+                        try {
+                            const smsLink = document.createElement('a');
+                            smsLink.href = `sms:+61459754708?body=${encodeURIComponent(snapshotText)}&body=${encodeURIComponent(snapshotText)}`;
+                            smsLink.style.display = 'none';
+                            document.body.appendChild(smsLink);
+                            smsLink.click();
+                            document.body.removeChild(smsLink);
+                            console.log('SMS link triggered successfully.');
+                        } catch (error) {
+                            console.error('Error triggering SMS link:', error);
+                            alert('Could not open messaging app. Please use "Copy Result" to copy the summary and send it to +61459754708 manually.');
+                        }
+                    }
 
-                       function copySnapshot() {
-                           console.log('Starting copySnapshot function...');
-                           if (!snapshotText) generateSnapshot();
+                    function copySnapshot() {
+                        console.log('Starting copySnapshot function...');
+                        if (!snapshotText) generateSnapshot();
 
-                           // Copy to clipboard
-                           navigator.clipboard.writeText(snapshotText).then(() => {
-                               console.log('Snapshot text copied to clipboard.');
-                               alert('Result copied to clipboard! Paste it into a message to +61459754708.');
-                           }).catch(error => {
-                               console.error('Error copying to clipboard:', error);
-                               alert('Could not copy to clipboard. Please manually copy the summary above and send it to +61459754708.');
-                           });
-                       }
+                        // Copy to clipboard
+                        navigator.clipboard.writeText(snapshotText).then(() => {
+                            console.log('Snapshot text copied to clipboard.');
+                            alert('Result copied to clipboard! Paste it into a message to +61459754708.');
+                        }).catch(error => {
+                            console.error('Error copying to clipboard:', error);
+                            alert('Could not copy to clipboard. Please manually copy the summary above and send it to +61459754708.');
+                        });
+                    }
 
-                       // Generate snapshot on page load
-                       window.onload = () => {
-                           console.log("Window loaded, generating snapshot...");
-                           generateSnapshot();
-                       };
-                   </script>
-               </div>
-           {% endif %}
-       </div>
-   </body>
-   </html>
+                    // Generate snapshot on page load
+                    window.onload = () => {
+                        console.log("Window loaded, generating snapshot...");
+                        generateSnapshot();
+                    };
+                </script>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
