@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Daily 10am Wordle Tournie</title>
+    <title>World Championship Wordle</title>
     <style>
         body {
             font-family: 'Clear Sans', 'Helvetica Neue', Arial, sans-serif;
@@ -107,6 +107,13 @@
             50% { transform: rotateX(90deg); }
             100% { transform: rotateX(0); }
         }
+        /* Define background images for each row */
+        {% for i in range(6) %}
+            {% set row_image = row_images.get(str(i), '/static/qld_logo.png') %}
+        .row-{{ i }} .tile {
+            background-image: url('{{ row_image }}');
+        }
+        {% endfor %}
         .keyboard {
             display: flex;
             flex-direction: column;
@@ -274,17 +281,15 @@
 </head>
 <body>
     <div class="game-container">
-        <h1 class="title">Daily 10am Wordle Tournie</h1>
+        <h1 class="title">World Championship Wordle</h1>
 
         <div class="grid-container">
             {% for i in range(6) %}
                 <div class="grid-row">
                     <div class="grid" style="display: contents;">
-                        <div class="row" data-row="{{ i }}">
+                        <div class="row row-{{ i }}" data-row="{{ i }}">
                             {% for j in range(5) %}
-                                {% set tile_key = i|string + '-' + j|string %}
-                                {% set tile_image = tile_images.get(tile_key, '/static/qld_logo.png') %}
-                                <div class="tile {% if i < attempts|length and attempts[i][j] %}filled {{ feedbacks[i][j] }}{% endif %}" style="--tile-bg-image: url('{{ tile_image }}'); background-image: var(--tile-bg-image);" data-tile="{{ i }}-{{ j }}">
+                                <div class="tile {% if i < attempts|length and attempts[i][j] %}filled {{ feedbacks[i][j] }}{% endif %}" data-tile="{{ i }}-{{ j }}">
                                     {% if i < attempts|length %}{{ attempts[i][j] }}{% endif %}
                                 </div>
                             {% endfor %}
@@ -504,7 +509,7 @@
                             snapshotText += rowText + '\n';
                         });
 
-                        snapshotText += `\n1st to SMS wins $5 Dan Murphy's Gift card`;
+                        snapshotText += `\n1st to SMS wins $20 Dan Murphy's Gift card`;
                         console.log('Generated snapshot text:', snapshotText);
 
                         // Display the snapshot text
