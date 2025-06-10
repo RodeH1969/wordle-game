@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no"> <!-- Added shrink-to-fit=no -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
     <title>World Championship Wordle</title>
     <style>
         body {
@@ -17,7 +17,7 @@
             min-height: -webkit-fill-available;
             height: -webkit-fill-available;
             overscroll-behavior: none;
-            -webkit-text-size-adjust: none; /* Prevent font scaling on mobile */
+            -webkit-text-size-adjust: none;
         }
         .game-container {
             display: flex;
@@ -43,7 +43,8 @@
             flex-direction: column;
             align-items: center;
             width: 100%;
-            flex-grow: 1;
+            flex-grow: 1; /* Maximize vertical space for grid */
+            min-height: 0; /* Allow shrinking if needed */
         }
         .grid-row {
             display: flex;
@@ -54,15 +55,16 @@
         }
         .grid {
             display: grid;
-            grid-template-rows: repeat(6, 70px);
+            grid-template-rows: repeat(6, 70px); /* Increased to 70px */
             grid-gap: 5px;
             margin-bottom: 10px;
             width: 100%;
             max-width: 370px;
+            height: auto; /* Allow grid to grow with tile size */
         }
         .row {
             display: grid;
-            grid-template-columns: repeat(5, 70px);
+            grid-template-columns: repeat(5, 70px); /* Increased to 70px */
             grid-gap: 5px;
             justify-content: center;
         }
@@ -73,7 +75,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 32px;
+            font-size: 36px; /* Increased font size to match larger tiles */
             font-weight: bold;
             text-transform: uppercase;
             color: #ffffff;
@@ -83,7 +85,7 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            touch-action: manipulation; /* Ensure tiles don’t trigger zoom */
+            touch-action: manipulation;
         }
         .tile.filled {
             background-image: none !important;
@@ -127,7 +129,7 @@
             width: 100%;
             max-width: 370px;
             margin-bottom: 10px;
-            touch-action: manipulation; /* Prevent zoom on keyboard */
+            touch-action: manipulation;
         }
         .keyboard-row {
             display: flex;
@@ -150,8 +152,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            touch-action: manipulation; /* Ensure no zoom on tap */
-            -webkit-tap-highlight-color: transparent; /* Remove tap highlight */
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
         }
         .key.wide {
             max-width: 68px;
@@ -246,20 +248,27 @@
                 margin-bottom: 2px;
             }
             .grid {
-                grid-template-rows: repeat(6, 60px);
-                max-width: 340px;
+                grid-template-rows: repeat(6, 70px); /* Maximize to 70px */
+                max-width: 370px; /* Use full available width */
+                width: 100%; /* Ensure full width utilization */
+                height: auto; /* Allow grid to grow */
             }
             .row {
-                grid-template-columns: repeat(5, 60px);
+                grid-template-columns: repeat(5, 70px); /* Maximize to 70px */
             }
             .tile {
-                width: 60px;
-                height: 60px;
-                font-size: 28px;
+                width: 70px;
+                height: 70px;
+                font-size: 36px; /* Match tile size increase */
             }
             .keyboard {
                 margin-top: 0;
                 padding-bottom: 10px;
+                position: fixed; /* Keep keyboard position fixed */
+                bottom: 0; /* Anchor to bottom */
+                left: 0;
+                right: 0;
+                max-width: 100%; /* Adjust to screen width */
             }
             .key {
                 height: 50px;
@@ -553,7 +562,7 @@
                             snapshotText += rowText + '\n';
                         });
 
-                        snapshotText += `\n1st to SMS wins $5 Dan Murphy's Gift card`; // Changed from $20 to $5
+                        snapshotText += `\n1st to SMS wins $5 Dan Murphy's Gift card`;
                         console.log('Generated snapshot text:', snapshotText);
 
                         // Display the snapshot text
