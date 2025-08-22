@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff - Choccy Surprise Guide</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .staff-container {
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .logo {
+            max-width: 150px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+        h1 {
+            color: #8B4513;
+            font-size: 2em;
+            margin: 0;
+        }
+        .section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            border-left: 5px solid #8B4513;
+        }
+        .section h2 {
+            color: #8B4513;
+            margin-top: 0;
+            font-size: 1.4em;
+        }
+        .winner-example {
+            background: linear-gradient(45deg, #00c851, #007e33);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        .winner-badge {
+            font-size: 2em;
+            margin: 10px 0;
+        }
+        .winner-badge-demo {
+            background: #00c851;
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin: 15px 0;
+            border: 3px solid #007e33;
+            text-align: center;
+            animation: celebrate 2s ease-in-out infinite;
+        }
+        @keyframes celebrate {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .instructions-list {
+            list-style: none;
+            padding: 0;
+        }
+        .instructions-list li {
+            background: white;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #00c851;
+            font-size: 1.1em;
+        }
+        .alert {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        .stats-button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: bold;
+            display: inline-block;
+            margin: 10px;
+            transition: transform 0.2s ease;
+        }
+        .stats-button:hover {
+            transform: translateY(-2px);
+            color: white;
+            text-decoration: none;
+        }
+        .navigation {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .phone-demo {
+            background: #333;
+            border-radius: 25px;
+            padding: 20px;
+            margin: 20px 0;
+            color: white;
+            text-align: center;
+            border: 3px solid #666;
+        }
+        .phone-screen {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 10px 0;
+            color: white;
+        }
+        .checklist {
+            background: #e8f5e8;
+            border: 1px solid #28a745;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .checklist h3 {
+            color: #28a745;
+            margin-top: 0;
+        }
+        .checklist ul {
+            list-style: none;
+            padding: 0;
+        }
+        .checklist li {
+            padding: 8px 0;
+            font-size: 1.1em;
+        }
+        .checklist li:before {
+            content: "✅ ";
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="staff-container">
+        <div class="header">
+            <div class="logo-container">
+                <img src="{{ url_for('static', filename='QWORD_logo.png') }}" alt="QWord Logo" class="logo">
+            </div>
+            <h1>Staff Guide - Choccy Surprises</h1>
+            <p>How to handle winning customers</p>
+        </div>
+
+        <div class="section">
+            <h2>🍫 When Customers Win</h2>
+            <p>Customers who solve the letter puzzle will show you their winning screen. Look for this display on their phone:</p>
+            
+            <div class="phone-demo">
+                <div class="phone-screen">
+                    <div>🎉 Woohoo!! You've won a choccy surprise with your coffee!!</div>
+                    <div style="margin: 15px 0; font-weight: bold;">📱 SHOW THIS SCREEN TO THE BARISTA NOW</div>
+                    <div class="winner-badge">🍫</div>
+                    <div class="winner-badge-demo">
+                        ✅ WINNER!<br>
+                        CHOCCY SURPRISE EARNED!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📋 What To Do</h2>
+            <ul class="instructions-list">
+                <li><strong>1. Check Screen:</strong> Customer shows you their phone with the winner screen</li>
+                <li><strong>2. Look for Green Badge:</strong> Verify the green "WINNER! CHOCCY SURPRISE EARNED!" message</li>
+                <li><strong>3. Give Surprise:</strong> Provide customer with their chocolate treat</li>
+                <li><strong>4. Congratulate:</strong> Say "Congratulations on solving the puzzle!"</li>
+            </ul>
+        </div>
+
+        <div class="checklist">
+            <h3>🔍 Quick Verification Checklist</h3>
+            <ul>
+                <li>Customer shows phone screen (not screenshot)</li>
+                <li>Screen shows QWORD logo at top</li>
+                <li>Big green "WINNER!" badge visible</li>
+                <li>"CHOCCY SURPRISE EARNED!" text present</li>
+                <li>Chocolate emoji 🍫 displayed</li>
+            </ul>
+        </div>
+
+        <div class="alert">
+            <strong>⚠️ Important:</strong> Each customer can only win once per QR code scan. Look for live phone screens, not screenshots!
+        </div>
+
+        <div class="section">
+            <h2>🎯 How The Game Works</h2>
+            <p><strong>Customer Journey:</strong></p>
+            <ol>
+                <li>Customer scans QR code from counter display</li>
+                <li>Gets letter puzzle with 12 scrambled letters</li>
+                <li>Must use highlighted letter to make 5-letter word</li>
+                <li>Gets ONE attempt only (no refreshing allowed)</li>
+                <li>If correct → shows winner screen to you!</li>
+                <li>You give them their choccy surprise! 🍫</li>
+            </ol>
+        </div>
+
+        <div class="section">
+            <h2>📊 Quick Stats & Tools</h2>
+            <p>Access system information and management tools:</p>
+            <div style="text-align: center;">
+                <a href="/admin" class="stats-button">📈 Admin Dashboard</a>
+                <a href="/counter_device" class="stats-button">🎯 Counter Device</a>
+                <a href="/test_game" class="stats-button">🧪 Test Game</a>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>❓ Common Questions</h2>
+            <p><strong>Q: What if customer shows a screenshot?</strong><br>
+            A: Must be live phone screen, not screenshot. Ask them to get a fresh QR code.</p>
+            
+            <p><strong>Q: Customer says they already won but lost the screen?</strong><br>
+            A: Each QR code gives one attempt only. They need to scan a new QR code to play again.</p>
+            
+            <p><strong>Q: What chocolate treats do we give?</strong><br>
+            A: Check with your manager for approved chocolate surprises!</p>
+        </div>
+
+        <div class="navigation">
+            <div style="opacity: 0.7; margin-top: 20px;">
+                <p><strong>Staff Training Complete ✅</strong></p>
+                <p>Questions? Ask your manager about the QWORD puzzle system.</p>
+                <p style="font-size: 0.9em; margin-top: 15px;">
+                    <strong>Remember:</strong> Green badge = Give choccy surprise! 🍫
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

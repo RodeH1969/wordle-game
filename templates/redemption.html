@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>$3 Coffee Discount</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #00c851 0%, #007e33 100%);
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+        .redemption-container {
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 2px solid #00c851;
+        }
+        .success-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #00c851;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        .discount-amount {
+            font-size: 3em;
+            font-weight: bold;
+            color: #007e33;
+            margin: 20px 0;
+            background: #f0f8f0;
+            border-radius: 15px;
+            padding: 20px;
+            border: 3px dashed #00c851;
+        }
+        .redemption-code {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #007e33;
+            margin: 15px 0;
+            letter-spacing: 2px;
+            padding: 10px;
+            background: #e8f5e8;
+            border-radius: 8px;
+        }
+        .qr-code {
+            margin: 20px 0;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .instructions {
+            background: #e8f5e8;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #00c851;
+        }
+        .instructions h3 {
+            color: #007e33;
+            margin-top: 0;
+        }
+        .instructions ol {
+            text-align: left;
+            color: #555;
+        }
+        .status {
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+        .status.valid {
+            background: #d1edff;
+            color: #004085;
+            border: 1px solid #007bff;
+        }
+        .status.redeemed {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #dc3545;
+        }
+        .back-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.1em;
+            border-radius: 25px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.3s ease;
+        }
+        .back-btn:hover {
+            transform: translateY(-2px);
+        }
+        .expiry-info {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="redemption-container">
+        <div class="success-icon">🎉</div>
+        <h1>Coffee Discount</h1>
+        
+        {% if redemption_data.redeemed %}
+            <div class="status redeemed">
+                ❌ This discount has already been used
+                <br><small>Redeemed on: {{ redemption_data.redeemed_at }}</small>
+            </div>
+        {% else %}
+            <div class="status valid">
+                ✅ Valid discount code
+            </div>
+        {% endif %}
+        
+        <div class="discount-amount">$3 OFF</div>
+        
+        <div class="redemption-code">Code: {{ redemption_code }}</div>
+        
+        <div class="instructions">
+            <h3>How to redeem:</h3>
+            <ol>
+                <li>Visit the cafe counter</li>
+                <li>Show this screen to staff</li>
+                <li>Staff will scan the QR code below</li>
+                <li>Get $3 off your coffee order! ☕</li>
+            </ol>
+        </div>
+        
+        <canvas id="qr-canvas" class="qr-code"></canvas>
+        
+        <div class="expiry-info">
+            ⏰ This discount code expires in 30 days from when you won the puzzle.
+        </div>
+        
+        <button class="back-btn" onclick="window.location.href='/'">
+            Play Another Puzzle
+        </button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const canvas = document.getElementById('qr-canvas');
+            const currentUrl = window.location.href;
+            
+            new QRious({
+                element: canvas,
+                value: currentUrl,
+                size: 200,
+                background: 'white',
+                foreground: 'black',
+                level: 'M'
+            });
+        });
+        
+        document.querySelector('.redemption-code').addEventListener('click', function() {
+            navigator.clipboard.writeText('{{ redemption_code }}').then(function() {
+                alert('Discount code copied to clipboard!');
+            }).catch(function() {
+                alert('Code: {{ redemption_code }}');
+            });
+        });
+    </script>
+</body>
+</html>

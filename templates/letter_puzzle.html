@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cafe Letter Puzzle</title>
+    <style>
+        body {
+            font-family: 'Clear Sans', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overscroll-behavior: none;
+        }
+        .game-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            overflow: visible;
+        }
+        .logo-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .logo {
+            max-width: 200px;
+            height: auto;
+            margin-bottom: 10px;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+        }
+        .title {
+            font-size: 1.5em;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            display: none; /* Hide text title when logo is present */
+        }
+        .subtitle {
+            text-align: center;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            color: #feca57;
+        }
+        .instructions {
+            text-align: center;
+            font-size: 0.9em;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            line-height: 1.4;
+        }
+        .letters-container {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .letters-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            justify-items: center;
+            margin-bottom: 20px;
+        }
+        .letter-tile {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+        .letter-tile.featured {
+            width: 80px;
+            height: 80px;
+            font-size: 36px;
+            background: linear-gradient(45deg, #feca57, #ff9f43);
+            color: white;
+            border: 3px solid #ff8c00;
+            box-shadow: 0 4px 15px rgba(255, 140, 0, 0.4);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .letter-tile.selected {
+            background: #00c851;
+            color: white;
+            border-color: #007e33;
+            transform: translateY(-2px);
+        }
+        .letter-tile.used {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .featured-letter-info {
+            text-align: center;
+            margin: 15px 0;
+            font-size: 1.1em;
+            color: #feca57;
+        }
+        .word-input-area {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .word-display {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin: 20px 0;
+        }
+        .word-letter {
+            width: 50px;
+            height: 50px;
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+        }
+        .word-letter.filled {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: white;
+        }
+        .word-letter.featured {
+            background: linear-gradient(45deg, #feca57, #ff9f43);
+            border-color: #ff8c00;
+        }
+        .submit-btn {
+            background: linear-gradient(45deg, #00c851, #007e33);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.2em;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            margin: 20px 0;
+        }
+        .submit-btn:hover {
+            transform: translateY(-2px);
+        }
+        .submit-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .clear-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 8px 20px;
+            font-size: 1em;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .toast {
+            position: fixed;
+            top: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #333;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+        .toast.show {
+            opacity: 1;
+        }
+        .game-over {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .result-message {
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+        .win-message {
+            background: linear-gradient(45deg, #00c851, #007e33);
+            color: white;
+        }
+        .lose-message {
+            background: linear-gradient(45deg, #ff4444, #cc0000);
+            color: white;
+        }
+        .redemption-section {
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+        .winner-badge {
+            background: #00c851;
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin: 20px 0;
+            border: 3px solid #007e33;
+            text-align: center;
+            animation: celebrate 2s ease-in-out;
+        }
+        @keyframes celebrate {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .ad-section, .ad-section-top {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .ad-section-top {
+            margin-bottom: 20px;
+            margin-top: 15px;
+        }
+        .ad-link {
+            display: inline-block;
+            transition: all 0.3s ease;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        .ad-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+        .ad-image-large {
+            width: 100%;
+            max-width: 850px;
+            min-width: 500px;
+            height: auto;
+            border-radius: 15px;
+            cursor: pointer;
+            image-rendering: crisp-edges;
+            image-rendering: -webkit-optimize-contrast;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="logo-container">
+            <img src="{{ url_for('static', filename='QWORD_logo.png') }}" alt="QWord Cafe Game" class="logo">
+        </div>
+        
+        <div class="ad-section-top">
+            <a href="/ad_click" target="_blank" class="ad-link">
+                <img src="{{ url_for('static', filename='ad1.png') }}" alt="Special Offer" class="ad-image-large">
+            </a>
+        </div>
+        
+        <h1 class="title">☕ Letter Puzzle</h1>
+        <p class="subtitle">Play to win a choccy surprise with your coffee</p>
+        
+        <div class="instructions">
+            Use the <strong>highlighted letter</strong> plus 4 others to make a 5-letter word.<br>
+            You get <strong>1 guess</strong> - make it count!
+        </div>
+
+        <div class="letters-container">
+            <div class="featured-letter-info">
+                Featured Letter: <strong id="featured-letter-display">{{ game_data.featured_letter }}</strong>
+            </div>
+            
+            <div class="letters-grid" id="letters-grid">
+                <!-- Letters populated by JavaScript -->
+            </div>
+        </div>
+
+        <div class="word-input-area">
+            <div class="word-display" id="word-display">
+                <!-- Word letters displayed here -->
+            </div>
+            
+            <div id="game-controls" style="display: block;">
+                <button class="submit-btn" onclick="submitWord()" id="submit-btn" disabled>
+                    Submit Word
+                </button>
+                <button class="clear-btn" onclick="clearWord()">
+                    Clear
+                </button>
+            </div>
+        </div>
+
+        <div class="game-over" id="game-over" style="display: none;">
+            <!-- Game over content inserted here -->
+        </div>
+
+        <div class="ad-section">
+            <a href="/ad_click" target="_blank" class="ad-link">
+                <img src="{{ url_for('static', filename='ad1.png') }}" alt="Special Offer" class="ad-image-large">
+            </a>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+        const gameId = '{{ game_id }}';
+        const gameData = {{ game_data|tojson }};
+        
+        let selectedLetters = [];
+        let gameStatus = gameData.status;
+        let isSubmitting = false;
+        let featuredLetterUsed = false;
+        let gameCompleted = false;
+
+        // Prevent refresh abuse - check game status on load
+        async function checkGameStatus() {
+            try {
+                const response = await fetch(`/game/${gameId}/status`);
+                const result = await response.json();
+                
+                if (!result.valid && result.status !== 'active') {
+                    // Game was completed, redirect to blocked page
+                    window.location.href = '/blocked';
+                    return false;
+                }
+                return true;
+            } catch (error) {
+                console.error('Error checking game status:', error);
+                return true; // Allow game to continue if check fails
+            }
+        }
+
+        // Disable browser back button and refresh warnings
+        window.addEventListener('beforeunload', function(e) {
+            if (!gameCompleted && selectedLetters.length > 0) {
+                e.preventDefault();
+                e.returnValue = 'Are you sure you want to leave? Your progress will be lost.';
+                return e.returnValue;
+            }
+        });
+
+        // Check game status when page becomes visible (if user switched tabs)
+        document.addEventListener('visibilitychange', async function() {
+            if (document.visibilityState === 'visible' && !gameCompleted) {
+                const isValid = await checkGameStatus();
+                if (!isValid) return;
+            }
+        });
+
+        function initializeGame() {
+            // Check if game is still valid on load
+            checkGameStatus().then(isValid => {
+                if (!isValid) return;
+                
+                createLettersGrid();
+                createWordDisplay();
+                
+                if (gameStatus !== 'active') {
+                    showGameOver();
+                }
+            });
+        }
+
+        function createLettersGrid() {
+            const grid = document.getElementById('letters-grid');
+            grid.innerHTML = '';
+            
+            gameData.available_letters.forEach((letter, index) => {
+                const tile = document.createElement('div');
+                tile.className = 'letter-tile';
+                tile.textContent = letter;
+                tile.setAttribute('data-letter', letter);
+                
+                if (letter === gameData.featured_letter) {
+                    tile.classList.add('featured');
+                }
+                
+                tile.addEventListener('click', () => selectLetter(letter, tile));
+                grid.appendChild(tile);
+            });
+        }
+
+        function createWordDisplay() {
+            const display = document.getElementById('word-display');
+            display.innerHTML = '';
+            
+            for (let i = 0; i < 5; i++) {
+                const letterDiv = document.createElement('div');
+                letterDiv.className = 'word-letter';
+                letterDiv.setAttribute('data-position', i);
+                display.appendChild(letterDiv);
+            }
+        }
+
+        function selectLetter(letter, tile) {
+            if (gameStatus !== 'active' || isSubmitting || gameCompleted) return;
+            
+            if (tile.classList.contains('used')) return;
+            
+            if (selectedLetters.length >= 5) {
+                showToast('Word is complete! Submit or clear to change.');
+                return;
+            }
+            
+            // Add letter to selected
+            selectedLetters.push(letter);
+            tile.classList.add('used');
+            
+            // Track if featured letter is used
+            if (letter === gameData.featured_letter) {
+                featuredLetterUsed = true;
+            }
+            
+            updateWordDisplay();
+            updateSubmitButton();
+        }
+
+        function updateWordDisplay() {
+            const positions = document.querySelectorAll('.word-letter');
+            
+            positions.forEach((pos, index) => {
+                if (index < selectedLetters.length) {
+                    pos.textContent = selectedLetters[index];
+                    pos.classList.add('filled');
+                    
+                    if (selectedLetters[index] === gameData.featured_letter) {
+                        pos.classList.add('featured');
+                    } else {
+                        pos.classList.remove('featured');
+                    }
+                } else {
+                    pos.textContent = '';
+                    pos.classList.remove('filled', 'featured');
+                }
+            });
+        }
+
+        function updateSubmitButton() {
+            const submitBtn = document.getElementById('submit-btn');
+            const canSubmit = selectedLetters.length === 5 && featuredLetterUsed && !gameCompleted;
+            
+            submitBtn.disabled = !canSubmit;
+            
+            if (!featuredLetterUsed && selectedLetters.length > 0) {
+                showToast('You must use the highlighted letter!');
+            }
+        }
+
+        function clearWord() {
+            if (gameStatus !== 'active' || isSubmitting || gameCompleted) return;
+            
+            selectedLetters = [];
+            featuredLetterUsed = false;
+            
+            // Reset all tiles
+            document.querySelectorAll('.letter-tile').forEach(tile => {
+                tile.classList.remove('used');
+            });
+            
+            updateWordDisplay();
+            updateSubmitButton();
+        }
+
+        async function submitWord() {
+            if (selectedLetters.length !== 5 || !featuredLetterUsed || gameCompleted) {
+                showToast('Please form a complete 5-letter word using the highlighted letter');
+                return;
+            }
+            
+            // Prevent multiple submissions
+            if (isSubmitting) {
+                return;
+            }
+            
+            isSubmitting = true;
+            gameCompleted = true; // Mark as completed to prevent refresh abuse
+            
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Checking...';
+            
+            try {
+                const word = selectedLetters.join('');
+                const response = await fetch(`/game/${gameId}/guess`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ guess: word })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    gameStatus = result.status;
+                    
+                    if (result.status === 'won') {
+                        setTimeout(() => showWin(result), 500);
+                    } else if (result.status === 'lost') {
+                        setTimeout(() => showLoss(result), 500);
+                    }
+                } else {
+                    // Allow retry if validation failed (not a server completion)
+                    gameCompleted = false;
+                    showToast(result.error);
+                    isSubmitting = false;
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Submit Word';
+                }
+            } catch (error) {
+                // Allow retry on network error
+                gameCompleted = false;
+                showToast('Network error. Please try again.');
+                console.error('Error:', error);
+                isSubmitting = false;
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Word';
+            }
+        }
+
+        function showWin(result) {
+            gameCompleted = true; // Ensure game is marked as completed
+            document.getElementById('game-controls').style.display = 'none';
+            const gameOverDiv = document.getElementById('game-over');
+            gameOverDiv.innerHTML = `
+                <div class="result-message win-message">
+                    🎉 Correct! You found: ${result.word}
+                </div>
+                <div class="redemption-section">
+                    <h3>🎉 Woohoo!! You've won a choccy surprise with your coffee!!</h3>
+                    <p><strong>📱 SHOW THIS SCREEN TO THE BARISTA NOW</strong></p>
+                    <p>to claim your delicious chocolate surprise!</p>
+                    <div style="font-size: 3em; margin: 20px 0;">🍫</div>
+                    <div class="winner-badge">
+                        ✅ WINNER!<br>
+                        CHOCCY SURPRISE EARNED!
+                    </div>
+                    <p style="margin-top: 20px;"><strong>This game is now complete. Scan a new QR code for another puzzle!</strong></p>
+                </div>
+            `;
+            gameOverDiv.style.display = 'block';
+        }
+
+        function showLoss(result) {
+            gameCompleted = true; // Ensure game is marked as completed
+            document.getElementById('game-controls').style.display = 'none';
+            const gameOverDiv = document.getElementById('game-over');
+            gameOverDiv.innerHTML = `
+                <div class="result-message lose-message">
+                    😔 Not quite! The correct word was:<br>
+                    <strong>${result.word}</strong>
+                </div>
+                <p>Better luck next time!</p>
+                <p style="margin-top: 20px;"><strong>This game is now complete. Scan a new QR code for another puzzle!</strong></p>
+            `;
+            gameOverDiv.style.display = 'block';
+        }
+
+        function showGameOver() {
+            gameCompleted = true;
+            document.getElementById('game-controls').style.display = 'none';
+            if (gameStatus === 'won') {
+                const gameOverDiv = document.getElementById('game-over');
+                gameOverDiv.innerHTML = `
+                    <div class="result-message win-message">
+                        🎉 You already won this puzzle!
+                    </div>
+                    <p><strong>This game is complete. Scan a new QR code for another puzzle!</strong></p>
+                `;
+                gameOverDiv.style.display = 'block';
+            } else if (gameStatus === 'lost') {
+                const gameOverDiv = document.getElementById('game-over');
+                gameOverDiv.innerHTML = `
+                    <div class="result-message lose-message">
+                        This puzzle has been completed
+                    </div>
+                    <p><strong>Scan a new QR code for another puzzle!</strong></p>
+                `;
+                gameOverDiv.style.display = 'block';
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // Prevent common refresh/reload attempts
+        document.addEventListener('keydown', function(e) {
+            // Prevent F5, Ctrl+R, Ctrl+F5
+            if (e.key === 'F5' || (e.ctrlKey && e.key === 'r')) {
+                if (gameCompleted) {
+                    e.preventDefault();
+                    showToast('Game completed! Scan a new QR code for another puzzle.');
+                }
+            }
+        });
+
+        window.addEventListener('load', initializeGame);
+    </script>
+</body>
+</html>

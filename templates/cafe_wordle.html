@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cafe Wordle Challenge</title>
+    <style>
+        body {
+            font-family: 'Clear Sans', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overscroll-behavior: none;
+        }
+        .game-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        .title {
+            font-size: 2em;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .subtitle {
+            text-align: center;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            color: #feca57;
+        }
+        .attempts-left {
+            text-align: center;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            font-weight: bold;
+        }
+        .grid {
+            display: grid;
+            grid-template-rows: repeat(2, 70px);
+            grid-gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+        .row {
+            display: grid;
+            grid-template-columns: repeat(5, 70px);
+            grid-gap: 10px;
+            justify-content: center;
+        }
+        .tile {
+            width: 70px;
+            height: 70px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #ffffff;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .tile.filled {
+            border-color: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .tile.green {
+            background-color: #538d4e;
+            border-color: #538d4e;
+        }
+        .tile.yellow {
+            background-color: #b59f3b;
+            border-color: #b59f3b;
+        }
+        .tile.gray {
+            background-color: #3a3a3c;
+            border-color: #3a3a3c;
+        }
+        .tile.flip {
+            animation: flip 0.5s ease forwards;
+        }
+        @keyframes flip {
+            0% { transform: rotateX(0); }
+            50% { transform: rotateX(90deg); }
+            100% { transform: rotateX(0); }
+        }
+        .keyboard {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 20px;
+        }
+        .keyboard-row {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+        }
+        .key {
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 6px;
+            padding: 0;
+            height: 50px;
+            flex: 1;
+            max-width: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+        .key:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+        }
+        .key.wide {
+            max-width: 60px;
+        }
+        .key.green {
+            background-color: #538d4e;
+        }
+        .key.yellow {
+            background-color: #b59f3b;
+        }
+        .key.gray {
+            background-color: #3a3a3c;
+        }
+        .toast {
+            position: fixed;
+            top: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #333;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+        .toast.show {
+            opacity: 1;
+        }
+        .game-over {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .result-message {
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+        .win-message {
+            background: linear-gradient(45deg, #00c851, #007e33);
+            color: white;
+        }
+        .lose-message {
+            background: linear-gradient(45deg, #ff4444, #cc0000);
+            color: white;
+        }
+        .redemption-section {
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+        .redemption-code {
+            font-size: 2em;
+            font-weight: bold;
+            color: #00c851;
+            margin: 10px 0;
+            letter-spacing: 2px;
+        }
+        .qr-code {
+            max-width: 200px;
+            margin: 15px auto;
+            border-radius: 10px;
+        }
+        .play-again-btn {
+            background: linear-gradient(45deg, #feca57, #ff9f43);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.1em;
+            border-radius: 25px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: transform 0.3s ease;
+        }
+        .play-again-btn:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1 class="title">☕ Cafe Wordle</h1>
+        <p class="subtitle">Solve the puzzle, win a small takeaway coffee!</p>
+        
+        <div class="attempts-left" id="attempts-display">
+            Attempts remaining: <span id="attempts-count">2</span>
+        </div>
+
+        <div class="grid" id="game-grid">
+            <!-- Grid populated by JavaScript -->
+        </div>
+
+        <div class="keyboard" id="keyboard">
+            <!-- Keyboard populated by JavaScript -->
+        </div>
+
+        <div class="game-over" id="game-over" style="display: none;">
+            <!-- Game over content inserted here -->
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+        const gameId = '{{ game_id }}';
+        const gameData = {{ game_data|tojson }};
+        
+        let currentGuess = '';
+        let currentRow = gameData.attempts.length;
+        let gameStatus = gameData.status;
+        let isSubmitting = false;
+
+        const keyboardLayout = [
+            ['Q','W','E','R','T','Y','U','I','O','P'],
+            ['A','S','D','F','G','H','J','K','L'],
+            ['ENTER','Z','X','C','V','B','N','M','BACKSPACE']
+        ];
+
+        function initializeGame() {
+            createGrid();
+            createKeyboard();
+            updateAttemptsDisplay();
+            
+            for (let i = 0; i < gameData.attempts.length; i++) {
+                displayAttempt(i, gameData.attempts[i], gameData.feedbacks[i]);
+            }
+            
+            updateKeyboard();
+            
+            if (gameStatus !== 'active') {
+                showGameOver();
+            }
+        }
+
+        function createGrid() {
+            const grid = document.getElementById('game-grid');
+            grid.innerHTML = '';
+            
+            for (let row = 0; row < 2; row++) {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'row';
+                rowDiv.setAttribute('data-row', row);
+                
+                for (let col = 0; col < 5; col++) {
+                    const tile = document.createElement('div');
+                    tile.className = 'tile';
+                    tile.setAttribute('data-tile', `${row}-${col}`);
+                    rowDiv.appendChild(tile);
+                }
+                
+                grid.appendChild(rowDiv);
+            }
+        }
+
+        function createKeyboard() {
+            const keyboard = document.getElementById('keyboard');
+            keyboard.innerHTML = '';
+            
+            keyboardLayout.forEach(row => {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'keyboard-row';
+                
+                row.forEach(key => {
+                    const keyButton = document.createElement('button');
+                    keyButton.className = 'key';
+                    keyButton.setAttribute('data-key', key);
+                    
+                    if (key === 'ENTER' || key === 'BACKSPACE') {
+                        keyButton.classList.add('wide');
+                        keyButton.textContent = key === 'BACKSPACE' ? '⌫' : key;
+                    } else {
+                        keyButton.textContent = key;
+                    }
+                    
+                    keyButton.addEventListener('click', () => handleKeyPress(key));
+                    rowDiv.appendChild(keyButton);
+                });
+                
+                keyboard.appendChild(rowDiv);
+            });
+        }
+
+        function handleKeyPress(key) {
+            if (gameStatus !== 'active' || isSubmitting) return;
+            
+            if (key === 'ENTER') {
+                submitGuess();
+            } else if (key === 'BACKSPACE') {
+                if (currentGuess.length > 0) {
+                    currentGuess = currentGuess.slice(0, -1);
+                    updateCurrentRow();
+                }
+            } else if (currentGuess.length < 5) {
+                currentGuess += key;
+                updateCurrentRow();
+            }
+        }
+
+        function updateCurrentRow() {
+            const tiles = document.querySelectorAll(`[data-row="${currentRow}"] .tile`);
+            tiles.forEach((tile, index) => {
+                tile.textContent = currentGuess[index] || '';
+                tile.classList.toggle('filled', !!currentGuess[index]);
+            });
+        }
+
+        function updateAttemptsDisplay() {
+            const attemptsLeft = 2 - gameData.attempts.length;
+            document.getElementById('attempts-count').textContent = Math.max(0, attemptsLeft);
+        }
+
+        async function submitGuess() {
+            if (currentGuess.length !== 5) {
+                showToast('Please enter a 5-letter word');
+                return;
+            }
+            
+            isSubmitting = true;
+            
+            try {
+                const response = await fetch(`/game/${gameId}/guess`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ guess: currentGuess })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    displayAttempt(currentRow, currentGuess, result.feedback);
+                    gameData.attempts = result.attempts;
+                    gameData.feedbacks = result.feedbacks;
+                    gameStatus = result.status;
+                    
+                    updateKeyboard();
+                    updateAttemptsDisplay();
+                    
+                    if (result.status === 'won') {
+                        setTimeout(() => showWin(result), 1500);
+                    } else if (result.status === 'lost') {
+                        setTimeout(() => showLoss(result), 1500);
+                    } else {
+                        currentRow++;
+                        currentGuess = '';
+                    }
+                } else {
+                    showToast(result.error);
+                }
+            } catch (error) {
+                showToast('Network error. Please try again.');
+                console.error('Error:', error);
+            } finally {
+                isSubmitting = false;
+            }
+        }
+
+        function displayAttempt(row, guess, feedback) {
+            const tiles = document.querySelectorAll(`[data-row="${row}"] .tile`);
+            
+            tiles.forEach((tile, index) => {
+                setTimeout(() => {
+                    tile.textContent = guess[index];
+                    tile.classList.add('filled', 'flip', feedback[index]);
+                }, index * 200);
+            });
+        }
+
+        function updateKeyboard() {
+            const keyStates = {};
+            
+            gameData.attempts.forEach((attempt, row) => {
+                attempt.split('').forEach((letter, index) => {
+                    const feedback = gameData.feedbacks[row][index];
+                    if (!keyStates[letter] || 
+                        (feedback === 'green') || 
+                        (feedback === 'yellow' && keyStates[letter] !== 'green')) {
+                        keyStates[letter] = feedback;
+                    }
+                });
+            });
+            
+            Object.keys(keyStates).forEach(letter => {
+                const key = document.querySelector(`[data-key="${letter}"]`);
+                if (key) {
+                    key.classList.remove('green', 'yellow', 'gray');
+                    key.classList.add(keyStates[letter]);
+                }
+            });
+        }
+
+        function showWin(result) {
+            const gameOverDiv = document.getElementById('game-over');
+            gameOverDiv.innerHTML = `
+                <div class="result-message win-message">
+                    🎉 Congratulations! You won!<br>
+                    The word was: ${result.word}
+                </div>
+                <div class="redemption-section">
+                    <h3>🎉 Woohoo!! You've won a small takeaway coffee!!</h3>
+                    <p>Just show the QR code to the barista on your next visit to claim your free coffee!!</p>
+                    <div class="redemption-code">${result.redemption_code}</div>
+                    <img src="data:image/png;base64,${result.redemption_qr}" alt="Redemption QR Code" class="qr-code">
+                    <p><small>Save this screen or screenshot!</small></p>
+                </div>
+            `;
+            gameOverDiv.style.display = 'block';
+        }
+
+        function showLoss(result) {
+            const gameOverDiv = document.getElementById('game-over');
+            gameOverDiv.innerHTML = `
+                <div class="result-message lose-message">
+                    😔 Better luck next time!<br>
+                    The word was: ${result.word}
+                </div>
+                <p>You used all your attempts. Try again with a new game!</p>
+            `;
+            gameOverDiv.style.display = 'block';
+        }
+
+        function showGameOver() {
+            if (gameStatus === 'won') {
+                const gameOverDiv = document.getElementById('game-over');
+                gameOverDiv.innerHTML = `
+                    <div class="result-message win-message">
+                        🎉 You already won this game!
+                    </div>
+                `;
+                gameOverDiv.style.display = 'block';
+            } else if (gameStatus === 'lost') {
+                const gameOverDiv = document.getElementById('game-over');
+                gameOverDiv.innerHTML = `
+                    <div class="result-message lose-message">
+                        Game Over - You already used all attempts
+                    </div>
+                `;
+                gameOverDiv.style.display = 'block';
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (gameStatus !== 'active' || isSubmitting) return;
+            
+            const key = e.key.toUpperCase();
+            if (key === 'ENTER') {
+                handleKeyPress('ENTER');
+            } else if (key === 'BACKSPACE') {
+                handleKeyPress('BACKSPACE');
+            } else if (/^[A-Z]$/.test(key)) {
+                handleKeyPress(key);
+            }
+        });
+
+        window.addEventListener('load', initializeGame);
+    </script>
+</body>
+</html>

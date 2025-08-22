@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QWORD - Counter Device</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            color: #fff;
+            overflow: hidden;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            max-width: 95vw;
+            width: 100%;
+            height: 95vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        /* Desktop/Laptop styles */
+        @media (min-width: 768px) {
+            .container {
+                max-width: 350px;
+                width: 350px;
+                height: auto;
+                min-height: 500px;
+            }
+            body {
+                height: 100vh;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+        .logo-container {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .logo {
+            max-width: 300px;
+            width: 80vw;
+            height: auto;
+            margin-bottom: 10px;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            display: none; /* Hide when logo is present */
+        }
+        .subtitle {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            opacity: 0.9;
+            color: #feca57;
+            font-weight: bold;
+        }
+        .qr-container {
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            margin: 15px 0;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            max-height: 60vh;
+        }
+        .qr-code {
+            max-width: 200px;
+            max-height: 200px;
+            width: 60vw;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        .qr-info {
+            color: #667eea;
+            font-weight: bold;
+            margin-top: 5px;
+            font-size: 0.9em;
+        }
+        .status {
+            color: #667eea;
+            font-size: 1em;
+            margin-top: 10px;
+        }
+        .status.scanning {
+            color: #00c851;
+            animation: pulse 2s infinite;
+        }
+        .status.generating {
+            color: #feca57;
+        }
+        .status.scanned {
+            color: #00c851;
+            font-weight: bold;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        .game-counter {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+        }
+        .retry-btn {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.3s ease;
+        }
+        .retry-btn:hover {
+            background: #ff5252;
+        }
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-counter" id="game-counter">
+        Puzzles Created: <span id="games-count">0</span>
+    </div>
+
+    <div class="container">
+        <div class="logo-container">
+            <img src="{{ url_for('static', filename='QWORD_logo.png') }}" alt="QWord Logo" class="logo">
+        </div>
+        <h1>🧩 Letter Puzzle</h1>
+        <p class="subtitle">Play to win a choccy surprise with your coffee!</p>
+        
+        <div class="qr-container" id="qr-container">
+            <div class="loading-spinner"></div>
+            <div class="status generating" id="status">Generating your first puzzle...</div>
+        </div>
+    </div>
+
+    <script>
+        let currentGameId = null;
+        let gamesCreated = 0;
+        let isGenerating = false;
+        let scanCheckInterval = null;
+
+        async function generateNewGame() {
+            if (isGenerating) return;
+            
+            isGenerating = true;
+            const container = document.getElementById('qr-container');
+            const status = document.getElementById('status');
+            
+            // Clear any existing interval
+            if (scanCheckInterval) {
+                clearInterval(scanCheckInterval);
+                scanCheckInterval = null;
+            }
+            
+            container.innerHTML = `
+                <div class="loading-spinner"></div>
+                <div class="status generating">Generating new puzzle...</div>
+            `;
+            
+            try {
+                const response = await fetch('/api/create_game', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    currentGameId = data.game_id;
+                    gamesCreated++;
+                    
+                    container.innerHTML = `
+                        <img src="data:image/png;base64,${data.qr_code}" alt="Game QR Code" class="qr-code">
+                        <div class="qr-info">
+                            Scan to play QWORD!<br>
+                            <small>Puzzle #${gamesCreated} • ID: ${data.game_id.substring(0, 8)}</small>
+                        </div>
+                        <div class="status scanning" id="status">Waiting for customer to scan...</div>
+                    `;
+                    
+                    // Update counter
+                    document.getElementById('games-count').textContent = gamesCreated;
+                    
+                    // Start monitoring for scans
+                    startScanMonitoring();
+                } else {
+                    container.innerHTML = `
+                        <div class="status" style="color: red;">
+                            Error generating puzzle: ${data.error}<br>
+                            <button class="retry-btn" onclick="generateNewGame()">
+                                Try Again
+                            </button>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                container.innerHTML = `
+                    <div class="status" style="color: red;">
+                        Network error. Please check connection.<br>
+                        <button class="retry-btn" onclick="generateNewGame()">
+                            Try Again
+                        </button>
+                    </div>
+                `;
+            } finally {
+                isGenerating = false;
+            }
+        }
+
+        async function checkIfGameScanned() {
+            if (!currentGameId) return false;
+            
+            try {
+                const response = await fetch(`/api/check_game_access/${currentGameId}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                const data = await response.json();
+                return data.success && data.accessed;
+            } catch (error) {
+                console.error('Error checking game access:', error);
+                return false;
+            }
+        }
+
+        function startScanMonitoring() {
+            if (scanCheckInterval) {
+                clearInterval(scanCheckInterval);
+            }
+            
+            scanCheckInterval = setInterval(async () => {
+                const wasScanned = await checkIfGameScanned();
+                
+                if (wasScanned) {
+                    clearInterval(scanCheckInterval);
+                    scanCheckInterval = null;
+                    
+                    // Show brief "scanned" message
+                    const container = document.getElementById('qr-container');
+                    container.innerHTML = `
+                        <div style="font-size: 3em; margin: 20px 0;">✅</div>
+                        <div class="status scanned">QR Code Scanned!</div>
+                        <div style="color: #00c851; margin-top: 10px;">Generating new puzzle in 2 seconds...</div>
+                    `;
+                    
+                    // Wait 2 seconds then generate new game
+                    setTimeout(() => {
+                        generateNewGame();
+                    }, 2000);
+                }
+            }, 3000); // Check every 3 seconds
+        }
+
+        // Generate first game when page loads
+        window.addEventListener('load', () => {
+            setTimeout(generateNewGame, 500); // Small delay to let page fully load
+        });
+
+        // Auto-refresh page every 30 minutes to prevent stale states
+        setTimeout(() => {
+            console.log('Auto-refreshing page to prevent stale states...');
+            window.location.reload();
+        }, 30 * 60 * 1000);
+
+        // Handle page visibility changes (when user switches tabs/apps)
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible' && scanCheckInterval === null && currentGameId) {
+                // Resume monitoring when page becomes visible again
+                startScanMonitoring();
+            }
+        });
+
+        // Error handling for unexpected issues
+        window.addEventListener('error', (event) => {
+            console.error('JavaScript error:', event.error);
+            if (isGenerating) {
+                isGenerating = false;
+                const container = document.getElementById('qr-container');
+                container.innerHTML = `
+                    <div class="status" style="color: red;">
+                        Something went wrong. Please refresh the page.<br>
+                        <button class="retry-btn" onclick="window.location.reload()">
+                            Refresh Page
+                        </button>
+                    </div>
+                `;
+            }
+        });
+
+        // Debug info (remove in production)
+        console.log('QWORD counter device initialized');
+        console.log('Auto-scan monitoring enabled');
+    </script>
+</body>
+</html>

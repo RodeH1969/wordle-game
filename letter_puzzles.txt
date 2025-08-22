@@ -1,0 +1,1203 @@
+# Generated Letter Puzzle Variations - FULLY SCRAMBLED
+# Format: FEATURED_LETTER|ANSWER|AVAILABLE_LETTERS
+
+# Puzzle 1: 12 words with 'S'
+# Examples: DUSTY, LUSTY, SEEDY, SHEET, SLEET
+S|STYLE|L,S,U,H,T,E,W,Y,W,H,E,D
+
+# Puzzle 2: 11 words with 'M'
+# Examples: AMISS, BIOME, DOGMA, IMAGE, MAMBO
+M|MAMBO|B,S,G,I,B,M,M,A,S,E,O,D
+
+# Puzzle 3: 2 words with 'D'
+# Examples: ADOPT, WIDOW
+D|WIDOW|D,A,I,T,W,G,O,P,W,W,O,B
+
+# Puzzle 4: 7 words with 'H'
+# Examples: COUGH, OUGHT, PATCH, POUCH, TOUCH
+H|TOUGH|H,O,P,T,G,W,U,U,A,A,U,C
+
+# Puzzle 5: 6 words with 'A'
+# Examples: CAGEY, CAMEO, COCOA, FOAMY, MECCA
+A|CAMEO|G,E,O,M,O,Y,C,W,A,C,F,Y
+
+# Puzzle 6: 19 words with 'K'
+# Examples: ALIKE, ANKLE, AWAKE, AWOKE, CLANK
+K|ANKLE|E,W,I,A,A,N,Y,L,K,C,T,O
+
+# Puzzle 7: 3 words with 'I'
+# Examples: BRINY, INCUR, PUBIC
+I|PUBIC|C,P,P,R,B,Y,N,I,I,P,U,B
+
+# Puzzle 8: 7 words with 'S'
+# Examples: BASIL, BASIN, SLAIN, SLIMY, SNAIL
+S|SNAIL|M,F,S,L,B,F,Y,N,N,R,I,A
+
+# Puzzle 9: 10 words with 'N'
+# Examples: INCUR, NICER, NIECE, PENCE, PREEN
+N|QUEEN|N,I,U,E,Q,R,C,P,I,R,R,E
+
+# Puzzle 10: 21 words with 'O'
+# Examples: DEPOT, DONUT, DOWEL, ENDOW, GOUGE
+O|GUSTO|G,N,S,O,E,W,U,G,D,L,P,T
+
+# Puzzle 11: 7 words with 'Y'
+# Examples: CORNY, CRONY, DUCHY, GOODY, HORNY
+Y|HORNY|C,R,U,O,G,H,U,N,H,Y,D,O
+
+# Puzzle 12: 19 words with 'R'
+# Examples: ABORT, BARON, BRUNT, BURNT, FORUM
+R|TUMOR|F,A,U,B,O,G,T,M,M,G,R,N
+
+# Puzzle 13: 66 words with 'E'
+# Examples: AGENT, AGREE, ANGER, CAPER, CASTE
+E|GREEN|C,N,T,E,E,A,G,S,T,N,P,R
+
+# Puzzle 14: 8 words with 'U'
+# Examples: GULLY, MINUS, MUSHY, SLUNG, SUING
+U|SLUNG|L,M,L,I,N,U,S,N,G,Y,H,L
+
+# Puzzle 15: 26 words with 'E'
+# Examples: CORER, COVEN, COVER, COWER, CRIER
+E|VENOM|F,V,M,C,R,E,I,M,N,W,O,R
+
+# Puzzle 16: 18 words with 'M'
+# Examples: ARMOR, CAMEO, CHAMP, CHARM, COMMA
+M|MACRO|E,R,H,O,M,R,P,C,C,M,D,A
+
+# Puzzle 17: 5 words with 'Y'
+# Examples: BELLY, BILLY, LEGGY, SILLY, STYLE
+Y|BELLY|G,E,L,G,I,T,B,B,B,Y,S,L
+
+# Puzzle 18: 2 words with 'J'
+# Examples: JUMBO, JUROR
+J|JUMBO|M,J,D,G,O,W,R,U,W,T,R,B
+
+# Puzzle 19: 5 words with 'D'
+# Examples: DOLLY, DROLL, DULLY, GODLY, GOURD
+D|DOLLY|L,Y,R,F,O,T,U,G,U,D,L,U
+
+# Puzzle 20: 8 words with 'I'
+# Examples: BRAIN, BRIAR, BROIL, FINAL, FLAIR
+I|FINAL|B,R,R,O,F,N,F,R,A,F,L,I
+
+# Puzzle 21: 20 words with 'R'
+# Examples: BROOM, METRO, MOTOR, OMBRE, OTTER
+R|SPERM|O,E,M,S,P,B,T,O,S,P,R,T
+
+# Puzzle 22: 23 words with 'A'
+# Examples: ARTSY, OVARY, RATTY, ROAST, ROYAL
+A|VAULT|Y,T,V,T,U,O,O,A,S,W,R,L
+
+# Puzzle 23: 13 words with 'P'
+# Examples: APPLY, CLASP, HAPPY, HARPY, PADDY
+P|SCALP|D,A,C,P,P,W,H,S,Y,D,R,L
+
+# Puzzle 24: 39 words with 'L'
+# Examples: CLASH, CLEAT, CLOSE, CLOTH, CLOVE
+L|CLOVE|E,O,S,A,H,C,V,C,T,L,A,E
+
+# Puzzle 25: 6 words with 'K'
+# Examples: ABACK, CHUCK, CRACK, WACKY, WHACK
+K|CRACK|B,R,Y,U,D,W,A,H,C,K,A,C
+
+# Puzzle 26: 12 words with 'B'
+# Examples: BILLY, BIRTH, BITTY, BLURT, BLUSH
+B|BILLY|T,L,R,H,I,U,F,T,Y,B,L,S
+
+# Puzzle 27: 5 words with 'Y'
+# Examples: DUMMY, DUMPY, FURRY, MARRY, PARRY
+Y|DUMMY|R,F,U,M,P,D,M,R,W,W,A,Y
+
+# Puzzle 28: 25 words with 'G'
+# Examples: AGLOW, ARGUE, BAGEL, BARGE, BEGAT
+G|GRUEL|L,O,G,B,U,W,E,A,C,R,F,T
+
+# Puzzle 29: 44 words with 'N'
+# Examples: ALIGN, ALONG, ANGST, BASIN, BATON
+N|SALON|B,U,O,I,F,T,O,L,A,N,G,S
+
+# Puzzle 30: 4 words with 'H'
+# Examples: AHEAD, ALPHA, HAPPY, HEADY
+H|HAPPY|A,Y,E,E,P,Y,L,P,A,H,L,D
+
+# Puzzle 31: 12 words with 'I'
+# Examples: HILLY, HIPPY, LITHE, PIETY, PITHY
+I|TULIP|E,L,L,A,I,H,Y,P,P,U,W,T
+
+# Puzzle 32: 44 words with 'E'
+# Examples: BEECH, BELCH, BELIE, BENCH, BICEP
+E|CREPE|C,R,N,E,I,B,L,P,E,D,H,P
+
+# Puzzle 33: 64 words with 'R'
+# Examples: ACRID, AIDER, ALERT, ALTER, ARISE
+R|LATER|E,T,E,R,D,I,C,L,N,S,A,N
+
+# Puzzle 34: 12 words with 'G'
+# Examples: EIGHT, EYING, GOING, GOOEY, HINGE
+G|THONG|T,T,Y,G,G,I,E,H,C,O,O,N
+
+# Puzzle 35: 39 words with 'U'
+# Examples: BEGUN, BLUER, BLUNT, BLURT, BRUNT
+U|DEBUT|N,U,F,R,B,G,T,L,C,D,E,M
+
+# Puzzle 36: 33 words with 'A'
+# Examples: ARISE, BAKER, BARGE, BRAKE, BRASH
+A|KHAKI|K,K,I,A,E,S,B,P,Y,R,H,G
+
+# Puzzle 37: 21 words with 'R'
+# Examples: AGREE, DRAPE, DREAD, DREAM, DRESS
+R|PARSE|D,A,S,G,E,P,M,D,R,E,D,S
+
+# Puzzle 38: 4 words with 'I'
+# Examples: AUDIO, MAGIC, OPIUM, PUBIC
+I|AUDIO|B,P,A,P,C,D,O,I,M,A,U,G
+
+# Puzzle 39: 1 words with 'F'
+# Examples: SNIFF
+F|SNIFF|G,S,I,F,P,S,R,A,N,S,W,F
+
+# Puzzle 40: 71 words with 'E'
+# Examples: ADEPT, AFIRE, AFTER, AGILE, AIDER
+E|TRIED|A,E,R,G,D,H,P,F,I,I,T,L
+
+# Puzzle 41: 21 words with 'H'
+# Examples: BATCH, BATHE, BEACH, BOTCH, BUTCH
+H|DUTCH|A,D,U,B,E,H,C,T,O,H,P,H
+
+# Puzzle 42: 15 words with 'C'
+# Examples: ACORN, CAROL, CARRY, CLOWN, COACH
+C|CROWN|R,C,Y,O,P,C,H,R,L,W,A,N
+
+# Puzzle 43: 13 words with 'V'
+# Examples: AVERT, CARVE, COVER, COVET, CRAVE
+V|OVERT|M,A,A,C,E,D,T,O,V,P,R,O
+
+# Puzzle 44: 15 words with 'K'
+# Examples: ASKEW, AWAKE, SKATE, SNACK, SNAKE
+K|SKATE|P,E,F,A,S,W,C,E,A,K,N,T
+
+# Puzzle 45: 7 words with 'L'
+# Examples: BLUNT, BLURB, BLURT, FLOUR, FLOUT
+L|BLUNT|O,H,F,B,G,N,B,T,B,L,R,U
+
+# Puzzle 46: 33 words with 'A'
+# Examples: AGAPE, AGATE, AGENT, ANGST, APNEA
+A|STANK|G,K,E,U,T,S,Y,P,P,N,A,A
+
+# Puzzle 47: 8 words with 'B'
+# Examples: ALBUM, BADLY, BALMY, BLAND, BLUNT
+B|BADLY|P,A,D,D,L,U,M,N,Y,B,G,T
+
+# Puzzle 48: 41 words with 'E'
+# Examples: CIDER, COPSE, COUPE, CREDO, CREED
+E|SPEED|S,O,R,E,C,U,D,P,E,I,E,D
+
+# Puzzle 49: 17 words with 'O'
+# Examples: ASCOT, BACON, BATON, BISON, BOAST
+O|BOSSY|N,Y,O,C,I,T,B,O,A,S,S,A
+
+# Puzzle 50: 16 words with 'R'
+# Examples: ERROR, HOMER, HORDE, HORSE, MOWER
+R|ERROR|M,R,W,S,O,R,E,D,H,O,R,D
+
+# Puzzle 51: 21 words with 'O'
+# Examples: CHOSE, CLOSE, CLOTH, COMET, DECOY
+O|CLOSE|H,E,E,O,M,T,I,L,Y,C,S,D
+
+# Puzzle 52: 7 words with 'C'
+# Examples: ACUTE, CHEAT, CHUTE, HATCH, HUTCH
+C|HUTCH|H,C,E,U,H,H,A,G,U,E,M,T
+
+# Puzzle 53: 9 words with 'B'
+# Examples: ABASE, ABATE, ABBEY, BASTE, BEAST
+B|ABASE|E,A,B,C,Y,E,F,B,S,T,A,E
+
+# Puzzle 54: 29 words with 'E'
+# Examples: AGREE, ANGER, ANNEX, ARISE, AROSE
+E|ANNEX|R,I,E,O,E,G,N,S,A,E,N,X
+
+# Puzzle 55: 44 words with 'A'
+# Examples: ACRID, ACUTE, AFIRE, AFTER, AIDER
+A|START|T,D,T,F,C,R,E,I,A,T,S,U
+
+# Puzzle 56: 15 words with 'O'
+# Examples: FOCUS, FOLLY, GOLLY, GOOFY, LOCUS
+O|SLOOP|S,F,C,U,Y,O,W,P,G,L,O,L
+
+# Puzzle 57: 12 words with 'L'
+# Examples: CAMEL, CANAL, CLEAN, EASEL, LANCE
+L|CANAL|Y,Y,E,S,M,E,C,E,L,N,A,A
+
+# Puzzle 58: 7 words with 'C'
+# Examples: CLING, CORNY, CRIMP, CRONY, LOGIC
+C|CORNY|P,G,M,R,C,I,Y,O,N,D,N,L
+
+# Puzzle 59: 13 words with 'L'
+# Examples: CLEFT, ELECT, ELEGY, ELITE, FILET
+L|STEEL|C,Y,S,S,F,E,I,L,T,E,E,G
+
+# Puzzle 60: 34 words with 'N'
+# Examples: ANGST, ANTIC, APING, CHAIN, CHANT
+N|TAUNT|S,I,D,U,P,T,C,H,G,T,N,A
+
+# Puzzle 61: 23 words with 'S'
+# Examples: ARTSY, DUSTY, HASTY, HUSSY, NASTY
+S|STRUT|T,D,H,N,T,R,Y,A,S,U,S,U
+
+# Puzzle 62: 73 words with 'E'
+# Examples: CHEER, CHIDE, CHORE, CHOSE, CIDER
+E|SCREE|S,E,N,E,O,R,P,H,D,I,D,C
+
+# Puzzle 63: 4 words with 'Q'
+# Examples: QUEEN, QUEER, QUERY, QUEUE
+Q|QUEEN|Y,U,Q,N,N,W,E,U,E,U,R,P
+
+# Puzzle 64: 28 words with 'R'
+# Examples: CHEER, CHORE, COLOR, CRESS, CREST
+R|SHORE|O,O,E,H,S,E,S,L,T,C,R,L
+
+# Puzzle 65: 5 words with 'K'
+# Examples: CLINK, FLICK, FLUNK, FUNKY, LUCKY
+K|FUNKY|Y,T,I,U,F,K,I,D,N,C,N,L
+
+# Puzzle 66: 5 words with 'S'
+# Examples: FROST, GHOST, GROSS, SHORT, SPORT
+S|GROSS|B,P,G,F,S,R,H,S,T,F,T,O
+
+# Puzzle 67: 29 words with 'O'
+# Examples: ACORN, ALONE, AROSE, ARSON, CANOE
+O|ACORN|R,L,A,C,U,L,S,S,E,N,N,O
+
+# Puzzle 68: 19 words with 'W'
+# Examples: COWER, GROWL, LOWER, SCOWL, SCREW
+W|WHIFF|S,I,W,R,L,F,C,G,O,H,F,E
+
+# Puzzle 69: 5 words with 'T'
+# Examples: BERET, BETEL, FLEET, LEFTY, METER
+T|METER|B,E,F,M,R,E,E,B,T,L,W,Y
+
+# Puzzle 70: 15 words with 'E'
+# Examples: AGATE, ALGAE, EAGLE, ELATE, GAVEL
+E|HEAVE|A,T,G,H,L,A,E,T,E,E,V,L
+
+# Puzzle 71: 8 words with 'C'
+# Examples: CLEFT, CLOSE, CLOUT, ELECT, FOCUS
+C|ELECT|F,L,U,S,E,O,S,E,T,C,B,W
+
+# Puzzle 72: 17 words with 'O'
+# Examples: CONDO, COPSE, COUPE, DEMON, MOOSE
+O|SCOPE|O,O,C,S,M,E,D,U,S,P,E,N
+
+# Puzzle 73: 15 words with 'R'
+# Examples: CHIRP, CRIME, CRIMP, FINER, GRIEF
+R|CRIMP|P,I,E,N,C,H,R,I,F,M,H,G
+
+# Puzzle 74: 64 words with 'E'
+# Examples: ABBEY, AROSE, ATONE, BASTE, BEAST
+E|SNORE|S,P,T,C,R,B,B,O,E,Y,N,A
+
+# Puzzle 75: 55 words with 'R'
+# Examples: ABHOR, ABORT, ACORN, ACRID, ACTOR
+R|ROACH|I,R,N,A,T,W,D,O,B,H,A,C
+
+# Puzzle 76: 8 words with 'H'
+# Examples: CINCH, ITCHY, NYMPH, PINCH, PITCH
+H|PITHY|S,N,H,C,Y,C,T,I,Y,T,M,P
+
+# Puzzle 77: 27 words with 'R'
+# Examples: BERET, EGRET, EMBER, ESTER, GREET
+R|BERET|R,E,G,T,E,B,S,M,W,O,Y,T
+
+# Puzzle 78: 21 words with 'T'
+# Examples: ANGST, ANTIC, ATTIC, GAUNT, GIANT
+T|STUNG|C,W,A,N,S,I,G,T,I,U,T,S
+
+# Puzzle 79: 8 words with 'N'
+# Examples: FUNGI, GRUNT, MINUS, STING, STUNG
+N|SUING|U,T,F,N,U,N,U,M,I,S,R,G
+
+# Puzzle 80: 13 words with 'A'
+# Examples: ALLOT, ALOFT, ALONG, ATOLL, FLOAT
+A|TALON|T,D,N,D,L,L,G,O,T,A,L,F
+
+# Puzzle 81: 17 words with 'E'
+# Examples: AMBER, AROSE, BARGE, GAMER, HAREM
+E|AROSE|M,E,A,M,B,O,S,G,M,H,R,S
+
+# Puzzle 82: 17 words with 'D'
+# Examples: ADAGE, ADORE, ADORN, ANODE, DONOR
+D|NUDGE|D,O,E,N,U,A,G,E,R,E,O,A
+
+# Puzzle 83: 27 words with 'T'
+# Examples: ALERT, ALTER, AVERT, BLEAT, BLURT
+T|VALET|M,M,U,T,L,E,B,B,A,V,R,I
+
+# Puzzle 84: 7 words with 'C'
+# Examples: ATTIC, BASIC, CACTI, CIRCA, SCRAM
+C|SCRAM|T,T,B,R,M,C,C,S,C,R,I,A
+
+# Puzzle 85: 5 words with 'A'
+# Examples: AGONY, ANNOY, BAGGY, BANJO, WAGON
+A|BANJO|A,G,N,Y,H,N,O,B,G,J,A,W
+
+# Puzzle 86: 19 words with 'E'
+# Examples: CHIEF, CHIME, CHOSE, CLOSE, COPSE
+E|CYCLE|C,P,I,M,Y,S,H,C,L,F,E,O
+
+# Puzzle 87: 51 words with 'R'
+# Examples: AMBER, ARISE, AROSE, ARSON, BALER
+R|BLARE|A,M,N,Y,I,L,O,E,S,B,R,B
+
+# Puzzle 88: 8 words with 'K'
+# Examples: BROOK, CRACK, CROAK, CROCK, CROOK
+K|CROCK|W,B,C,O,A,C,K,R,O,Y,D,W
+
+# Puzzle 89: 29 words with 'I'
+# Examples: CHIDE, CHIRP, CIDER, CRIED, DIRGE
+I|PITCH|I,R,P,D,G,T,T,H,P,D,C,E
+
+# Puzzle 90: 46 words with 'I'
+# Examples: ACRID, ADMIT, AIDER, CHAIR, CHIDE
+I|WIDER|A,W,M,R,H,I,M,C,L,D,E,T
+
+# Puzzle 91: 3 words with 'E'
+# Examples: PESKY, SHEIK, SPIKE
+E|SHEIK|Y,S,F,M,I,K,Y,E,P,Y,H,B
+
+# Puzzle 92: 15 words with 'I'
+# Examples: AGAIN, ALIGN, APING, CAIRN, CIGAR
+I|CIGAR|A,P,N,A,F,N,R,I,C,L,R,G
+
+# Puzzle 93: 11 words with 'O'
+# Examples: AFOOT, ALOFT, ALOOF, ELOPE, FLOAT
+O|LOOPY|O,E,Y,P,F,T,T,E,O,L,A,C
+
+# Puzzle 94: 3 words with 'A'
+# Examples: BADGE, BEGAT, CADET
+A|BADGE|A,D,C,B,T,E,D,M,M,G,G,B
+
+# Puzzle 95: 8 words with 'B'
+# Examples: ALBUM, BLURB, CRUMB, PLUMB, RUMBA
+B|UMBRA|B,M,B,C,R,G,P,S,L,U,G,A
+
+# Puzzle 96: 10 words with 'P'
+# Examples: ADAPT, ADEPT, AGAPE, APART, CAPER
+P|ADEPT|E,R,G,C,P,A,D,C,A,F,T,D
+
+# Puzzle 97: 14 words with 'I'
+# Examples: FLING, FLINT, FUNGI, GLINT, GUILT
+I|VISIT|U,N,L,S,V,I,S,G,F,T,S,I
+
+# Puzzle 98: 25 words with 'U'
+# Examples: ACUTE, AMUSE, ANNUL, AUNTY, CAUSE
+U|SUNNY|Y,E,N,U,G,L,C,A,N,S,M,T
+
+# Puzzle 99: 26 words with 'O'
+# Examples: DEPOT, DONUT, DRONE, DROVE, GONER
+O|VOGUE|R,U,G,E,D,U,V,T,U,N,O,P
+
+# Puzzle 100: 41 words with 'E'
+# Examples: AFTER, AGREE, DEATH, DEFER, DETER
+E|GRATE|E,Y,W,H,E,A,G,E,F,D,R,T
+
+# Puzzle 101: 8 words with 'D'
+# Examples: BUSED, DEBUT, DEPOT, DOUBT, DOWEL
+D|DWELL|S,D,O,L,B,L,P,T,W,U,E,W
+
+# Puzzle 102: 12 words with 'S'
+# Examples: GHOST, GLOSS, GUSTO, SHOOT, SHOUT
+S|STOOL|U,S,S,O,D,G,S,H,T,O,O,L
+
+# Puzzle 103: 3 words with 'N'
+# Examples: ENSUE, NEWLY, QUEEN
+N|QUEEN|P,L,U,S,W,P,Y,E,Q,P,N,E
+
+# Puzzle 104: 2 words with 'F'
+# Examples: FLECK, FLYER
+F|FLECK|Y,R,F,E,C,N,W,L,Y,G,W,K
+
+# Puzzle 105: 9 words with 'L'
+# Examples: BELIE, BELLE, FLESH, FOLIO, HELLO
+L|FOLIO|F,L,O,E,F,I,L,O,E,H,B,S
+
+# Puzzle 106: 19 words with 'A'
+# Examples: ALLOT, ALLOY, ALOFT, ATOLL, BANJO
+A|BANJO|Y,N,F,L,O,B,J,A,I,T,L,H
+
+# Puzzle 107: 36 words with 'A'
+# Examples: ACORN, ACRID, ACTOR, ADORN, ALLOT
+A|CANON|C,H,I,N,N,D,L,L,A,O,R,T
+
+# Puzzle 108: 6 words with 'T'
+# Examples: APTLY, PATTY, PLANT, TANGY, TAWNY
+T|PLANT|T,P,M,W,L,N,N,Y,A,P,T,G
+
+# Puzzle 109: 20 words with 'I'
+# Examples: FILMY, FIRST, FLICK, FLIRT, FOIST
+I|SILKY|C,R,T,O,L,M,I,Y,S,R,K,F
+
+# Puzzle 110: 43 words with 'T'
+# Examples: ACUTE, CAPUT, CASTE, CLEAT, CUTIE
+T|VITAL|I,V,U,E,P,C,S,E,T,A,L,I
+
+# Puzzle 111: 61 words with 'A'
+# Examples: AFTER, ARTSY, CAGEY, CASTE, CATER
+A|GRATE|S,C,M,A,F,H,E,Y,T,G,Y,R
+
+# Puzzle 112: 9 words with 'Y'
+# Examples: COYLY, HOTLY, LOUSY, LUSTY, POUTY
+Y|LUSTY|W,U,C,H,U,O,P,L,S,Y,Y,T
+
+# Puzzle 113: 22 words with 'I'
+# Examples: AISLE, ARISE, CHAIR, CHIME, CLAIM
+I|WHILE|W,E,M,I,A,R,A,L,Y,H,C,S
+
+# Puzzle 114: 9 words with 'V'
+# Examples: ANVIL, CAVIL, CURVY, GRAVY, RIVAL
+V|GRAVY|A,C,U,L,V,G,I,G,R,Y,U,N
+
+# Puzzle 115: 10 words with 'U'
+# Examples: ADULT, ALOUD, GOURD, GROUT, GUARD
+U|VAULT|A,V,A,D,T,G,R,U,L,T,O,L
+
+# Puzzle 116: 2 words with 'R'
+# Examples: GRUFF, TRUTH
+R|GRUFF|T,F,R,D,H,U,G,G,T,F,W,F
+
+# Puzzle 117: 7 words with 'I'
+# Examples: ADMIN, ANIME, DENIM, EDIFY, FIEND
+I|EDIFY|N,I,A,Y,D,E,F,I,M,I,Y,P
+
+# Puzzle 118: 43 words with 'E'
+# Examples: AGREE, AIDER, CADET, CAGEY, CATER
+E|EATER|Y,E,R,G,D,I,A,T,C,E,D,Y
+
+# Puzzle 119: 17 words with 'N'
+# Examples: AGENT, ANGEL, ANGER, ANGLE, CHANT
+N|RANCH|G,E,N,C,L,N,T,G,A,R,H,R
+
+# Puzzle 120: 9 words with 'W'
+# Examples: MOWER, POWER, ROWER, TOWER, WEIRD
+W|WRITE|I,W,E,D,M,R,P,G,T,O,R,W
+
+# Puzzle 121: 9 words with 'B'
+# Examples: BASIN, BATTY, BITTY, BRAID, BRAIN
+B|BRAND|B,N,G,Y,R,T,N,S,D,T,I,A
+
+# Puzzle 122: 6 words with 'L'
+# Examples: ALIBI, BRAWL, TRAIL, TRAWL, TRIAL
+L|TRIAL|T,R,R,B,W,B,I,A,N,I,L,T
+
+# Puzzle 123: 17 words with 'E'
+# Examples: DRIER, DRYER, EDIFY, FERRY, FIERY
+E|PRIED|E,R,I,P,I,Y,D,U,R,P,F,W
+
+# Puzzle 124: 9 words with 'L'
+# Examples: APPLY, CLASP, PALSY, PULPY, PUPAL
+L|CLASP|D,S,D,G,P,C,P,L,A,U,Y,G
+
+# Puzzle 125: 3 words with 'C'
+# Examples: BELCH, CHESS, WELCH
+C|CHESS|S,D,B,L,Y,H,E,C,S,W,S,F
+
+# Puzzle 126: 21 words with 'U'
+# Examples: GROUT, GRUEL, GRUNT, GUILE, GUILT
+U|UNLIT|I,L,Y,O,U,T,U,E,G,L,R,N
+
+# Puzzle 127: 34 words with 'S'
+# Examples: AISLE, ARISE, ARTSY, CASTE, CREST
+S|SWEAR|R,I,S,L,A,E,C,W,I,Y,G,T
+
+# Puzzle 128: 13 words with 'O'
+# Examples: ALONE, ANODE, CACAO, CANOE, CLONE
+O|COLON|N,W,C,L,D,A,C,E,O,O,A,E
+
+# Puzzle 129: 7 words with 'W'
+# Examples: AWARE, AWFUL, FEWER, JEWEL, TRAWL
+W|JEWEL|U,U,T,W,F,A,R,L,E,J,E,A
+
+# Puzzle 130: 10 words with 'Y'
+# Examples: BADLY, BEADY, CANDY, DECAY, DELAY
+Y|HANDY|C,L,A,B,A,Y,D,E,H,E,H,N
+
+# Puzzle 131: 3 words with 'A'
+# Examples: ALOOF, MADAM, MODAL
+A|MADAM|L,O,O,A,M,P,M,W,F,A,D,D
+
+# Puzzle 132: 50 words with 'A'
+# Examples: ABIDE, ABLED, AGILE, AIDER, ALIBI
+A|ABIDE|G,I,A,D,W,N,B,L,R,N,E,I
+
+# Puzzle 133: 8 words with 'R'
+# Examples: DIRTY, DRILL, DROIT, DROLL, DRYLY
+R|DRYLY|T,D,S,L,D,R,O,I,Y,Y,M,L
+
+# Puzzle 134: 7 words with 'I'
+# Examples: CHILI, CINCH, CLING, HINGE, ICING
+I|ICING|L,G,C,G,C,E,I,C,I,I,N,H
+
+# Puzzle 135: 35 words with 'A'
+# Examples: ABODE, ABOUT, ABUSE, ADOBE, AGENT
+A|ATONE|S,O,O,H,E,G,B,N,U,A,T,D
+
+# Puzzle 136: 22 words with 'Y'
+# Examples: FANCY, FLAKY, HASTY, HEFTY, HYENA
+Y|SHAKY|T,S,Y,N,F,E,A,C,K,W,H,L
+
+# Puzzle 137: 6 words with 'O'
+# Examples: CONDO, DITTO, NOTCH, ONION, TONIC
+O|ONION|D,T,H,Y,O,I,O,O,C,N,N,T
+
+# Puzzle 138: 25 words with 'N'
+# Examples: ENSUE, GENIE, GENRE, GREEN, NEWER
+N|RISEN|R,N,W,U,E,E,S,U,R,S,I,G
+
+# Puzzle 139: 9 words with 'Y'
+# Examples: BELLY, BONEY, DOLLY, EBONY, GODLY
+Y|EBONY|T,E,G,Y,O,B,D,Y,L,N,L,M
+
+# Puzzle 140: 6 words with 'H'
+# Examples: CHUCK, CHUNK, HUMUS, MUNCH, SHUCK
+H|SHUCK|T,N,T,U,K,T,C,C,S,M,U,H
+
+# Puzzle 141: 7 words with 'U'
+# Examples: CRUMB, CRUMP, FEMUR, PUREE, RUMBA
+U|RUPEE|E,P,R,C,E,A,F,F,U,B,M,U
+
+# Puzzle 142: 67 words with 'E'
+# Examples: DENSE, DEPOT, DEPTH, DETER, DRONE
+E|HOTEL|N,S,H,O,R,R,E,D,L,E,T,P
+
+# Puzzle 143: 7 words with 'H'
+# Examples: CHEER, HENCE, SHEEN, SHEER, SHREW
+H|SHEEN|E,S,N,D,C,E,R,R,E,N,W,H
+
+# Puzzle 144: 12 words with 'A'
+# Examples: CADDY, CADET, CANDY, CATTY, DANCE
+A|EXACT|E,C,D,C,X,N,D,T,F,Y,T,A
+
+# Puzzle 145: 30 words with 'S'
+# Examples: ABYSS, ARSON, ARTSY, BOAST, BOSSY
+S|PANSY|O,A,S,Y,P,N,B,S,R,P,T,M
+
+# Puzzle 146: 5 words with 'Y'
+# Examples: ENJOY, FUNNY, PENNY, PINEY, UNIFY
+Y|ENJOY|Y,O,N,P,N,F,I,U,E,P,J,O
+
+# Puzzle 147: 2 words with 'N'
+# Examples: LUMEN, UNCLE
+N|UNCLE|C,S,L,B,B,E,C,M,P,N,Y,U
+
+# Puzzle 148: 7 words with 'I'
+# Examples: BIRCH, BRICK, CHICK, CHIRP, CRICK
+I|PRICK|K,H,Y,I,C,I,W,P,F,R,C,B
+
+# Puzzle 149: 11 words with 'O'
+# Examples: LOAMY, LOOPY, MODAL, MOLDY, MOODY
+O|ODDLY|C,A,L,P,D,M,O,A,Y,D,S,O
+
+# Puzzle 150: 27 words with 'A'
+# Examples: AGAPE, ALGAE, AMPLE, ANGEL, ANGLE
+A|AGAPE|N,A,E,G,A,P,L,S,A,E,L,M
+
+# Puzzle 151: 2 words with 'W'
+# Examples: SWAMI, SWARM
+W|SWARM|M,S,A,B,S,I,S,I,B,W,R,D
+
+# Puzzle 152: 18 words with 'R'
+# Examples: CORER, CREDO, CREST, DECOR, DECRY
+R|ROGER|R,R,S,Y,D,Y,O,E,G,C,M,T
+
+# Puzzle 153: 10 words with 'C'
+# Examples: COLOR, CORER, CREPT, CRIER, OCTET
+C|CREPT|T,L,R,T,I,P,C,R,C,O,E,O
+
+# Puzzle 154: 17 words with 'T'
+# Examples: BLURT, BROTH, FLOUT, FORTH, FORTY
+T|YOUTH|U,F,R,O,T,Y,L,P,B,T,H,H
+
+# Puzzle 155: 12 words with 'C'
+# Examples: CLOCK, CLOUT, CLUCK, CLUNG, COUNT
+C|CLOCK|F,L,U,O,G,C,N,K,T,L,S,C
+
+# Puzzle 156: 24 words with 'S'
+# Examples: CLOSE, FETUS, FLOSS, FOCUS, GLOSS
+S|SCONE|S,E,G,N,L,U,F,S,T,O,C,O
+
+# Puzzle 157: 6 words with 'A'
+# Examples: LOAMY, MAYOR, MOLAR, MORAL, MURAL
+A|LOAMY|I,M,W,L,R,A,U,O,Y,M,I,Y
+
+# Puzzle 158: 18 words with 'E'
+# Examples: ACUTE, CATER, CHEAT, CHUTE, CRATE
+E|CHUTE|T,H,A,H,A,Y,U,R,H,C,E,Y
+
+# Puzzle 159: 11 words with 'Y'
+# Examples: HARPY, HARRY, HORNY, MARRY, MAYOR
+Y|MARRY|O,H,R,H,Y,N,O,O,M,P,A,R
+
+# Puzzle 160: 4 words with 'M'
+# Examples: ADMIT, DATUM, GAMUT, MAXIM
+M|MAXIM|M,X,D,U,G,A,M,W,T,G,I,W
+
+# Puzzle 161: 9 words with 'G'
+# Examples: AGORA, CARGO, GONAD, GRAND, GRAPH
+G|CARGO|G,D,C,R,D,H,N,H,A,P,A,O
+
+# Puzzle 162: 1 words with 'A'
+# Examples: GAWKY
+A|GAWKY|W,W,W,Y,A,G,A,Y,H,Y,B,K
+
+# Puzzle 163: 10 words with 'I'
+# Examples: ALIBI, CHILI, CHILL, HABIT, ILIAC
+I|ALIBI|T,L,I,I,C,P,I,B,L,A,H,G
+
+# Puzzle 164: 12 words with 'T'
+# Examples: GHOST, GUSTO, HOIST, OUGHT, POSIT
+T|OUGHT|T,U,O,U,T,U,S,G,H,G,P,I
+
+# Puzzle 165: 30 words with 'I'
+# Examples: CIDER, CRIED, CRIER, CRIME, DEIGN
+I|RIDGE|G,N,D,M,R,Y,C,R,I,G,W,E
+
+# Puzzle 166: 9 words with 'F'
+# Examples: AFOOT, CRAFT, FORTH, FROST, FROTH
+F|SPOOF|A,S,P,H,O,S,O,C,T,R,F,H
+
+# Puzzle 167: 43 words with 'E'
+# Examples: BATHE, BEADY, BEARD, BERET, BERTH
+E|ETHER|B,R,E,Y,H,N,E,W,E,T,A,D
+
+# Puzzle 168: 8 words with 'N'
+# Examples: ANNEX, ANNUL, APNEA, BANAL, LUMEN
+N|ANNEX|U,X,A,B,A,N,M,E,L,N,A,P
+
+# Puzzle 169: 43 words with 'R'
+# Examples: BERRY, BRIDE, BRIEF, BRINE, BRINY
+R|BERRY|E,S,T,R,R,L,N,F,I,B,Y,D
+
+# Puzzle 170: 13 words with 'H'
+# Examples: CATCH, CHART, COACH, COUCH, HATCH
+H|COUCH|A,O,C,C,R,C,H,W,T,U,O,H
+
+# Puzzle 171: 8 words with 'L'
+# Examples: DWELL, ELEGY, LEDGE, NEWLY, SHELL
+L|DWELL|S,L,W,D,L,E,E,Y,H,L,N,G
+
+# Puzzle 172: 13 words with 'E'
+# Examples: DEMON, DRONE, DROVE, ENVOY, FOYER
+E|DROVE|Y,E,M,R,N,S,D,F,O,D,V,D
+
+# Puzzle 173: 17 words with 'S'
+# Examples: BLUSH, BUSED, GUISE, PLUSH, PULSE
+S|SLEEK|B,L,H,U,K,E,S,G,P,I,D,E
+
+# Puzzle 174: 36 words with 'R'
+# Examples: DINER, DRINK, DROIT, DRONE, IDLER
+R|SKIRT|N,M,L,I,D,T,E,K,O,T,S,R
+
+# Puzzle 175: 10 words with 'O'
+# Examples: BELOW, BOULE, BOWEL, BROIL, ELBOW
+O|LOWER|W,W,I,E,L,R,I,G,O,B,L,U
+
+# Puzzle 176: 29 words with 'N'
+# Examples: CRONE, CROWN, DRONE, DROWN, ENDOW
+N|NOTCH|W,H,E,D,R,T,N,S,G,O,H,C
+
+# Puzzle 177: 55 words with 'I'
+# Examples: CHIEF, CLING, EIGHT, ELFIN, ETHIC
+I|WRING|G,W,I,L,N,H,R,F,E,W,T,C
+
+# Puzzle 178: 2 words with 'S'
+# Examples: FLUSH, SHUCK
+S|SHUCK|H,C,H,W,G,M,F,S,K,U,F,L
+
+# Puzzle 179: 17 words with 'U'
+# Examples: ABOUT, ALBUM, BLUNT, BOULE, BUTTE
+U|HUMAN|E,N,M,L,B,O,U,T,H,T,L,A
+
+# Puzzle 180: 2 words with 'C'
+# Examples: CRAFT, TRACT
+C|CRAFT|G,M,F,L,T,R,T,L,A,M,C,T
+
+# Puzzle 181: 10 words with 'O'
+# Examples: FOIST, IONIC, LOFTY, NOISY, NYLON
+O|SCION|F,I,N,C,I,N,Y,N,O,L,T,S
+
+# Puzzle 182: 29 words with 'O'
+# Examples: ABHOR, ABODE, ADOBE, ADORE, ADORN
+O|OPINE|H,N,E,R,H,I,O,P,A,W,B,D
+
+# Puzzle 183: 30 words with 'L'
+# Examples: AGLOW, ALLOW, CAROL, CELLO, CLEAR
+L|CELLO|L,L,A,G,C,R,E,D,O,G,W,H
+
+# Puzzle 184: 22 words with 'I'
+# Examples: AFIRE, ATTIC, BEFIT, BRIEF, EVICT
+I|WAIVE|W,F,E,T,I,O,A,T,V,B,R,C
+
+# Puzzle 185: 4 words with 'D'
+# Examples: ACRID, CHARD, DWARF, SHARD
+D|DWARF|W,C,S,W,R,I,F,D,H,G,R,A
+
+# Puzzle 186: 48 words with 'R'
+# Examples: BERTH, BIRCH, BIRTH, BLUER, BLURT
+R|CURSE|B,H,U,S,R,S,L,P,C,E,I,T
+
+# Puzzle 187: 13 words with 'U'
+# Examples: ERUPT, GRUEL, GUIDE, GUILD, GUILE
+U|PURGE|P,W,L,I,U,D,E,T,Y,R,H,G
+
+# Puzzle 188: 27 words with 'O'
+# Examples: ARMOR, CAMEO, CARGO, CAROL, CLOVE
+O|VALOR|O,C,E,A,M,U,L,R,G,C,V,R
+
+# Puzzle 189: 2 words with 'F'
+# Examples: FIFTY, JIFFY
+F|JIFFY|Y,F,F,G,C,T,J,I,T,Y,Y,P
+
+# Puzzle 190: 35 words with 'E'
+# Examples: ALERT, ALTER, BALER, BATHE, BELIE
+E|ALERT|U,A,R,U,E,I,B,E,L,T,E,H
+
+# Puzzle 191: 6 words with 'I'
+# Examples: ALIEN, ANIME, ELFIN, EMAIL, FINAL
+I|ALIEN|W,I,I,L,A,O,F,E,M,L,N,U
+
+# Puzzle 192: 18 words with 'L'
+# Examples: ALLOY, AMPLY, LOAMY, LORRY, LOYAL
+L|ALLOY|N,A,L,S,L,L,R,O,P,Y,M,R
+
+# Puzzle 193: 4 words with 'N'
+# Examples: CORNY, CRONY, MOURN, SCORN
+N|CRONY|O,F,U,M,N,C,Y,L,L,U,S,R
+
+# Puzzle 194: 29 words with 'R'
+# Examples: DRONE, DRYER, ENTRY, ERROR, GONER
+R|ORDER|R,R,O,T,G,R,Y,S,N,H,E,D
+
+# Puzzle 195: 1 words with 'I'
+# Examples: CUBIC
+I|CUBIC|C,S,B,S,Y,C,U,W,I,B,G,C
+
+# Puzzle 196: 5 words with 'D'
+# Examples: BADLY, CADDY, DADDY, ODDLY, PADDY
+D|DADDY|Y,D,O,Y,C,L,P,A,F,B,D,D
+
+# Puzzle 197: 18 words with 'T'
+# Examples: AORTA, APART, AWAIT, PARTY, PATIO
+T|WRATH|A,O,P,Y,W,W,T,T,A,H,I,R
+
+# Puzzle 198: 42 words with 'E'
+# Examples: CHORE, CHOSE, CLONE, CLOSE, CRONE
+E|HERON|G,O,L,U,S,E,R,C,N,H,M,O
+
+# Puzzle 199: 18 words with 'E'
+# Examples: EMPTY, ETHER, FORTE, FOYER, HEFTY
+E|METER|F,H,T,E,P,O,P,Y,M,F,E,R
+
+# Puzzle 200: 33 words with 'I'
+# Examples: BEGIN, BEING, BINGE, BRINE, BRING
+I|REIGN|B,E,N,R,P,Y,R,G,M,I,T,W
+
+# Puzzle 201: 9 words with 'D'
+# Examples: ALOUD, CLOUD, CLUED, COULD, DECAL
+D|COULD|O,A,U,C,S,A,U,L,O,F,D,E
+
+# Puzzle 202: 2 words with 'S'
+# Examples: SAUCY, SAUNA
+S|SAUNA|Y,A,A,N,U,U,Y,S,A,C,U,F
+
+# Puzzle 203: 19 words with 'H'
+# Examples: FLASH, FORTH, FROTH, HOARD, LOATH
+H|FROTH|M,T,T,D,F,O,W,R,H,L,S,A
+
+# Puzzle 204: 9 words with 'U'
+# Examples: BOUND, CROUP, CURIO, FOUND, INCUR
+U|INCUR|U,R,B,P,N,I,U,O,F,C,D,U
+
+# Puzzle 205: 37 words with 'R'
+# Examples: BERET, BERRY, BERTH, BROTH, CHEER
+R|CORER|Y,F,E,T,C,H,M,B,O,E,R,R
+
+# Puzzle 206: 17 words with 'B'
+# Examples: ABASE, ABUSE, ALBUM, AMBLE, BANAL
+B|BASIC|S,C,N,I,A,M,L,A,B,E,E,U
+
+# Puzzle 207: 7 words with 'D'
+# Examples: BOUND, DOWNY, HOUND, HOWDY, POUND
+D|POUND|N,B,H,U,D,I,Y,U,W,P,P,O
+
+# Puzzle 208: 20 words with 'U'
+# Examples: ACUTE, CAPUT, CRUEL, CUTIE, ERUPT
+U|PUPAL|T,L,A,P,P,R,U,T,E,C,I,R
+
+# Puzzle 209: 12 words with 'U'
+# Examples: BULLY, BURLY, CLUNG, CURLY, FLUNG
+U|CURLY|N,C,L,U,F,B,Y,Y,L,R,S,G
+
+# Puzzle 210: 5 words with 'I'
+# Examples: BISON, DISCO, IONIC, SCION, SONIC
+I|BISON|P,I,S,I,W,N,B,O,N,B,C,D
+
+# Puzzle 211: 11 words with 'E'
+# Examples: AGILE, AISLE, BAGEL, BILGE, CABLE
+E|CABLE|L,E,G,B,F,I,I,S,C,I,F,A
+
+# Puzzle 212: 3 words with 'U'
+# Examples: GUEST, SEGUE, TULLE
+U|SEGUE|G,C,T,L,C,L,U,E,E,S,C,T
+
+# Puzzle 213: 26 words with 'I'
+# Examples: AFIRE, AISLE, ARISE, BASIL, BIBLE
+I|BRIBE|B,A,R,F,O,P,B,P,L,S,E,I
+
+# Puzzle 214: 34 words with 'E'
+# Examples: EARLY, LAPSE, LAYER, LEARN, NEWLY
+E|PARER|S,L,R,W,Y,R,E,A,U,Y,N,P
+
+# Puzzle 215: 8 words with 'R'
+# Examples: CAIRN, CIGAR, CRAWL, FLAIR, FRAIL
+R|FRAIL|F,F,I,A,G,M,W,C,N,M,R,L
+
+# Puzzle 216: 55 words with 'T'
+# Examples: AGENT, ANGST, ANTIC, ASCOT, ATONE
+T|STAGE|A,F,F,E,G,N,T,I,O,H,S,C
+
+# Puzzle 217: 3 words with 'L'
+# Examples: FLUME, SMELL, SWELL
+L|SMELL|L,W,M,S,S,F,U,L,U,M,E,C
+
+# Puzzle 218: 7 words with 'Y'
+# Examples: AMITY, CRYPT, DAIRY, DIARY, DIRTY
+Y|TARDY|M,P,A,I,A,T,D,P,Y,Y,C,R
+
+# Puzzle 219: 6 words with 'Y'
+# Examples: APPLY, APTLY, AUNTY, CANDY, FANCY
+Y|APPLY|U,C,Y,L,N,A,P,T,F,Y,D,P
+
+# Puzzle 220: 8 words with 'E'
+# Examples: ELITE, GUILE, LIEGE, TITLE, TOWEL
+E|ELITE|O,I,L,O,U,E,T,W,T,E,G,L
+
+# Puzzle 221: 22 words with 'R'
+# Examples: DIRTY, DONOR, DOWRY, DROIT, DROOP
+R|IRONY|R,D,Y,N,R,O,T,O,I,G,P,W
+
+# Puzzle 222: 15 words with 'C'
+# Examples: ABACK, BLACK, CABAL, CABIN, CANAL
+C|FLACK|A,H,K,L,B,F,N,C,I,P,A,A
+
+# Puzzle 223: 4 words with 'O'
+# Examples: CLOUT, FLOUT, FOGGY, LOFTY
+O|FOGGY|F,U,C,L,O,G,U,G,W,Y,T,B
+
+# Puzzle 224: 7 words with 'S'
+# Examples: BUSED, DUSTY, FETUS, SETUP, STUDY
+S|DUSTY|D,P,F,S,Y,B,E,U,Y,D,T,F
+
+# Puzzle 225: 8 words with 'E'
+# Examples: CRUEL, CYCLE, LEMUR, MERCY, MERRY
+E|RULER|R,R,E,U,C,Y,C,R,L,M,C,L
+
+# Puzzle 226: 8 words with 'L'
+# Examples: CHILI, CLIFF, FLUSH, ICILY, LOCUS
+L|LUNCH|L,F,N,H,C,O,U,F,S,Y,I,I
+
+# Puzzle 227: 8 words with 'A'
+# Examples: AMEND, ASHEN, ENEMA, GNASH, MANGE
+A|ASHEN|E,S,M,D,H,E,A,N,M,N,F,G
+
+# Puzzle 228: 10 words with 'E'
+# Examples: ADEPT, AMUSE, PASTE, PAUSE, SAUTE
+E|PAUSE|A,T,D,U,S,P,A,D,E,D,P,M
+
+# Puzzle 229: 29 words with 'L'
+# Examples: ABLED, ANKLE, BELCH, BLACK, BLADE
+L|KNELT|E,D,T,N,H,K,D,L,L,A,C,B
+
+# Puzzle 230: 6 words with 'O'
+# Examples: BOSOM, COMIC, DISCO, IDIOM, SCOOP
+O|COMIC|O,D,C,M,I,I,C,S,B,P,O,F
+
+# Puzzle 231: 10 words with 'G'
+# Examples: DIGIT, GIRTH, GRIND, ICING, MIGHT
+G|ICING|M,I,G,D,T,N,H,C,C,R,I,H
+
+# Puzzle 232: 24 words with 'E'
+# Examples: FEVER, FILER, FLIER, LEVER, LIVER
+E|VERSE|S,L,F,O,E,O,V,R,I,M,S,E
+
+# Puzzle 233: 8 words with 'W'
+# Examples: AGLOW, AWFUL, SHAWL, SHOWY, WELSH
+W|AGLOW|E,F,A,H,O,U,G,L,W,F,S,Y
+
+# Puzzle 234: 33 words with 'L'
+# Examples: ABLED, AISLE, ALBUM, ALIKE, AMBLE
+L|ALIKE|U,L,S,I,K,M,D,S,E,B,Y,A
+
+# Puzzle 235: 4 words with 'C'
+# Examples: BUNCH, CONDO, COUGH, DUCHY
+C|CONDO|Y,U,H,G,C,N,Y,G,O,D,O,B
+
+# Puzzle 236: 17 words with 'O'
+# Examples: DONOR, DROOL, FLOOD, FLOOR, FORGO
+O|GLOOM|R,L,M,N,S,D,O,F,G,Y,O,Y
+
+# Puzzle 237: 11 words with 'O'
+# Examples: ANODE, ATONE, AUDIO, DONUT, ENDOW
+O|SOUND|A,D,N,S,E,T,I,W,E,U,S,O
+
+# Puzzle 238: 12 words with 'A'
+# Examples: AGING, ALIGN, ALLOT, ALONG, ATOLL
+A|ALONG|G,N,T,G,O,U,O,I,I,A,L,L
+
+# Puzzle 239: 27 words with 'A'
+# Examples: ACUTE, AFTER, CADET, CARAT, CATER
+A|CADET|C,T,M,A,D,F,R,R,C,U,A,E
+
+# Puzzle 240: 14 words with 'S'
+# Examples: ANGST, ERASE, ESTER, RESET, SANER
+S|SNARE|R,N,E,G,R,E,A,S,G,A,N,T
+
+# Puzzle 241: 89 words with 'E'
+# Examples: AGILE, AGREE, AISLE, ALERT, ALTER
+E|SLEET|L,T,M,E,A,E,R,I,G,E,S,C
+
+# Puzzle 242: 26 words with 'H'
+# Examples: ABHOR, BEACH, BELCH, BENCH, CHAMP
+H|BELCH|L,A,B,R,N,H,C,P,M,O,E,B
+
+# Puzzle 243: 6 words with 'D'
+# Examples: BUILD, DRYLY, GUILD, LUCID, LURID
+D|LURID|G,I,R,D,C,P,U,P,B,L,Y,Y
+
+# Puzzle 244: 17 words with 'N'
+# Examples: AGING, APING, CANOE, COVEN, GIVEN
+N|OVINE|P,V,G,E,I,N,G,I,U,C,O,A
+
+# Puzzle 245: 4 words with 'V'
+# Examples: CIVIL, LIVID, VIGIL, VIGOR
+V|CIVIL|V,I,R,D,C,O,L,I,I,T,G,H
+
+# Puzzle 246: 3 words with 'M'
+# Examples: LIMIT, MUSTY, SLIMY
+M|LIMIT|U,M,B,S,I,L,U,W,W,Y,I,T
+
+# Puzzle 247: 32 words with 'E'
+# Examples: BELOW, BLEED, BLESS, BOWEL, BREED
+E|SHEER|B,E,W,R,H,E,S,L,O,R,D,S
+
+# Puzzle 248: 3 words with 'H'
+# Examples: GLYPH, HAPPY, HIPPY
+H|GLYPH|L,Y,H,G,P,B,I,G,B,H,A,P
+
+# Puzzle 249: 22 words with 'G'
+# Examples: AGREE, ARGUE, EAGER, FORGE, GRAPE
+G|SUGAR|R,F,E,A,U,R,P,O,E,I,G,S
+
+# Puzzle 250: 16 words with 'D'
+# Examples: DINER, DRIED, DRUID, NEEDY, NERDY
+D|REEDY|N,R,W,I,E,D,D,W,U,E,E,Y
+
+# Puzzle 251: 31 words with 'L'
+# Examples: ALERT, ALTER, CAMEL, CLAIM, CLEAR
+L|FERAL|I,F,L,R,T,L,R,R,C,A,M,E
+
+# Puzzle 252: 10 words with 'N'
+# Examples: CANDY, CONCH, CONDO, FANCY, FOUND
+N|FANCY|N,A,P,F,D,C,Y,C,U,O,H,O
+
+# Puzzle 253: 16 words with 'P'
+# Examples: IMPEL, OPINE, PHONE, PLIED, POISE
+P|POISE|O,S,H,P,I,L,N,E,M,O,M,D
+
+# Puzzle 254: 5 words with 'Y'
+# Examples: LOUSY, LUSTY, SALTY, STYLE, YEAST
+Y|LOUSY|S,U,E,A,U,W,Y,L,I,T,O,I
+
+# Puzzle 255: 1 words with 'F'
+# Examples: SKIFF
+F|SKIFF|E,I,S,F,D,M,P,I,A,F,K,F
+
+# Puzzle 256: 7 words with 'X'
+# Examples: EXACT, EXALT, EXCEL, EXERT, EXPEL
+X|RELAX|E,A,R,C,L,D,E,H,S,P,T,X
+
+# Puzzle 257: 1 words with 'R'
+# Examples: BIRCH
+R|BIRCH|H,C,G,C,D,W,F,B,I,R,B,Y
+
+# Puzzle 258: 17 words with 'S'
+# Examples: BASIL, BLAST, BOAST, FLASH, FOIST
+S|BLAST|I,W,G,H,S,T,I,L,F,A,B,O
+
+# Puzzle 259: 4 words with 'B'
+# Examples: BEGET, BESET, GUMBO, OBESE
+B|OBESE|U,G,S,E,E,M,B,C,S,T,W,O
+
+# Puzzle 260: 14 words with 'R'
+# Examples: BLURB, BLURT, BRIAR, BURST, MURAL
+R|BURST|M,A,R,R,S,L,U,T,B,U,B,I
+
+# Puzzle 261: 32 words with 'A'
+# Examples: ABASE, ABATE, APART, ASSET, BASTE
+A|HEART|S,E,S,P,T,E,B,A,H,S,R,A
+
+# Puzzle 262: 21 words with 'S'
+# Examples: BLUSH, BONUS, ETHOS, GHOST, GUEST
+S|UNSET|H,E,L,G,N,N,T,U,S,O,B,H
+
+# Puzzle 263: 17 words with 'R'
+# Examples: BORNE, BROWN, CORNY, COWER, CRONE
+R|BORNE|E,B,N,G,R,O,E,Y,N,W,G,C
+
+# Puzzle 264: 7 words with 'L'
+# Examples: ALGAE, ALLAY, ALLEY, GAYLY, GLAZE
+L|GLAZE|A,Z,W,G,Y,U,A,L,E,L,C,Y
+
+# Puzzle 265: 39 words with 'A'
+# Examples: ADEPT, ADOPT, APTLY, DEALT, DELAY
+A|GLOAT|P,Y,O,G,A,T,S,L,E,T,D,G
+
+# Puzzle 266: 14 words with 'S'
+# Examples: CREST, CRUST, CURSE, GUEST, NURSE
+S|STRUT|N,T,T,S,R,R,D,C,E,R,U,G
+
+# Puzzle 267: 10 words with 'R'
+# Examples: BROOD, DROOL, DROOP, FJORD, FLOOR
+R|FJORD|F,O,U,J,L,D,D,P,B,W,O,R
+
+# Puzzle 268: 6 words with 'C'
+# Examples: CHOSE, CLOSE, LEECH, SCOLD, SCOWL
+C|WELCH|C,E,E,H,L,O,D,W,H,G,E,S
+
+# Puzzle 269: 12 words with 'R'
+# Examples: ERROR, GRIME, GRIMY, GROOM, MERRY
+R|ERROR|O,G,O,W,O,R,R,R,I,M,E,Y
+
+# Puzzle 270: 19 words with 'N'
+# Examples: BEGIN, BEING, BINGE, BINGO, BONEY
+N|ENVOY|D,B,N,O,P,G,E,P,I,N,V,Y
+
+# Puzzle 271: 9 words with 'L'
+# Examples: CAMEL, CLUED, DECAL, FECAL, FLAME
+L|FECAL|A,C,H,M,U,D,F,L,M,F,D,E
+
+# Puzzle 272: 11 words with 'T'
+# Examples: ACTOR, AUDIT, COURT, DIGIT, DROIT
+T|RATIO|C,T,D,G,I,W,I,O,O,U,A,R
+
+# Puzzle 273: 21 words with 'O'
+# Examples: BLOOD, BROOD, CLOUD, COLOR, COULD
+O|FLOOD|C,L,U,L,R,Y,O,W,F,O,B,D
+
+# Puzzle 274: 4 words with 'M'
+# Examples: CHUMP, CLUMP, MULCH, THUMP
+M|CHUMP|C,H,M,D,C,U,P,U,L,U,T,L
+
+# Puzzle 275: 31 words with 'S'
+# Examples: CHASM, CRASH, CRASS, CRUSH, CRUST
+S|SPURT|W,C,S,P,N,M,R,U,H,S,A,T
+
+# Puzzle 276: 53 words with 'E'
+# Examples: AGREE, CADET, CAGEY, CASTE, CATER
+E|RESET|C,T,S,E,Y,A,T,E,G,D,R,R
+
+# Puzzle 277: 4 words with 'M'
+# Examples: AMUSE, MASSE, SPASM, SWAMP
+M|AMUSE|E,S,S,G,M,P,D,U,D,A,F,W
+
+# Puzzle 278: 20 words with 'T'
+# Examples: CREPT, CREST, CRUST, ERUPT, RECUT
+T|STRUT|E,T,N,P,U,S,P,W,C,U,R,T
+
+# Puzzle 279: 7 words with 'N'
+# Examples: BLIND, BLINK, BRING, BRINK, DRINK
+N|BLINK|K,D,F,B,L,L,I,N,B,G,N,R
+
+# Puzzle 280: 23 words with 'R'
+# Examples: ABHOR, ARBOR, AROSE, BRASH, BRUSH
+R|SHEAR|B,H,E,S,F,R,R,O,R,U,A,H
+
+# Puzzle 281: 7 words with 'E'
+# Examples: FERRY, FOYER, PRONE, PRUNE, PURER
+E|UPPER|N,F,O,O,E,U,R,Y,R,U,P,P
+
+# Puzzle 282: 17 words with 'D'
+# Examples: DAILY, DELAY, DOPEY, EDIFY, FIELD
+D|FIELD|O,D,G,O,O,Y,E,A,F,L,P,I
+
+# Puzzle 283: 28 words with 'R'
+# Examples: AMBER, BEARD, BERRY, BREAD, DEBAR
+R|PARRY|M,E,D,B,Y,R,P,Y,A,M,T,R
+
+# Puzzle 284: 45 words with 'E'
+# Examples: ERUPT, ESTER, ETHER, HYPER, LEERY
+E|SWEEP|W,L,T,H,R,E,P,Y,S,Y,E,U
+
+# Puzzle 285: 22 words with 'B'
+# Examples: ABBEY, ABLED, ABODE, ADOBE, BADLY
+B|CABBY|D,R,A,C,E,L,O,B,C,B,D,Y
+
+# Puzzle 286: 6 words with 'R'
+# Examples: CHIRP, CHOIR, CROWN, FROWN, PORCH
+R|FROWN|R,W,F,I,F,H,C,O,P,N,W,P
+
+# Puzzle 287: 35 words with 'R'
+# Examples: ACORN, ACTOR, ARSON, CAROL, CORAL
+R|TUTOR|L,M,U,U,R,A,T,S,N,O,C,T
+
+# Puzzle 288: 4 words with 'L'
+# Examples: ALONG, FLANK, KNOLL, KOALA
+L|FLANK|K,A,N,G,L,G,F,G,L,L,O,A
+
+# Puzzle 289: 9 words with 'C'
+# Examples: CAGEY, CAUSE, CEASE, FANCY, FENCE
+C|SUMAC|Y,M,G,S,E,F,C,Y,E,N,A,U
+
+# Puzzle 290: 9 words with 'L'
+# Examples: AFOUL, ALARM, FLORA, FLOUR, LOAMY
+L|AFOUL|R,F,U,L,A,U,O,M,A,Y,H,U
+
+# Puzzle 291: 14 words with 'N'
+# Examples: CUMIN, ENNUI, MINCE, MINUS, SCENT
+N|ENNUI|S,C,I,N,F,T,U,N,I,M,U,E
+
+# Puzzle 292: 12 words with 'H'
+# Examples: CHAOS, CHASE, CHEAP, CHOSE, COUGH
+H|COUGH|P,O,G,S,G,G,C,E,A,H,U,Y
+
+# Puzzle 293: 3 words with 'B'
+# Examples: BONGO, BOOBY, BUNNY
+B|BONGO|O,B,O,Y,O,W,G,C,B,N,U,N
+
+# Puzzle 294: 19 words with 'S'
+# Examples: ABUSE, ASSET, BASIS, BASTE, BEAST
+S|SAUTE|B,E,S,I,U,A,E,P,S,S,T,T
+
+# Puzzle 295: 7 words with 'O'
+# Examples: ARROW, OPERA, POWER, ROWER, WHOOP
+O|WHOOP|H,A,R,E,H,W,O,Y,R,O,O,P
+
+# Puzzle 296: 17 words with 'O'
+# Examples: ALOOF, ANNOY, AROMA, FLOOR, FLORA
+O|RAYON|L,A,N,O,M,F,O,Y,R,N,A,O
+
+# Puzzle 297: 14 words with 'C'
+# Examples: CAPER, CEASE, CREEP, CREPE, FARCE
+C|CREPE|A,F,W,R,W,E,S,C,G,C,E,P
+
+# Puzzle 298: 6 words with 'M'
+# Examples: EMAIL, FLAME, FLUME, HUMID, MEDAL
+M|FLAME|A,U,U,U,M,I,E,L,D,F,F,H
+
+# Puzzle 299: 30 words with 'E'
+# Examples: AMBER, ANGER, ARGUE, AZURE, BARGE
+E|AZURE|G,B,U,M,Z,A,C,N,R,H,E,R
+
+# Puzzle 300: 12 words with 'O'
+# Examples: ALLOY, FLORA, FOLLY, FORAY, HOLLY
+O|ALLOY|F,A,O,R,H,L,S,L,R,F,H,Y
+

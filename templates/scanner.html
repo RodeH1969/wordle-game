@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discount Code Scanner</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .scanner-container {
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .coffee-icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+        h1 {
+            color: #8B4513;
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .scanner-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            border: 2px dashed #8B4513;
+        }
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        #code-input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        #code-input:focus {
+            outline: none;
+            border-color: #8B4513;
+        }
+        .scan-btn {
+            background: linear-gradient(45deg, #00c851, #007e33);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: transform 0.2s ease;
+        }
+        .scan-btn:hover {
+            transform: translateY(-1px);
+        }
+        .scan-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .result {
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 15px;
+            font-weight: bold;
+            text-align: center;
+            font-size: 1.4em;
+            transition: all 0.3s ease;
+            display: none;
+        }
+        .result.success {
+            background: linear-gradient(45deg, #00c851, #007e33);
+            color: white;
+            border: 3px solid #00a040;
+        }
+        .result.error {
+            background: linear-gradient(45deg, #ff4444, #cc0000);
+            color: white;
+            border: 3px solid #cc3333;
+        }
+        .result.warning {
+            background: linear-gradient(45deg, #feca57, #ff9f43);
+            color: white;
+            border: 3px solid #e6b800;
+        }
+        .camera-scanner {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .camera-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 10px;
+        }
+        #video {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 10px;
+            margin: 10px 0;
+            display: none;
+        }
+        .instructions {
+            background: #e9ecef;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .instructions h3 {
+            color: #8B4513;
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="scanner-container">
+        <div class="header">
+            <div class="coffee-icon">☕</div>
+            <h1>$3 Discount Scanner</h1>
+            <p>Scan customer QR codes for coffee discounts</p>
+        </div>
+
+        <div class="scanner-section">
+            <h3>Manual Code Entry</h3>
+            <div class="input-group">
+                <input type="text" id="code-input" placeholder="Enter 8-character code" maxlength="8">
+                <button class="scan-btn" onclick="validateCode()" id="validate-btn">
+                    Apply $3 Discount
+                </button>
+            </div>
+        </div>
+
+        <div class="camera-scanner">
+            <h3>QR Code Scanner</h3>
+            <button class="camera-btn" onclick="startCamera()" id="camera-btn">
+                📱 Start Camera Scanner
+            </button>
+            <button class="camera-btn" onclick="stopCamera()" id="stop-btn" style="display:none;">
+                ⏹️ Stop Scanner
+            </button>
+            <video id="video" autoplay></video>
+            <canvas id="canvas" style="display:none;"></canvas>
+        </div>
+
+        <div id="result" class="result"></div>
+
+        <div class="instructions">
+            <h3>How to use:</h3>
+            <ol>
+                <li><strong>Manual:</strong> Type the code from customer's screen</li>
+                <li><strong>Camera:</strong> Scan customer's QR code</li>
+                <li>System shows if $3 discount can be applied</li>
+                <li>Deduct $3 from their coffee order!</li>
+            </ol>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsqr/1.4.0/jsQR.js"></script>
+    
+    <script>
+        let video = null;
+        let canvas = null;
+        let context = null;
+        let scanning = false;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            canvas = document.getElementById('canvas');
+            context = canvas.getContext('2d');
+            
+            document.getElementById('code-input').focus();
+            
+            document.getElementById('code-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    validateCode();
+                }
+            });
+            
+            document.getElementById('code-input').addEventListener('input', function(e) {
+                e.target.value = e.target.value.toUpperCase();
+            });
+        });
+
+        async function validateCode() {
+            const codeInput = document.getElementById('code-input');
+            const code = codeInput.value.trim();
+            const validateBtn = document.getElementById('validate-btn');
+            const resultDiv = document.getElementById('result');
+
+            if (code.length !== 8) {
+                showResult('Please enter a valid 8-character code', 'error');
+                return;
+            }
+
+            validateBtn.disabled = true;
+            validateBtn.textContent = 'Checking...';
+
+            try {
+                const response = await fetch('/api/redeem_code', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ code: code })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showResult('✅ $3 DISCOUNT APPLIED!\nDeduct $3 from customer\'s order', 'success');
+                    codeInput.value = '';
+                    
+                    // Celebrate animation
+                    resultDiv.style.transform = 'scale(1.05)';
+                    setTimeout(() => resultDiv.style.transform = 'scale(1)', 200);
+                } else {
+                    if (result.error.includes('already redeemed')) {
+                        showResult(`❌ Code Already Used\n${result.redeemed_at || 'Previously redeemed'}`, 'warning');
+                    } else {
+                        showResult(`❌ Invalid Code\n${result.error}`, 'error');
+                    }
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showResult('❌ Network Error\nPlease try again', 'error');
+            } finally {
+                validateBtn.disabled = false;
+                validateBtn.textContent = 'Apply $3 Discount';
+                codeInput.focus();
+            }
+        }
+
+        function showResult(message, type) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = message;
+            resultDiv.className = `result ${type}`;
+            resultDiv.style.display = 'block';
+            
+            // Auto-hide success messages after 5 seconds
+            if (type === 'success') {
+                setTimeout(() => {
+                    resultDiv.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        async function startCamera() {
+            try {
+                video = document.getElementById('video');
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: 'environment' } 
+                });
+                
+                video.srcObject = stream;
+                video.style.display = 'block';
+                document.getElementById('camera-btn').style.display = 'none';
+                document.getElementById('stop-btn').style.display = 'inline-block';
+                
+                scanning = true;
+                scanForQR();
+                
+                showResult('📷 Camera ready - point at QR code', 'success');
+            } catch (error) {
+                console.error('Camera error:', error);
+                showResult('❌ Camera not available\nUse manual entry instead', 'error');
+            }
+        }
+
+        function stopCamera() {
+            scanning = false;
+            if (video && video.srcObject) {
+                video.srcObject.getTracks().forEach(track => track.stop());
+                video.style.display = 'none';
+            }
+            document.getElementById('camera-btn').style.display = 'inline-block';
+            document.getElementById('stop-btn').style.display = 'none';
+            showResult('📷 Camera stopped', 'warning');
+        }
+
+        function scanForQR() {
+            if (!scanning || !video) return;
+            
+            if (video.readyState === video.HAVE_ENOUGH_DATA) {
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                
+                const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+                const code = jsQR(imageData.data, imageData.width, imageData.height);
+                
+                if (code) {
+                    // Extract redemption code from URL
+                    const url = code.data;
+                    const match = url.match(/\/redeem\/([A-Z0-9]{8})/);
+                    
+                    if (match) {
+                        const redemptionCode = match[1];
+                        document.getElementById('code-input').value = redemptionCode;
+                        stopCamera();
+                        validateCode();
+                        return;
+                    } else {
+                        showResult('❌ Invalid QR code\nTry manual entry', 'error');
+                    }
+                }
+            }
+            
+            if (scanning) {
+                requestAnimationFrame(scanForQR);
+            }
+        }
+
+        // Clear result when typing
+        document.getElementById('code-input').addEventListener('input', function() {
+            document.getElementById('result').style.display = 'none';
+        });
+    </script>
+</body>
+</html>
